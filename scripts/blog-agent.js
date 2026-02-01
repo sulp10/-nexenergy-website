@@ -400,18 +400,16 @@ async function publishToCMS(article, imageUrl) {
     ? article.metaDescription.substring(0, 157) + '...'
     : article.metaDescription;
 
-  // Ensure content is not empty - use directAnswer as fallback
-  const contentHtml = article.content && article.content.trim()
-    ? article.content
-    : `<h2>${article.h1}</h2><p>${article.directAnswer}</p>`;
+  // Convert HTML content to Payload Lexical format
+  const contentLexical = htmlToLexical(article.content || article.directAnswer);
 
-  console.log(`   Content length: ${contentHtml.length} chars`);
+  console.log(`   Content nodes: ${contentLexical.root.children.length}`);
 
   const payload = {
     title: article.title,
     h1: article.h1,
     slug: article.slug,
-    content: contentHtml,
+    content: contentLexical,
     focusKeyword: article.slug.replace(/-/g, ' '),
     directAnswer: truncatedDirectAnswer,
     searchIntent: 'informational',
@@ -514,6 +512,151 @@ async function sendNotification(type, data) {
   }
 
   return await response.json();
+}
+
+/**
+ * Convert HTML content to Payload CMS Lexical format
+ * Lexical uses a tree structure with root > children nodes
+ */
+function htmlToLexical(html) {
+  if (!html) {
+    return {
+      root: {
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [{ type: 'text', text: 'Contenuto non disponibile.' }]
+          }
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1
+      }
+    };
+  }
+
+  const children = [];
+
+  // Simple HTML to Lexical conversion
+  // Split by common HTML tags and convert to Lexical nodes
+  const parts = html.split(/(<\/?(?:h[1-6]|p|ul|li|strong|em)[^>]*>)/gi);
+
+  let currentParagraph = [];
+  let inList = false;
+  let listItems = [];
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+
+    if (!part || part.trim() === '') continue;
+
+    // Opening tags
+    if (/<h([1-6])[^>]*>/i.test(part)) {
+      // Flush current paragraph
+      if (currentParagraph.length > 0) {
+        children.push({
+          type: 'paragraph',
+          children: currentParagraph
+        });
+        currentParagraph = [];
+      }
+
+      const level = parseInt(part.match(/<h([1-6])/i)[1]);
+      const nextPart = parts[i + 1] || '';
+      const text = nextPart.replace(/<[^>]*>/g, '').trim();
+
+      if (text) {
+        children.push({
+          type: 'heading',
+          tag: `h${level}`,
+          children: [{ type: 'text', text: text }]
+        });
+        i++; // Skip content
+      }
+    } else if (/<\/h[1-6]>/i.test(part)) {
+      // Skip closing heading tags
+      continue;
+    } else if (/<p[^>]*>/i.test(part)) {
+      // Start new paragraph
+      if (currentParagraph.length > 0) {
+        children.push({
+          type: 'paragraph',
+          children: currentParagraph
+        });
+        currentParagraph = [];
+      }
+    } else if (/<\/p>/i.test(part)) {
+      // End paragraph
+      if (currentParagraph.length > 0) {
+        children.push({
+          type: 'paragraph',
+          children: currentParagraph
+        });
+        currentParagraph = [];
+      }
+    } else if (/<ul[^>]*>/i.test(part)) {
+      inList = true;
+      listItems = [];
+    } else if (/<\/ul>/i.test(part)) {
+      if (listItems.length > 0) {
+        children.push({
+          type: 'list',
+          listType: 'bullet',
+          children: listItems
+        });
+      }
+      inList = false;
+      listItems = [];
+    } else if (/<li[^>]*>/i.test(part)) {
+      // List item - get content from next part
+      const nextPart = parts[i + 1] || '';
+      const text = nextPart.replace(/<[^>]*>/g, '').trim();
+      if (text && inList) {
+        listItems.push({
+          type: 'listitem',
+          children: [{ type: 'text', text: text }]
+        });
+        i++;
+      }
+    } else if (/<\/li>/i.test(part)) {
+      continue;
+    } else if (!/<[^>]*>/.test(part)) {
+      // Plain text
+      const text = part.trim();
+      if (text) {
+        currentParagraph.push({ type: 'text', text: text });
+      }
+    }
+  }
+
+  // Flush remaining paragraph
+  if (currentParagraph.length > 0) {
+    children.push({
+      type: 'paragraph',
+      children: currentParagraph
+    });
+  }
+
+  // Ensure at least one child
+  if (children.length === 0) {
+    children.push({
+      type: 'paragraph',
+      children: [{ type: 'text', text: html.replace(/<[^>]*>/g, ' ').trim() || 'Contenuto' }]
+    });
+  }
+
+  return {
+    root: {
+      type: 'root',
+      children: children,
+      direction: 'ltr',
+      format: '',
+      indent: 0,
+      version: 1
+    }
+  };
 }
 
 /**

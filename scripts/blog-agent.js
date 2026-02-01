@@ -395,8 +395,17 @@ async function publishToCMS(article, imageUrl) {
     ? article.directAnswer.substring(0, 157) + '...'
     : article.directAnswer;
 
-  // Ensure content is not empty
-  const contentHtml = article.content || `<p>${article.directAnswer}</p>`;
+  // Truncate metaDescription to max 160 chars
+  const truncatedMetaDesc = article.metaDescription && article.metaDescription.length > 160
+    ? article.metaDescription.substring(0, 157) + '...'
+    : article.metaDescription;
+
+  // Ensure content is not empty - use directAnswer as fallback
+  const contentHtml = article.content && article.content.trim()
+    ? article.content
+    : `<h2>${article.h1}</h2><p>${article.directAnswer}</p>`;
+
+  console.log(`   Content length: ${contentHtml.length} chars`);
 
   const payload = {
     title: article.title,
@@ -408,9 +417,9 @@ async function publishToCMS(article, imageUrl) {
     searchIntent: 'informational',
     meta: {
       title: article.title,
-      description: article.metaDescription,
+      description: truncatedMetaDesc,
       ogTitle: article.title,
-      ogDescription: article.metaDescription
+      ogDescription: truncatedMetaDesc
     },
     faqSchema: article.faq,
     _status: 'published'

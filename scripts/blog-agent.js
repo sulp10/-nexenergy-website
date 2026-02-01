@@ -453,8 +453,11 @@ async function publishToCMS(article, imageUrl) {
     return {};
   });
 
+  // Log full response for debugging
+  console.log('   Full CMS Response:', JSON.stringify(responseData, null, 2).substring(0, 500));
+
   if (!response.ok) {
-    console.error('   CMS Response:', JSON.stringify(responseData, null, 2));
+    console.error('   CMS Error:', JSON.stringify(responseData, null, 2));
     throw new Error(`Payload CMS error: ${response.status} - ${JSON.stringify(responseData)}`);
   }
 

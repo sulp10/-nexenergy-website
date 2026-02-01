@@ -1,0 +1,42 @@
+{
+  "name": "nexenergy-website",
+  "version": "1.0.0",
+  "description": "NexEnergy - Sistema di retrofit energetico intelligente per l'hospitality italiana",
+  "main": "index.html",
+  "scripts": {
+    "lint": "npx html-validate index.html && echo Lint passed",
+    "typecheck": "echo Static HTML project - no TypeScript to check && exit 0",
+    "build": "echo Static site - no build needed && exit 0",
+    "serve": "npx serve .",
+    "dev": "npx serve .",
+    "validate": "npx html-validate index.html",
+    "blog:generate": "node scripts/blog-agent.js",
+    "blog:test": "node scripts/blog-agent.js --test --dry-run",
+    "blog:dry-run": "node scripts/blog-agent.js --dry-run",
+    "api:health": "node scripts/api-health-check.js",
+    "api:health:email": "node scripts/api-health-check.js --send-test-email",
+    "test:article": "node scripts/test-article-generator.js",
+    "test:newsletter": "node scripts/test-newsletter.js",
+    "test:cms": "node scripts/test-cms-publish.js",
+    "test:cms:keep": "node scripts/test-cms-publish.js --keep",
+    "test:all": "npm run api:health && npm run lint"
+  },
+  "keywords": [
+    "nexenergy",
+    "retrofit",
+    "energy",
+    "hotel",
+    "hospitality"
+  ],
+  "author": "NexEnergy",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "html-validate": "^8.0.0",
+    "serve": "^14.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}

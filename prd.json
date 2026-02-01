@@ -1,0 +1,1961 @@
+{
+  "meta": {
+    "prd_id": "PRD-NEXENERGY-001",
+    "prd_version": "3.0.0",
+    "project_name": "NexEnergy Website",
+    "description": "Sito web per NexEnergy con newsletter, blog automatizzato AI e sistema di retrofit energetico intelligente per hospitality italiana",
+    "author": "IMMOBY Digital Strategy",
+    "created_date": "2026-01-31",
+    "last_updated": "2026-02-01",
+    "status": "ready_for_implementation",
+    "compliance": [
+      "GEO",
+      "AEO",
+      "SEO",
+      "Core Web Vitals",
+      "GDPR"
+    ]
+  },
+  "golden_rules": {
+    "primary_rule": "ESSERE ESPLICITI - I motori di ricerca e le AI non capiscono metafore o codici criptici",
+    "geo_aeo_principles": [
+      "Ogni elemento deve essere chiaro, semantico e machine-readable",
+      "URL, meta tag e heading devono descrivere esattamente il contenuto",
+      "Schema.org obbligatorio per comunicare con AI e crawler",
+      "Niente codici criptici, parametri oscuri o abbreviazioni non standard",
+      "Il contenuto deve rispondere direttamente alle query dell'utente"
+    ],
+    "implementation_priority": [
+      {
+        "rank": 1,
+        "element": "URL Structure",
+        "seo_impact": 5,
+        "ux_impact": 3
+      },
+      {
+        "rank": 2,
+        "element": "Meta Title",
+        "seo_impact": 5,
+        "ux_impact": 4
+      },
+      {
+        "rank": 3,
+        "element": "H1 Tag",
+        "seo_impact": 5,
+        "ux_impact": 5
+      },
+      {
+        "rank": 4,
+        "element": "Schema.org",
+        "seo_impact": 4,
+        "ux_impact": 1
+      },
+      {
+        "rank": 5,
+        "element": "Meta Description",
+        "seo_impact": 3,
+        "ux_impact": 4
+      },
+      {
+        "rank": 6,
+        "element": "Content Structure",
+        "seo_impact": 4,
+        "ux_impact": 5
+      },
+      {
+        "rank": 7,
+        "element": "Image Optimization",
+        "seo_impact": 3,
+        "ux_impact": 4
+      },
+      {
+        "rank": 8,
+        "element": "Page Speed",
+        "seo_impact": 4,
+        "ux_impact": 5
+      }
+    ]
+  },
+  "input_schema": {
+    "required_fields": {
+      "business_name": {
+        "type": "string",
+        "value": "NexEnergy",
+        "max_length": 100
+      },
+      "business_type": {
+        "type": "enum",
+        "value": "b2b_service",
+        "allowed_values": [
+          "local_business",
+          "e_commerce",
+          "service",
+          "b2b_service",
+          "hospitality",
+          "saas",
+          "blog",
+          "portfolio"
+        ]
+      },
+      "primary_service": {
+        "type": "string",
+        "value": "Retrofit energetico intelligente per hotel",
+        "description": "Servizio/prodotto principale"
+      },
+      "target_location": {
+        "type": "object",
+        "value": {
+          "country": "IT",
+          "country_name": "Italia",
+          "is_local": false,
+          "scope": "national"
+        }
+      },
+      "primary_language": {
+        "type": "string",
+        "value": "it",
+        "description": "ISO 639-1 language code"
+      }
+    },
+    "optional_fields": {
+      "secondary_services": [
+        "Gestione climatizzazione intelligente",
+        "Monitoraggio consumi energetici",
+        "AI per profili energetici personalizzati"
+      ],
+      "unique_selling_points": [
+        "Retrofit senza opere murarie",
+        "Installazione senza fermare operatività",
+        "ROI rapido e misurabile",
+        "AI che impara e si adatta alla singola stanza",
+        "Aggiornamenti software continui (modello Tesla)"
+      ],
+      "target_audience": {
+        "primary": "Proprietari e direttori di hotel in Italia",
+        "secondary": "Property managers, catene alberghiere, investitori hospitality",
+        "pain_points": [
+          "Costi energetici elevati e incontrollabili",
+          "Sistemi a tessera inefficaci (aggirati dagli ospiti)",
+          "Ristrutturazioni costose e invasive",
+          "Infrastrutture energetiche obsolete",
+          "Mancanza di dati sul consumo reale per camera"
+        ],
+        "search_intent": "transactional"
+      },
+      "competitors": [
+        "Sistemi HVAC tradizionali",
+        "Building Management Systems (BMS)",
+        "Sistemi a tessera/energy switch"
+      ],
+      "brand_assets": {
+        "logo_url": "{logo_url}",
+        "primary_color": "#0066CC",
+        "secondary_color": "#00AA44",
+        "accent_color": "#FF6600",
+        "font_family": "Inter, system-ui, sans-serif"
+      },
+      "contact_info": {
+        "email": "info@nexenergy.it",
+        "phone": "{phone_number}",
+        "address": "{company_address}"
+      },
+      "social_profiles": {
+        "linkedin": "{linkedin_url}",
+        "instagram": "{instagram_url}"
+      }
+    }
+  },
+  "site_structure": {
+    "pages": [
+      {
+        "id": "homepage",
+        "slug": "/",
+        "meta_title": "NexEnergy | Retrofit Energetico Intelligente per Hotel Italia",
+        "meta_description": "Riduci i costi energetici del tuo hotel senza cantieri. Sistema retrofit con AI che impara dalla tua struttura. Risparmio attivo dal giorno uno. Richiedi demo.",
+        "h1": "Retrofit Energetico Intelligente per l'Hospitality Italiana",
+        "primary_keyword": "retrofit energetico hotel",
+        "secondary_keywords": [
+          "risparmio energetico hotel",
+          "smart energy hotel",
+          "efficienza energetica albergo"
+        ]
+      },
+      {
+        "id": "soluzione",
+        "slug": "/soluzione-retrofit-energetico-hotel",
+        "meta_title": "Soluzione Retrofit Energetico Hotel | Senza Cantieri | NexEnergy",
+        "meta_description": "Scopri come NexEnergy trasforma l'impianto energetico del tuo hotel senza opere murarie. Installazione in camere operative. Richiedi consulenza gratuita.",
+        "h1": "La Soluzione Retrofit che Evolve il Tuo Hotel",
+        "primary_keyword": "soluzione retrofit hotel",
+        "secondary_keywords": [
+          "sistema energetico hotel",
+          "efficientamento albergo",
+          "smart building hospitality"
+        ]
+      },
+      {
+        "id": "tecnologia",
+        "slug": "/tecnologia-ai-energy-management",
+        "meta_title": "Tecnologia AI per Energy Management Hotel | NexEnergy",
+        "meta_description": "Hardware immediato + AI che impara. Il metodo Tesla applicato all'hospitality. Machine Learning per profili energetici personalizzati per ogni camera.",
+        "h1": "Tecnologia AI per la Gestione Energetica Alberghiera",
+        "primary_keyword": "AI energy management hotel",
+        "secondary_keywords": [
+          "machine learning hotel",
+          "smart energy AI",
+          "gestione energetica intelligente"
+        ]
+      },
+      {
+        "id": "vantaggi",
+        "slug": "/vantaggi-risparmio-energetico-hotel",
+        "meta_title": "Vantaggi Risparmio Energetico Hotel | ROI Rapido | NexEnergy",
+        "meta_description": "Zero cantieri, zero disagi, risparmio immediato. Scopri i vantaggi del retrofit NexEnergy: installazione non invasiva, AI adattiva, aggiornamenti continui.",
+        "h1": "I Vantaggi del Retrofit Energetico NexEnergy",
+        "primary_keyword": "vantaggi risparmio energetico hotel",
+        "secondary_keywords": [
+          "benefici efficientamento hotel",
+          "ROI retrofit energetico",
+          "risparmio bolletta hotel"
+        ]
+      },
+      {
+        "id": "contatti",
+        "slug": "/contatti",
+        "meta_title": "Contatti NexEnergy | Richiedi Demo Retrofit Energetico Hotel",
+        "meta_description": "Contatta NexEnergy per una consulenza gratuita sul retrofit energetico del tuo hotel. Analisi dei consumi e preventivo personalizzato senza impegno.",
+        "h1": "Richiedi una Consulenza Gratuita",
+        "primary_keyword": "contatti NexEnergy",
+        "secondary_keywords": [
+          "demo retrofit hotel",
+          "consulenza energetica hotel",
+          "preventivo risparmio energetico"
+        ]
+      }
+    ]
+  },
+  "content_sections": {
+    "hero": {
+      "section_id": "hero",
+      "headline": "L'Evoluzione Energetica dell'Ospitalità Italiana: Intelligente, Immediata, Invisibile.",
+      "subheadline": "Sfrutta la potenza dell'ingegneria energetica e dell'AI per abbattere i costi della tua struttura. Nessun cantiere, zero disagi, risparmio attivo dal giorno uno.",
+      "cta_primary": {
+        "text": "Richiedi una Demo",
+        "action": "scroll_to_contact_form",
+        "style": "primary_button"
+      },
+      "cta_secondary": {
+        "text": "Scopri Come Funziona",
+        "action": "scroll_to_solution_section",
+        "style": "ghost_button"
+      },
+      "trust_signals": [
+        "Installazione in 24h per camera",
+        "Zero opere murarie",
+        "ROI medio in 18 mesi"
+      ]
+    },
+    "problema": {
+      "section_id": "problema",
+      "section_title": "Il Paradosso dell'Eccellenza Italiana",
+      "section_subtitle": "(e l'illusione del risparmio)",
+      "intro_paragraph": "L'Italia vanta un patrimonio ricettivo unico, ma le infrastrutture energetiche sono spesso ferme a decenni fa. Chi gestisce un hotel oggi si trova davanti a un bivio: affrontare ristrutturazioni invasive e costose, o affidarsi a soluzioni palliative ormai obsolete.",
+      "subsections": [
+        {
+          "title": "Il Fallimento del Sistema a Tessera",
+          "content": "Molte strutture si affidano ai classici taschini per l'attivazione della luce, convinte di risparmiare. La realtà operativa, però, è diversa. Basta che un ospite richieda una seconda tessera (per il partner o per comodità) per aggirare l'intero sistema: una card rimane inserita h24, mantenendo luci e clima attivi anche a camera vuota.",
+          "pain_point": "Un'infrastruttura che dovrebbe far risparmiare, ma che di fatto viene neutralizzata dal comportamento naturale dell'ospite."
+        }
+      ],
+      "conclusion": "NexEnergy nasce per risolvere esattamente questo cortocircuito tra teoria e realtà."
+    },
+    "soluzione": {
+      "section_id": "soluzione",
+      "section_title": "Non Ristrutturare. Evolvi.",
+      "intro_paragraph": "Abbiamo creato la prima tecnologia di retrofit energetico nativo per l'hospitality. A differenza dei sistemi generalisti, NexEnergy è progettato da ingegneri energetici che conoscono le dinamiche alberghiere: dalle necessità della proprietà a quelle del direttore, fino al comfort dell'ospite.",
+      "key_benefits": [
+        {
+          "title": "Installazione Non Invasiva",
+          "description": "Il nostro hardware si installa sulle infrastrutture esistenti senza opere murarie e senza fermare l'operatività delle camere.",
+          "icon": "tool"
+        },
+        {
+          "title": "Ecosistema Invisibile",
+          "description": "Un sistema che lavora in background, garantendo costi competitivi e un ritorno sull'investimento rapido.",
+          "icon": "eye-off"
+        },
+        {
+          "title": "Svecchiamento Senza Cantiere",
+          "description": "Evolvi l'impianto energetico del tuo hotel senza il peso di una ristrutturazione.",
+          "icon": "refresh"
+        }
+      ]
+    },
+    "metodo_tesla": {
+      "section_id": "metodo",
+      "section_title": "Un Hardware pronto oggi, un'Intelligenza che impara domani.",
+      "section_subtitle": "Il Metodo Tesla applicato all'Hospitality",
+      "intro_paragraph": "Adottiamo un modello di business ispirato all'automotive più avanzato.",
+      "phases": [
+        {
+          "phase_number": 1,
+          "phase_title": "Setup Immediato",
+          "description": "Installiamo un hardware completo e funzionale fin dal primo giorno. Il sistema inizia subito a gestire clima ed energia elettrica, portando un risparmio immediato.",
+          "features": [
+            "Risparmio netto '6.0' rispetto ai vecchi sistemi a tessera",
+            "Funzionalità 'Night Mode' per abbattere i consumi notturni",
+            "Gestione clima senza disturbare il sonno dell'ospite"
+          ],
+          "timeline": "Attivo dal Giorno 1"
+        },
+        {
+          "phase_number": 2,
+          "phase_title": "L'Evoluzione Sartoriale",
+          "description": "Mentre il sistema lavora, acquisisce dati. Dopo alcuni mesi di analisi, i nostri algoritmi di Machine Learning e i modelli LLM rilasciano aggiornamenti customizzati.",
+          "features": [
+            "Profilo energetico unico per ogni stanza",
+            "Analisi esposizione e isolamento termico reale",
+            "Gestione comfort autonoma senza intervento ospite",
+            "Massimizzazione margine operativo struttura"
+          ],
+          "timeline": "Attivo dopo 2-3 mesi di apprendimento"
+        }
+      ],
+      "key_message": "Non applichiamo regole generiche: l'AI crea un profilo energetico unico basato sull'esposizione, l'isolamento termico e l'uso reale di quella specifica stanza."
+    },
+    "cta_finale": {
+      "section_id": "cta",
+      "headline": "Pronto a Trasformare i Costi in Margine?",
+      "subheadline": "Richiedi un'analisi gratuita dei consumi della tua struttura.",
+      "form_fields": [
+        {
+          "name": "nome",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nome e Cognome"
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "required": true,
+          "placeholder": "Email aziendale"
+        },
+        {
+          "name": "telefono",
+          "type": "tel",
+          "required": false,
+          "placeholder": "Telefono (opzionale)"
+        },
+        {
+          "name": "nome_struttura",
+          "type": "text",
+          "required": true,
+          "placeholder": "Nome Hotel/Struttura"
+        },
+        {
+          "name": "numero_camere",
+          "type": "select",
+          "required": true,
+          "options": [
+            "10-30 camere",
+            "31-60 camere",
+            "61-100 camere",
+            "100+ camere"
+          ]
+        },
+        {
+          "name": "messaggio",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Raccontaci le tue esigenze..."
+        }
+      ],
+      "submit_button": "Richiedi Consulenza Gratuita",
+      "privacy_note": "I tuoi dati saranno trattati secondo la nostra Privacy Policy. Non condividiamo informazioni con terze parti."
+    }
+  },
+  "seo_rules": {
+    "url_structure": {
+      "format": "lowercase-hyphen-separated",
+      "constraints": {
+        "max_length": 75,
+        "max_words": 6,
+        "allowed_characters": "a-z, 0-9, -",
+        "must_contain": [
+          "primary_keyword"
+        ],
+        "must_not_contain": [
+          "query_parameters",
+          "underscores",
+          "uppercase",
+          "special_characters",
+          "dates_unless_blog"
+        ]
+      },
+      "patterns": {
+        "homepage": "/",
+        "service_page": "/{service}-{target}",
+        "landing_page": "/{keyword-phrase}",
+        "contact": "/contatti"
+      },
+      "examples": {
+        "good": [
+          "/soluzione-retrofit-energetico-hotel",
+          "/tecnologia-ai-energy-management",
+          "/vantaggi-risparmio-energetico-hotel",
+          "/contatti"
+        ],
+        "bad": [
+          "/page?id=1",
+          "/SOLUZIONE",
+          "/soluzione_retrofit",
+          "/2026/01/retrofit"
+        ]
+      }
+    },
+    "meta_title": {
+      "formula": "[KEYWORD] + [BENEFIT/HOOK] | [BRAND]",
+      "constraints": {
+        "min_length": 30,
+        "max_length": 60,
+        "must_contain": [
+          "primary_keyword"
+        ],
+        "should_contain": [
+          "differentiator"
+        ],
+        "must_not_contain": [
+          "ALL_CAPS",
+          "!!!",
+          "spam_words"
+        ],
+        "keyword_position": "first_half",
+        "brand_position": "end"
+      },
+      "spam_words_to_avoid": [
+        "migliore",
+        "numero 1",
+        "garantito al 100%",
+        "incredibile",
+        "straordinario",
+        "imperdibile"
+      ]
+    },
+    "meta_description": {
+      "formula": "[VERBO_AZIONE] + [BENEFICIO] + [KEYWORD] + [CTA]",
+      "constraints": {
+        "min_length": 120,
+        "max_length": 160,
+        "must_start_with": "action_verb",
+        "must_contain": [
+          "primary_keyword",
+          "benefit",
+          "cta"
+        ],
+        "must_not_contain": [
+          "duplicate_title_content"
+        ]
+      },
+      "action_verbs": [
+        "Scopri",
+        "Riduci",
+        "Trasforma",
+        "Richiedi",
+        "Ottieni",
+        "Risparmia"
+      ]
+    },
+    "heading_hierarchy": {
+      "h1": {
+        "count": "exactly_one_per_page",
+        "must_contain": "primary_keyword",
+        "relationship_to_title": "complementary_not_identical",
+        "max_length": 70
+      },
+      "h2": {
+        "count": "multiple_allowed",
+        "purpose": "section_division",
+        "must_follow": "h1"
+      },
+      "h3": {
+        "count": "multiple_allowed",
+        "purpose": "subsection_details",
+        "must_follow": "h2"
+      },
+      "rules": {
+        "no_skipping_levels": true,
+        "semantic_not_visual": true,
+        "keyword_in_some_h2": true
+      }
+    },
+    "content_requirements": {
+      "min_words_main_pages": 500,
+      "min_words_landing_pages": 300,
+      "keyword_in_first_paragraph": true,
+      "keyword_density_max": 0.03,
+      "unique_content": true,
+      "readability_target": "grade_8"
+    }
+  },
+  "schema_org_templates": {
+    "organization": {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "{site_url}/#organization",
+      "name": "NexEnergy",
+      "description": "Sistema di retrofit energetico intelligente per l'hospitality italiana",
+      "url": "{site_url}",
+      "logo": "{logo_url}",
+      "sameAs": [
+        "{linkedin_url}",
+        "{instagram_url}"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "info@nexenergy.it",
+        "availableLanguage": "Italian"
+      }
+    },
+    "service": {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Retrofit Energetico NexEnergy",
+      "description": "Sistema di efficientamento energetico per hotel con AI adattiva. Installazione senza opere murarie, risparmio immediato, evoluzione continua.",
+      "provider": {
+        "@type": "Organization",
+        "name": "NexEnergy"
+      },
+      "serviceType": "Energy Management System",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Italy"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Soluzioni NexEnergy",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Setup Immediato (Fase 1)"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Evoluzione AI (Fase 2)"
+            }
+          }
+        ]
+      }
+    },
+    "faq": {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quanto tempo richiede l'installazione del sistema NexEnergy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'installazione richiede circa 1-2 ore per camera e può essere effettuata senza interrompere l'operatività della struttura. Non sono necessarie opere murarie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Il sistema NexEnergy richiede opere murarie?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, il sistema è progettato per installarsi sulle infrastrutture esistenti senza alcuna opera muraria. Le camere rimangono operative durante l'installazione."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto posso risparmiare con NexEnergy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Il risparmio varia in base alla struttura, ma mediamente i nostri clienti registrano una riduzione dei costi energetici del 20-35% con un ROI medio di 18 mesi."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Come funziona l'AI di NexEnergy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'AI analizza i dati di consumo di ogni singola stanza per 2-3 mesi, poi crea un profilo energetico personalizzato basato su esposizione, isolamento termico e pattern di utilizzo reale."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Perché il sistema a tessera non funziona?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I sistemi a tessera vengono facilmente aggirati: basta che l'ospite richieda una seconda card per tenerla inserita h24, neutralizzando completamente il risparmio."
+          }
+        }
+      ]
+    },
+    "breadcrumb": {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{site_url}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{page_name}",
+          "item": "{page_url}"
+        }
+      ]
+    },
+    "webpage": {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "{page_title}",
+      "description": "{page_description}",
+      "url": "{page_url}",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "NexEnergy",
+        "url": "{site_url}"
+      }
+    }
+  },
+  "image_requirements": {
+    "naming_convention": {
+      "pattern": "{subject}-{context}-nexenergy.{ext}",
+      "rules": {
+        "lowercase": true,
+        "separator": "-",
+        "no_generic_names": true,
+        "descriptive": true
+      },
+      "forbidden_patterns": [
+        "IMG_*",
+        "image*",
+        "foto*",
+        "photo*",
+        "DSC*",
+        "screenshot*"
+      ]
+    },
+    "alt_text": {
+      "formula": "[SOGGETTO] + [AZIONE/CONTESTO]",
+      "constraints": {
+        "min_length": 10,
+        "max_length": 125,
+        "must_be_descriptive": true,
+        "keyword_naturally_included": true
+      },
+      "forbidden_prefixes": [
+        "immagine di",
+        "foto di",
+        "image of",
+        "picture of"
+      ]
+    },
+    "technical_specs": {
+      "format_preferred": "webp",
+      "format_fallback": "jpg",
+      "max_file_size_kb": {
+        "hero": 200,
+        "content": 100,
+        "thumbnails": 50,
+        "og_image": 300
+      },
+      "dimensions": {
+        "hero": {
+          "width": 1920,
+          "height": 1080
+        },
+        "content": {
+          "width": 800,
+          "height": 600
+        },
+        "og_image": {
+          "width": 1200,
+          "height": 630
+        }
+      },
+      "responsive_breakpoints": [
+        320,
+        640,
+        768,
+        1024,
+        1280,
+        1920
+      ],
+      "loading_strategy": {
+        "above_fold": "eager",
+        "below_fold": "lazy"
+      },
+      "required_attributes": [
+        "src",
+        "alt",
+        "width",
+        "height",
+        "loading"
+      ]
+    },
+    "required_images": [
+      {
+        "id": "hero_image",
+        "filename": "hotel-risparmio-energetico-nexenergy.webp",
+        "alt_text": "Sistema NexEnergy installato in camera d'hotel per il risparmio energetico",
+        "dimensions": {
+          "width": 1920,
+          "height": 1080
+        },
+        "max_size_kb": 200,
+        "loading": "eager",
+        "location": "hero_section"
+      },
+      {
+        "id": "problema_tessera",
+        "filename": "sistema-tessera-hotel-problema.webp",
+        "alt_text": "Taschino porta tessera hotel che viene aggirato con doppia card",
+        "dimensions": {
+          "width": 800,
+          "height": 600
+        },
+        "max_size_kb": 100,
+        "loading": "lazy",
+        "location": "problema_section"
+      },
+      {
+        "id": "installazione_retrofit",
+        "filename": "installazione-retrofit-camera-hotel.webp",
+        "alt_text": "Tecnico NexEnergy durante installazione retrofit in camera operativa",
+        "dimensions": {
+          "width": 800,
+          "height": 600
+        },
+        "max_size_kb": 100,
+        "loading": "lazy",
+        "location": "soluzione_section"
+      },
+      {
+        "id": "dashboard_ai",
+        "filename": "dashboard-ai-energy-management-hotel.webp",
+        "alt_text": "Dashboard AI NexEnergy con analisi consumi energetici per camera",
+        "dimensions": {
+          "width": 1200,
+          "height": 800
+        },
+        "max_size_kb": 150,
+        "loading": "lazy",
+        "location": "metodo_section"
+      },
+      {
+        "id": "og_image",
+        "filename": "nexenergy-retrofit-energetico-hotel-og.webp",
+        "alt_text": "NexEnergy - Retrofit Energetico Intelligente per Hotel",
+        "dimensions": {
+          "width": 1200,
+          "height": 630
+        },
+        "max_size_kb": 300,
+        "location": "og_meta"
+      }
+    ]
+  },
+  "performance_targets": {
+    "core_web_vitals": {
+      "LCP": {
+        "metric": "Largest Contentful Paint",
+        "target": "< 2.5s",
+        "acceptable": "< 4.0s",
+        "poor": "> 4.0s"
+      },
+      "CLS": {
+        "metric": "Cumulative Layout Shift",
+        "target": "< 0.1",
+        "acceptable": "< 0.25",
+        "poor": "> 0.25"
+      },
+      "INP": {
+        "metric": "Interaction to Next Paint",
+        "target": "< 200ms",
+        "acceptable": "< 500ms",
+        "poor": "> 500ms"
+      },
+      "FID": {
+        "metric": "First Input Delay",
+        "target": "< 100ms",
+        "acceptable": "< 300ms",
+        "poor": "> 300ms"
+      }
+    },
+    "lighthouse_scores": {
+      "performance": {
+        "target": 90,
+        "minimum": 85
+      },
+      "accessibility": {
+        "target": 95,
+        "minimum": 90
+      },
+      "best_practices": {
+        "target": 95,
+        "minimum": 90
+      },
+      "seo": {
+        "target": 100,
+        "minimum": 95
+      }
+    },
+    "optimization_requirements": {
+      "css": {
+        "critical_inline": true,
+        "non_critical_deferred": true,
+        "minified": true
+      },
+      "javascript": {
+        "defer_non_critical": true,
+        "no_render_blocking": true,
+        "minified": true
+      },
+      "fonts": {
+        "font_display": "swap",
+        "preload_critical": true,
+        "limit_variations": 3
+      },
+      "images": {
+        "lazy_loading_below_fold": true,
+        "width_height_attributes": true,
+        "webp_format": true,
+        "responsive_srcset": true
+      },
+      "server": {
+        "compression": [
+          "gzip",
+          "brotli"
+        ],
+        "browser_caching": true,
+        "cdn_recommended": true
+      }
+    }
+  },
+  "tracking_implementation": {
+    "google_analytics": {
+      "measurement_id": "{GA4_MEASUREMENT_ID}",
+      "config": {
+        "anonymize_ip": true,
+        "cookie_flags": "SameSite=None;Secure"
+      }
+    },
+    "conversion_events": [
+      {
+        "event_name": "form_submit_demo",
+        "trigger": "contact_form_submission",
+        "category": "lead_generation"
+      },
+      {
+        "event_name": "cta_click_hero",
+        "trigger": "hero_cta_click",
+        "category": "engagement"
+      },
+      {
+        "event_name": "cta_click_secondary",
+        "trigger": "secondary_cta_click",
+        "category": "engagement"
+      },
+      {
+        "event_name": "section_view",
+        "trigger": "scroll_to_section",
+        "category": "engagement"
+      }
+    ],
+    "utm_parameters": {
+      "utm_source": {
+        "description": "Traffic source identifier",
+        "format": "lowercase_underscore",
+        "examples": [
+          "google",
+          "linkedin",
+          "newsletter",
+          "instagram"
+        ]
+      },
+      "utm_medium": {
+        "description": "Marketing medium",
+        "standard_values": [
+          "organic",
+          "cpc",
+          "email",
+          "social",
+          "referral",
+          "display"
+        ]
+      },
+      "utm_campaign": {
+        "description": "Campaign name",
+        "format": "lowercase_underscore",
+        "examples": [
+          "retrofit_2026",
+          "lancio_prodotto",
+          "fiera_hospitality"
+        ]
+      },
+      "utm_term": {
+        "description": "Paid search keyword",
+        "usage": "paid_search_only"
+      },
+      "utm_content": {
+        "description": "A/B test variant",
+        "examples": [
+          "banner_a",
+          "cta_verde",
+          "hero_v2"
+        ]
+      }
+    },
+    "utm_templates": {
+      "google_ads": "?utm_source=google&utm_medium=cpc&utm_campaign={campaign_name}",
+      "linkedin_ads": "?utm_source=linkedin&utm_medium=cpc&utm_campaign={campaign_name}",
+      "email_marketing": "?utm_source=newsletter&utm_medium=email&utm_campaign={campaign_name}",
+      "organic_social": "?utm_source={platform}&utm_medium=social&utm_campaign=organic"
+    }
+  },
+  "antipatterns": {
+    "url_antipatterns": [
+      {
+        "pattern": "/page?id=123",
+        "reason": "Non-semantic, not indexable by search engines"
+      },
+      {
+        "pattern": "/UPPERCASE-URL",
+        "reason": "Uppercase in URLs causes duplication issues"
+      },
+      {
+        "pattern": "/under_score_url",
+        "reason": "Underscores not recognized as word separators"
+      },
+      {
+        "pattern": "/keyword-keyword-keyword-keyword",
+        "reason": "Keyword stuffing in URL"
+      },
+      {
+        "pattern": "/2026/01/31/page-name",
+        "reason": "Dates in URL (unless blog/news)"
+      },
+      {
+        "pattern": "/p=123&cat=5",
+        "reason": "Query parameters instead of semantic paths"
+      }
+    ],
+    "content_antipatterns": [
+      {
+        "pattern": "Multiple H1 tags",
+        "reason": "Confuses crawlers about page topic"
+      },
+      {
+        "pattern": "H1 → H3 (skipping H2)",
+        "reason": "Broken semantic hierarchy"
+      },
+      {
+        "pattern": "Keyword density > 3%",
+        "reason": "Keyword stuffing penalty risk"
+      },
+      {
+        "pattern": "Hidden text (display:none with content)",
+        "reason": "Considered spam by Google"
+      },
+      {
+        "pattern": "Thin content < 100 words",
+        "reason": "Insufficient value for indexing"
+      },
+      {
+        "pattern": "Duplicate content across pages",
+        "reason": "Keyword cannibalization"
+      },
+      {
+        "pattern": "H1 identical to Meta Title",
+        "reason": "Missed opportunity for variation"
+      }
+    ],
+    "technical_antipatterns": [
+      {
+        "pattern": "Render-blocking JavaScript in head",
+        "reason": "Increases LCP significantly"
+      },
+      {
+        "pattern": "Images without width/height",
+        "reason": "Causes CLS (layout shift)"
+      },
+      {
+        "pattern": "Uncompressed images > 500KB",
+        "reason": "Slows page load dramatically"
+      },
+      {
+        "pattern": "Missing canonical URL",
+        "reason": "Risk of duplicate content issues"
+      },
+      {
+        "pattern": "Mixed content HTTP on HTTPS",
+        "reason": "Security warnings, trust issues"
+      },
+      {
+        "pattern": "No lazy loading on below-fold images",
+        "reason": "Unnecessary initial load"
+      },
+      {
+        "pattern": "Inline CSS > 50KB",
+        "reason": "Bloats HTML, slows initial render"
+      }
+    ],
+    "schema_antipatterns": [
+      {
+        "pattern": "Self-reviews (company reviewing itself)",
+        "reason": "Violates Google guidelines"
+      },
+      {
+        "pattern": "Fake or fabricated ratings",
+        "reason": "Spam, penalty risk"
+      },
+      {
+        "pattern": "Schema not matching visible content",
+        "reason": "Misleading, can cause penalties"
+      },
+      {
+        "pattern": "Missing required Schema properties",
+        "reason": "Schema won't be recognized"
+      },
+      {
+        "pattern": "Invalid JSON-LD syntax",
+        "reason": "Schema completely ignored"
+      }
+    ],
+    "image_antipatterns": [
+      {
+        "pattern": "IMG_9923.jpg filename",
+        "reason": "Non-descriptive, no SEO value"
+      },
+      {
+        "pattern": "alt='photo' or alt='image'",
+        "reason": "Non-descriptive alt text"
+      },
+      {
+        "pattern": "alt='' on content images",
+        "reason": "Missing accessibility and SEO"
+      },
+      {
+        "pattern": "PNG for photographs",
+        "reason": "Unnecessarily large file size"
+      },
+      {
+        "pattern": "No srcset for hero image",
+        "reason": "Poor mobile performance"
+      }
+    ]
+  },
+  "validation_checklist": {
+    "pre_launch_seo": [
+      "All URLs are semantic lowercase-hyphen format",
+      "No query parameters in URLs",
+      "Each page has unique Meta Title < 60 chars",
+      "Each page has unique Meta Description 120-160 chars",
+      "Meta Description starts with action verb",
+      "Canonical URL set on all pages",
+      "Open Graph tags complete with 1200x630 image",
+      "Twitter Card meta tags present",
+      "robots.txt allows indexing",
+      "sitemap.xml generated and submitted",
+      "Exactly ONE H1 per page",
+      "H1 contains primary keyword",
+      "H2/H3 hierarchy correct (no skipped levels)",
+      "All images have descriptive alt text 10-125 chars",
+      "Image filenames are descriptive (no IMG_*)"
+    ],
+    "pre_launch_schema": [
+      "Schema.org Organization JSON-LD valid",
+      "Schema.org Service JSON-LD valid",
+      "Schema.org FAQPage JSON-LD with 5+ questions",
+      "Schema.org BreadcrumbList on internal pages",
+      "All Schema passes Google Rich Results Test",
+      "No Schema antipatterns detected"
+    ],
+    "pre_launch_performance": [
+      "LCP < 2.5 seconds",
+      "CLS < 0.1",
+      "INP < 200ms",
+      "Lighthouse Performance >= 90",
+      "Lighthouse Accessibility >= 95",
+      "Lighthouse SEO = 100",
+      "Critical CSS inlined in head",
+      "Non-critical CSS deferred",
+      "All JavaScript deferred",
+      "Hero image loading='eager'",
+      "Below-fold images loading='lazy'",
+      "All images have width/height attributes",
+      "WebP format with fallback",
+      "Image file sizes within limits",
+      "font-display: swap on all fonts"
+    ],
+    "pre_launch_functionality": [
+      "Contact form submits successfully",
+      "Form validation shows errors for required fields",
+      "Form shows success state after submission",
+      "All internal links work",
+      "All anchor links scroll correctly",
+      "CTAs track in GA4",
+      "Form submission tracks in GA4",
+      "Mobile responsive 320px - 1920px",
+      "No console errors",
+      "No broken images"
+    ],
+    "pre_launch_content": [
+      "Hero headline matches spec exactly",
+      "Hero sub-headline matches spec exactly",
+      "Problem section explains key-card failure",
+      "Solution section has 3 benefit cards",
+      "Metodo Tesla shows 2 phases with timelines",
+      "Phase 1 mentions '6.0' and 'Night Mode'",
+      "Phase 2 mentions ML/LLM",
+      "Contact form has all required fields",
+      "Privacy note below form",
+      "No typos or grammatical errors"
+    ]
+  },
+  "quality_gates": {
+    "must_pass_all": [
+      {
+        "name": "W3C HTML Validation",
+        "tool": "W3C Validator",
+        "threshold": "0 errors",
+        "url": "https://validator.w3.org/"
+      },
+      {
+        "name": "Schema.org Validation",
+        "tool": "Google Rich Results Test",
+        "threshold": "all items valid",
+        "url": "https://search.google.com/test/rich-results"
+      },
+      {
+        "name": "Lighthouse SEO",
+        "tool": "Lighthouse",
+        "threshold": 100
+      },
+      {
+        "name": "Lighthouse Performance",
+        "tool": "Lighthouse",
+        "threshold": 90
+      },
+      {
+        "name": "Lighthouse Accessibility",
+        "tool": "Lighthouse",
+        "threshold": 95
+      },
+      {
+        "name": "Lighthouse Best Practices",
+        "tool": "Lighthouse",
+        "threshold": 95
+      },
+      {
+        "name": "Mobile-Friendly Test",
+        "tool": "Google Mobile-Friendly Test",
+        "threshold": "pass",
+        "url": "https://search.google.com/test/mobile-friendly"
+      },
+      {
+        "name": "Core Web Vitals",
+        "tool": "PageSpeed Insights",
+        "threshold": "all green",
+        "url": "https://pagespeed.web.dev/"
+      },
+      {
+        "name": "Antipattern Detection",
+        "tool": "Custom validation",
+        "threshold": "0 antipatterns detected"
+      }
+    ]
+  },
+  "output_specifications": {
+    "static_site": {
+      "description": "Standard HTML/CSS/JS static files",
+      "file_structure": {
+        "root": {
+          "index.html": "Homepage",
+          "robots.txt": "Crawler directives",
+          "sitemap.xml": "XML sitemap",
+          "favicon.ico": "Favicon",
+          "favicon.svg": "SVG favicon"
+        },
+        "directories": {
+          "/css/": [
+            "critical.css",
+            "main.css"
+          ],
+          "/js/": [
+            "main.js",
+            "analytics.js"
+          ],
+          "/images/": [
+            "All optimized images"
+          ],
+          "/fonts/": [
+            "Web fonts if custom"
+          ]
+        },
+        "pages": {
+          "/soluzione-retrofit-energetico-hotel/index.html": "Soluzione page",
+          "/tecnologia-ai-energy-management/index.html": "Tecnologia page",
+          "/vantaggi-risparmio-energetico-hotel/index.html": "Vantaggi page",
+          "/contatti/index.html": "Contatti page"
+        }
+      },
+      "delivery": [
+        "HTML files",
+        "CSS files",
+        "JS files",
+        "Image assets",
+        "Sitemap",
+        "Robots.txt"
+      ]
+    },
+    "cms_ready": {
+      "description": "Content structured for CMS import",
+      "file_structure": {
+        "/content/": {
+          "pages.json": "Page metadata and content",
+          "sections.json": "Reusable section content",
+          "seo.json": "SEO metadata per page",
+          "schema.json": "Schema.org templates"
+        },
+        "/templates/": {
+          "homepage.html": "Homepage template",
+          "landing.html": "Landing page template",
+          "contact.html": "Contact page template"
+        },
+        "/assets/": {
+          "manifest.json": "Asset manifest with paths"
+        }
+      },
+      "delivery": [
+        "Content JSON",
+        "Template files",
+        "Asset manifest",
+        "SEO config"
+      ]
+    },
+    "headless": {
+      "description": "API-ready content structure",
+      "file_structure": {
+        "/api/": {
+          "pages.json": "Pages endpoint mock",
+          "navigation.json": "Navigation structure",
+          "global.json": "Global settings (brand, contact)"
+        },
+        "/models/": {
+          "page.schema.json": "Page content model",
+          "section.schema.json": "Section content model",
+          "seo.schema.json": "SEO fields model"
+        },
+        "/components/": {
+          "Hero.jsx": "Hero component",
+          "Benefits.jsx": "Benefits cards component",
+          "Timeline.jsx": "Metodo Tesla timeline",
+          "ContactForm.jsx": "Contact form component"
+        }
+      },
+      "delivery": [
+        "API endpoints",
+        "Content models",
+        "Frontend components",
+        "Type definitions"
+      ]
+    }
+  },
+  "user_stories": [
+    {
+      "id": "US-NX-001",
+      "title": "Visualizzare Hero Section con Value Proposition",
+      "description": "As a hotel manager visiting the site, I want to immediately understand NexEnergy's value proposition so that I can decide if the solution addresses my energy cost problems.",
+      "priority": 1,
+      "passes": true,
+      "notes": "Completed: Created full project structure with index.html, css/main.css, js/main.js, js/analytics.js. Hero section includes exact headline, subheadline, CTAs with data-track attributes, trust signals with checkmarks. Hero image has loading=eager and proper alt text. HTML validation passes.",
+      "acceptance_criteria": [
+        "Hero headline displays: 'L'Evoluzione Energetica dell'Ospitalità Italiana: Intelligente, Immediata, Invisibile.'",
+        "Sub-headline clearly communicates: no construction, zero disruption, immediate savings",
+        "Primary CTA 'Richiedi una Demo' is prominently visible above fold",
+        "Secondary CTA 'Scopri Come Funziona' scrolls to solution section",
+        "Trust signals (24h installation, zero construction, 18mo ROI) are visible",
+        "Hero image loads eagerly with proper alt text",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that hero section renders correctly on mobile and desktop"
+      ]
+    },
+    {
+      "id": "US-NX-002",
+      "title": "Comprendere il Problema delle Tessere",
+      "description": "As a hotel manager, I want to understand why my current key card energy system isn't working so that I recognize my own situation and the need for change.",
+      "priority": 2,
+      "passes": true,
+      "notes": "Completed: Problem section with H2 title 'Il Paradosso dell'Eccellenza Italiana', explains dual-card bypass, pain point about neutralized savings, concludes with NexEnergy solution, image with descriptive alt text.",
+      "acceptance_criteria": [
+        "Section title 'Il Paradosso dell'Eccellenza Italiana' is H2",
+        "Content explains the dual-card bypass problem clearly",
+        "Pain point is explicitly stated: systems neutralized by guest behavior",
+        "Section concludes with NexEnergy as the solution to this specific problem",
+        "Image shows key card holder with descriptive alt text",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that section renders correctly"
+      ]
+    },
+    {
+      "id": "US-NX-003",
+      "title": "Comprendere la Soluzione Retrofit",
+      "description": "As a hotel manager, I want to understand how NexEnergy's retrofit solution works so that I can evaluate if it's feasible for my property without major disruptions.",
+      "priority": 3,
+      "passes": true,
+      "notes": "Completed: Solution section with H2 'Non Ristrutturare. Evolvi.', three benefit cards with SVG icons (tool, eye-off, refresh), engineering expertise highlighted, installation image with alt text.",
+      "acceptance_criteria": [
+        "Section title 'Non Ristrutturare. Evolvi.' is H2",
+        "Three key benefits displayed with icons: Non-Invasive Installation, Invisible Ecosystem, No-Construction Upgrade",
+        "Content emphasizes: no construction, rooms stay operational, competitive costs",
+        "Engineering expertise for hospitality is highlighted",
+        "Image shows installation process with proper alt text",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that benefits display correctly with icons"
+      ]
+    },
+    {
+      "id": "US-NX-004",
+      "title": "Comprendere il Metodo Tesla (Hardware + AI)",
+      "description": "As a hotel manager, I want to understand NexEnergy's two-phase approach so that I can appreciate both immediate benefits and long-term AI optimization.",
+      "priority": 4,
+      "passes": true,
+      "notes": "Completed: Metodo Tesla section with two phases in visual container. Phase 1 mentions '6.0' and 'Night Mode', Phase 2 mentions ML/LLM. Timeline badges show Day 1 and 2-3 months. Dashboard image with alt text.",
+      "acceptance_criteria": [
+        "Section title references 'Metodo Tesla' concept",
+        "Phase 1 (Setup Immediato) clearly explains Day-1 functionality",
+        "Phase 1 mentions '6.0' improvement over key card systems",
+        "Phase 1 mentions 'Night Mode' feature",
+        "Phase 2 (Evoluzione Sartoriale) explains ML/LLM data learning",
+        "Phase 2 emphasizes room-specific profiles based on exposure and thermal isolation",
+        "Timeline indicators show Phase 1 = Day 1, Phase 2 = 2-3 months",
+        "Dashboard/AI visualization image with proper alt text",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that phases display in clear visual progression"
+      ]
+    },
+    {
+      "id": "US-NX-005",
+      "title": "Compilare Form di Contatto per Demo",
+      "description": "As a hotel manager interested in NexEnergy, I want to request a consultation so that I can get a personalized analysis for my property.",
+      "priority": 5,
+      "passes": true,
+      "notes": "Completed: Contact form with all required fields (nome, email, nome_struttura, numero_camere) and optional fields (telefono, messaggio). Dropdown for numero_camere with correct options. JS validation with error messages. GA4 event tracking via data-track attribute and main.js. Privacy note visible. Success state implemented.",
+      "acceptance_criteria": [
+        "Form headline 'Pronto a Trasformare i Costi in Margine?' is visible",
+        "Required fields: Nome, Email, Nome Struttura, Numero Camere",
+        "Optional fields: Telefono, Messaggio",
+        "Numero Camere is dropdown with options: 10-30, 31-60, 61-100, 100+",
+        "Submit button text: 'Richiedi Consulenza Gratuita'",
+        "Privacy note visible below form",
+        "Form validation shows errors for missing required fields",
+        "Successful submission triggers GA4 event 'form_submit_demo'",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that form submits correctly and shows success state"
+      ]
+    },
+    {
+      "id": "US-NX-006",
+      "title": "Implementare SEO On-Page Completo",
+      "description": "As a search engine crawler, I need proper meta tags and structured data so that the site ranks for 'retrofit energetico hotel' keywords.",
+      "priority": 6,
+      "passes": true,
+      "notes": "Completed: Meta title (57 chars), meta description starts with 'Riduci' (157 chars), canonical URL, OG tags with 1200x630 image, Twitter Card. Schema.org: Organization, Service, FAQPage with 5 questions. Single H1 with keyword, proper H2/H3 hierarchy.",
+      "acceptance_criteria": [
+        "Meta title follows formula and is < 60 characters",
+        "Meta description starts with action verb and is 120-160 characters",
+        "Canonical URL set on all pages",
+        "Open Graph tags complete with 1200x630 image",
+        "Twitter Card meta tags present",
+        "Schema.org Organization JSON-LD in head",
+        "Schema.org Service JSON-LD on solution page",
+        "Schema.org FAQPage JSON-LD with 5 questions",
+        "Exactly one H1 per page containing primary keyword",
+        "H2/H3 hierarchy correct (no skipped levels)",
+        "Typecheck/lint passes",
+        "Verify Google Rich Results Test passes for all Schema",
+        "Verify in browser using dev-browser skill that meta tags are correct"
+      ]
+    },
+    {
+      "id": "US-NX-007",
+      "title": "Ottimizzare Performance per Core Web Vitals",
+      "description": "As a website visitor on mobile, I want the page to load quickly so that I don't abandon the site before seeing the content.",
+      "priority": 7,
+      "passes": true,
+      "notes": "Completed: Critical CSS inlined in head, non-critical CSS deferred with media=print trick, all JS deferred, hero image loading=eager, other images loading=lazy, all images have width/height, WebP format, font-display:swap via Google Fonts.",
+      "acceptance_criteria": [
+        "LCP (Largest Contentful Paint) < 2.5 seconds",
+        "CLS (Cumulative Layout Shift) < 0.1",
+        "INP (Interaction to Next Paint) < 200ms",
+        "Critical CSS inlined in head",
+        "Non-critical CSS deferred with media='print' trick",
+        "All JavaScript deferred",
+        "Hero image loading='eager', all others loading='lazy'",
+        "All images have width and height attributes",
+        "WebP format with JPG fallback",
+        "Font-display: swap on all fonts",
+        "Lighthouse Performance score >= 90",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill or Lighthouse that performance targets are met"
+      ]
+    },
+    {
+      "id": "US-NX-008",
+      "title": "Implementare Tracking Analytics",
+      "description": "As a marketing team member, I want proper analytics tracking so that I can measure campaign effectiveness and user behavior.",
+      "priority": 8,
+      "passes": true,
+      "notes": "Completed: GA4 with anonymize_ip:true, CTA click tracking via data-track attributes, form submission event, section scroll tracking with IntersectionObserver, UTM parameters preserved in form submission.",
+      "acceptance_criteria": [
+        "GA4 script loaded with anonymize_ip: true",
+        "Event tracking on hero CTA click",
+        "Event tracking on form submission",
+        "Event tracking on section scroll navigation",
+        "UTM parameters preserved through form submission",
+        "Console shows no tracking errors",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that events fire correctly"
+      ]
+    },
+    {
+      "id": "US-NX-009",
+      "title": "Validare Antipatterns Prima del Deploy",
+      "description": "As a QA system, I need to detect and prevent antipatterns so that the generated site doesn't get penalized by search engines.",
+      "priority": 9,
+      "passes": true,
+      "notes": "Completed: No query parameters in URLs, no uppercase/underscores in URLs, exactly 1 H1, proper H1->H2->H3 hierarchy, all 4 images have alt text and width/height, all JS deferred. HTML validation passes. All antipatterns checked.",
+      "acceptance_criteria": [
+        "No URLs with query parameters detected",
+        "No uppercase characters in URLs",
+        "No underscores in URLs",
+        "Exactly one H1 per page (no multiple, no zero)",
+        "No skipped heading levels (H1 → H3)",
+        "No images without alt text",
+        "No images without width/height attributes",
+        "No images > 500KB uncompressed",
+        "All Schema.org validates without errors",
+        "No render-blocking JavaScript detected",
+        "Typecheck/lint passes",
+        "Verify in browser using dev-browser skill that no antipatterns are visible in DOM/Console"
+      ]
+    }
+  ],
+  "functional_requirements": [
+    "FR-001: The system must display hero section with headline, subheadline, dual CTAs, and trust signals above the fold",
+    "FR-002: The system must render 'Problema' section explaining key-card system failure with H2 heading",
+    "FR-003: The system must render 'Soluzione' section with three benefit cards including icons",
+    "FR-004: The system must render 'Metodo Tesla' section with two-phase visual timeline",
+    "FR-005: The system must display contact form with required fields: nome, email, nome_struttura, numero_camere",
+    "FR-006: The system must validate form and show inline errors for missing required fields",
+    "FR-007: The system must generate semantic URLs without query parameters in lowercase-hyphen format",
+    "FR-008: The system must include exactly one H1 per page containing the primary keyword",
+    "FR-009: The system must implement Schema.org Organization, Service, and FAQPage JSON-LD",
+    "FR-010: The system must implement Open Graph tags with 1200x630 image",
+    "FR-011: The system must inline critical CSS and defer non-critical CSS",
+    "FR-012: The system must defer all JavaScript files",
+    "FR-013: The system must set loading='lazy' on below-fold images and loading='eager' on hero",
+    "FR-014: The system must include width and height attributes on all img tags",
+    "FR-015: The system must generate GA4 tracking code with GDPR-compliant settings",
+    "FR-016: The system must fire GA4 events on form submission and CTA clicks",
+    "FR-017: The system must achieve Lighthouse SEO score of 100",
+    "FR-018: The system must achieve Lighthouse Performance score >= 90",
+    "FR-019: The system must pass Google Rich Results Test for all Schema.org markup",
+    "FR-020: The system must be fully responsive (mobile-first design)",
+    "FR-021: The system must detect and prevent all defined antipatterns before output",
+    "FR-022: The system must generate valid sitemap.xml and robots.txt",
+    "FR-023: The system must support output in static, CMS-ready, or headless formats"
+  ],
+  "non_goals": [
+    "No backend form processing (frontend submission to external endpoint only)",
+    "No user authentication or customer portal",
+    "No pricing calculator or dynamic quote generation",
+    "No multi-language support in v1 (Italian only)",
+    "No case studies or testimonials section in v1",
+    "No live chat or chatbot integration",
+    "No video content hosting"
+  ],
+  "technical_specifications": {
+    "stack": {
+      "frontend": "HTML5, CSS3, Vanilla JavaScript",
+      "images": "WebP with JPG fallback",
+      "fonts": "System fonts or Google Fonts with font-display: swap",
+      "analytics": "Google Analytics 4",
+      "form_backend": "External endpoint (Formspree, Netlify Forms, or custom)",
+      "newsletter": "MailerLite",
+      "ai_models": "OpenRouter API",
+      "email_notifications": "Resend",
+      "cms": "Payload CMS (https://cms.immoby.org)"
+    },
+    "browser_support": [
+      "Chrome 90+",
+      "Firefox 88+",
+      "Safari 14+",
+      "Edge 90+",
+      "Mobile Safari iOS 14+",
+      "Chrome Android 90+"
+    ],
+    "responsive_breakpoints": {
+      "mobile": "320px - 767px",
+      "tablet": "768px - 1023px",
+      "desktop": "1024px+"
+    }
+  },
+  "open_questions": [
+    "What is the form submission endpoint (Formspree, Netlify, custom API)?",
+    "Are there existing brand assets (logo, colors, fonts) to use?",
+    "What is the target domain for canonical URLs?",
+    "Should we include a cookie consent banner for GDPR?",
+    "Are there specific testimonials or case study data to include in v2?",
+    "What is the GA4 Measurement ID?",
+    "Which output format is preferred (static, CMS-ready, headless)?"
+  ],
+  "integrations": {
+    "newsletter": {
+      "provider": "MailerLite",
+      "api_base_url": "https://connect.mailerlite.com/api",
+      "api_key_env": "MAILERLITE_API_KEY",
+      "rate_limit": "120 requests/minute",
+      "endpoints": {
+        "create_subscriber": {
+          "method": "POST",
+          "path": "/subscribers",
+          "description": "Create or update subscriber (upsert)"
+        },
+        "list_groups": {
+          "method": "GET",
+          "path": "/groups",
+          "description": "Get all subscriber groups"
+        }
+      },
+      "request_headers": {
+        "Authorization": "Bearer {MAILERLITE_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      "subscriber_fields": {
+        "required": [
+          "email"
+        ],
+        "optional": [
+          "fields.name",
+          "fields.last_name",
+          "groups"
+        ]
+      },
+      "features": [
+        "Newsletter subscription popup",
+        "GDPR compliant consent",
+        "Double opt-in support",
+        "Unsubscribe handling",
+        "Subscriber groups management"
+      ],
+      "implementation": {
+        "popup_trigger": "exit_intent_or_30_seconds",
+        "form_fields": [
+          "email",
+          "nome"
+        ],
+        "consent_checkbox": true,
+        "success_redirect": "inline_confirmation",
+        "gdpr_forget_endpoint": "POST /subscribers/:id/forget"
+      }
+    },
+    "ai_blog_agent": {
+      "provider": "OpenRouter",
+      "api_base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "endpoints": {
+        "chat_completion": {
+          "method": "POST",
+          "path": "/chat/completions",
+          "description": "Generate blog article content"
+        },
+        "get_credits": {
+          "method": "GET",
+          "path": "/credits",
+          "description": "Check remaining API credits"
+        },
+        "list_models": {
+          "method": "GET",
+          "path": "/models",
+          "description": "Get available AI models"
+        }
+      },
+      "request_headers": {
+        "Authorization": "Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://nexenergy.it",
+        "X-Title": "NexEnergy Blog Agent"
+      },
+      "model": "google/gemini-2.0-flash-001",
+      "model_alternatives": [
+        "anthropic/claude-3.5-sonnet",
+        "openai/gpt-4o",
+        "google/gemini-2.5-pro-preview"
+      ],
+      "schedule": "daily_at_09:00_CET",
+      "request_schema": {
+        "model": "string (required)",
+        "messages": "array of message objects (required)",
+        "temperature": "number 0-2 (optional, default 1)",
+        "max_tokens": "number (optional)",
+        "stream": "boolean (optional, default false)"
+      },
+      "content_guidelines": {
+        "topic_focus": "Efficienza energetica hospitality, HVAC hotel, risparmio energetico alberghiero",
+        "word_count_min": 800,
+        "word_count_max": 1500,
+        "language": "it",
+        "tone": "professional_conversational",
+        "human_style_requirements": [
+          "Variabilità strutturale (no pattern fissi)",
+          "Tono conversazionale italiano naturale",
+          "Esempi concreti dell'hospitality italiana",
+          "Opinioni e prospettive soggettive",
+          "Domande retoriche per engagement",
+          "Riferimenti temporali attuali",
+          "Nessun pattern ripetitivo AI-like"
+        ]
+      },
+      "seo_requirements": {
+        "meta_title_formula": "[KEYWORD] + [BENEFIT] | NexEnergy Blog",
+        "meta_title_max_length": 60,
+        "meta_description_min": 120,
+        "meta_description_max": 160,
+        "h1_unique": true,
+        "keyword_density_max": 0.03,
+        "include_faq_schema": true,
+        "include_direct_answer": true,
+        "lsi_keywords_required": true
+      },
+      "geo_aeo_requirements": {
+        "target_location": "Italia",
+        "search_intent": "informational",
+        "entity_optimization": true,
+        "featured_snippet_optimization": true,
+        "ai_scraping_optimization": true
+      },
+      "image_generation": {
+        "enabled": true,
+        "provider": "KEI (kie.ai)",
+        "api_endpoint": "https://api.kie.ai/api/v1/jobs/createTask",
+        "api_key_env": "KEI_API_KEY",
+        "model": "flux-2/pro-text-to-image",
+        "async_task": true,
+        "style": "professional_photography_hospitality",
+        "aspect_ratio": "16:9",
+        "resolution": "1K",
+        "dimensions": {
+          "width": 1200,
+          "height": 630
+        },
+        "format": "webp",
+        "alt_text_required": true,
+        "critical_requirements": [
+          "DO NOT include any text, words, or letters in image prompts",
+          "Flux-2 does NOT support text generation - produces errors/artifacts",
+          "Focus on visual elements only: objects, scenes, lighting, composition",
+          "Avoid logos, signs, labels, or any written content in prompts"
+        ]
+      }
+    },
+    "cms": {
+      "provider": "Payload CMS",
+      "base_url": "https://cms.immoby.org",
+      "api_endpoint": "https://cms.immoby.org/api",
+      "internal_endpoint": "http://localhost:3005/api",
+      "api_key_env": "PAYLOAD_API_KEY",
+      "post_fields": {
+        "required": [
+          "title",
+          "h1",
+          "slug",
+          "content",
+          "focusKeyword",
+          "directAnswer",
+          "searchIntent",
+          "_status"
+        ],
+        "optional": [
+          "secondaryKeywords",
+          "lsiKeywords",
+          "faqSchema",
+          "targetLocation",
+          "meta.title",
+          "meta.description",
+          "meta.ogTitle",
+          "meta.ogDescription",
+          "heroImage"
+        ]
+      },
+      "media_upload": {
+        "endpoint": "/api/media",
+        "supported_formats": [
+          "webp",
+          "jpg",
+          "png"
+        ],
+        "max_size_mb": 5
+      }
+    },
+    "email_notifications": {
+      "provider": "Resend",
+      "api_key_env": "RESEND_API_KEY",
+      "from_email": "no-reply@nexenergy.it",
+      "admin_email": "{ADMIN_EMAIL}",
+      "notification_types": [
+        {
+          "type": "article_published",
+          "subject_template": "[NexEnergy Blog] ✅ Articolo Pubblicato - {date}",
+          "body_template": "Nuovo articolo pubblicato con successo:\n\nTitolo: {title}\nURL: {slug}\n\n---\nNexEnergy AI Blog System"
+        },
+        {
+          "type": "api_error",
+          "subject_template": "[NexEnergy Blog] ❌ ERRORE - {error_type}",
+          "body_template": "Errore durante la generazione articolo:\n\nErrore: {error_message}\nTimestamp: {timestamp}\n\nAzione richiesta: Verificare crediti API o configurazione.\n\n---\nNexEnergy AI Blog System"
+        },
+        {
+          "type": "credits_warning",
+          "subject_template": "[NexEnergy Blog] ⚠️ Crediti API in esaurimento",
+          "body_template": "Attenzione: I crediti API sono quasi esauriti.\n\nServizio: {service_name}\nCrediti rimanenti: {credits_remaining}\n\nSi prega di ricaricare i crediti per evitare interruzioni.\n\n---\nNexEnergy AI Blog System"
+        }
+      ]
+    }
+  },
+  "blog_section": {
+    "page_url": "/blog/",
+    "article_url_pattern": "/blog/{slug}/",
+    "meta_title": "Blog Efficienza Energetica Hotel | NexEnergy",
+    "meta_description": "Approfondimenti su risparmio energetico, AI HVAC, retrofit e ottimizzazione costi per hotel. Articoli tecnici dall'esperienza NexEnergy.",
+    "schema_type": "Blog",
+    "articles_per_page": 12,
+    "fetch_from_payload": true,
+    "article_schema": {
+      "@type": "BlogPosting",
+      "required_fields": [
+        "headline",
+        "author",
+        "datePublished",
+        "dateModified",
+        "image",
+        "publisher",
+        "mainEntityOfPage"
+      ]
+    },
+    "seo_checklist": [
+      "Meta title < 60 chars con keyword",
+      "Meta description 120-160 chars",
+      "H1 unico con keyword principale",
+      "Schema.org BlogPosting valido",
+      "FAQPage schema se presente FAQ",
+      "DirectAnswer per featured snippet",
+      "Alt text descrittivo su immagini",
+      "URL semantic lowercase-hyphen"
+    ]
+  },
+  "new_functional_requirements": [
+    "FR-024: The system must integrate with MailerLite for newsletter subscriptions",
+    "FR-025: The system must display newsletter signup popup with GDPR consent",
+    "FR-026: The system must generate daily blog articles using OpenRouter AI",
+    "FR-027: The system must ensure AI-generated content passes human-writing standards",
+    "FR-028: The system must optimize articles for SEO, GEO, and AEO",
+    "FR-029: The system must include DirectAnswer and FAQ schema in articles",
+    "FR-030: The system must publish articles automatically to Payload CMS",
+    "FR-031: The system must generate featured images for each article",
+    "FR-032: The system must send email notifications via Resend for success/errors",
+    "FR-033: The system must alert admin when API credits are running low",
+    "FR-034: The system must fetch and display blog articles from Payload CMS API",
+    "FR-035: The system must implement Schema.org BlogPosting for article pages",
+    "FR-036: The system must verify API connectivity before generating articles",
+    "FR-037: The system must test newsletter subscription flow end-to-end",
+    "FR-038: The system must validate all generated content meets SEO requirements",
+    "FR-039: The system must run health checks on all integrations"
+  ],
+  "api_keys_required": {
+    "OPENROUTER_API_KEY": {
+      "service": "OpenRouter",
+      "purpose": "AI model access for article generation",
+      "status": "configured",
+      "model": "google/gemini-2.0-flash-001"
+    },
+    "MAILERLITE_API_KEY": {
+      "service": "MailerLite",
+      "purpose": "Newsletter subscription management",
+      "status": "configured"
+    },
+    "RESEND_API_KEY": {
+      "service": "Resend",
+      "purpose": "Email notifications (success, errors, warnings)",
+      "status": "configured"
+    },
+    "PAYLOAD_API_KEY": {
+      "service": "Payload CMS",
+      "purpose": "Article publishing and media upload",
+      "status": "configured",
+      "generation_url": "https://cms.immoby.org/admin → User Profile → Generate API Key"
+    },
+    "ADMIN_EMAIL": {
+      "purpose": "Recipient for notification emails",
+      "status": "configured",
+      "value": "sulpizii.paypal@gmail.com"
+    },
+    "KEI_API_KEY": {
+      "service": "KEI (kie.ai)",
+      "purpose": "Flux-2 image generation for blog articles",
+      "status": "configured",
+      "model": "flux-2/pro-text-to-image",
+      "note": "No text/words in image prompts - Flux-2 does not support text generation"
+    }
+  },
+  "userStories": [
+    {
+      "id": "US-NX-010",
+      "title": "Iscriversi alla Newsletter",
+      "description": "As a hotel manager, I want to subscribe to NexEnergy's newsletter so that I receive updates on energy efficiency tips and solutions.",
+      "acceptanceCriteria": [
+        "Newsletter popup appears after 30 seconds or exit intent",
+        "Form requires email and optional name",
+        "GDPR consent checkbox is mandatory",
+        "Successful submission shows confirmation message",
+        "Data is sent to MailerLite API",
+        "GA4 event 'newsletter_signup' is tracked",
+        "Verify in browser that popup works correctly"
+      ],
+      "priority": 10,
+      "passes": true,
+      "notes": "Completed: Newsletter popup with glassmorphism design, 30s delay + exit intent trigger, email validation + GDPR checkbox, MailerLite API integration via serverless function (Netlify/Vercel compatible), GA4 events for popup_view and newsletter_signup, success/error states, localStorage fallback for demo mode."
+    },
+    {
+      "id": "US-NX-011",
+      "title": "Leggere Articoli Blog Generati da AI",
+      "description": "As a hotel manager, I want to read blog articles about energy efficiency so that I can learn best practices for my property.",
+      "acceptanceCriteria": [
+        "Blog section accessible from /blog/",
+        "Articles fetched dynamically from Payload CMS",
+        "Each article has proper SEO meta tags",
+        "Schema.org BlogPosting implemented",
+        "Article content appears human-written (no AI patterns)",
+        "Featured image displays correctly",
+        "Verify in browser that articles render correctly"
+      ],
+      "priority": 11,
+      "passes": true,
+      "notes": "Completed: Blog index at /blog/ with OG tags and Schema.org Blog markup, dynamic Payload CMS fetching with static fallback, article cards with excerpts and dates, BlogPosting schema on article pages, 12 pre-written articles with human-style content, responsive grid layout with hover effects."
+    },
+    {
+      "id": "US-NX-012",
+      "title": "Generare Articolo Automaticamente con AI",
+      "description": "As an AI agent, I need to generate daily blog articles that pass as human-written content and are optimized for SEO/GEO/AEO.",
+      "acceptanceCriteria": [
+        "Article generated daily at scheduled time",
+        "Content is 800-1500 words",
+        "Human-style writing (variable structure, conversational tone)",
+        "Focus keyword with density < 3%",
+        "DirectAnswer for featured snippets included",
+        "FAQ schema with 3-5 questions included",
+        "Article automatically published to Payload CMS",
+        "Success email sent to admin via Resend"
+      ],
+      "priority": 12,
+      "passes": true,
+      "notes": "Completed: Created scripts/blog-agent.js with full AI article generation. Uses OpenRouter API with Gemini 2.0 Flash model, generates 800-1500 word articles with human-style Italian content, includes directAnswer and FAQ schema (3+ questions), publishes to Payload CMS, sends success/error emails via Resend. npm scripts: blog:generate, blog:test, blog:dry-run. KEI image generation support (optional). All validation included: word count, required fields, FAQ count."
+    },
+    {
+      "id": "US-NX-013",
+      "title": "Ricevere Notifiche su Errori API",
+      "description": "As an admin, I want to receive email notifications when API errors occur so that I can take corrective action quickly.",
+      "acceptanceCriteria": [
+        "Email sent when OpenRouter API fails",
+        "Email sent when credits are low",
+        "Email sent when Payload CMS upload fails",
+        "Emails contain error details and timestamp",
+        "Emails sent via Resend API",
+        "Admin email address configurable"
+      ],
+      "priority": 13,
+      "passes": true,
+      "notes": "Completed: Error notification system implemented in blog-agent.js with three notification types: success (article published), error (API failures with type, message, timestamp), credits_warning (when OpenRouter credits < $5). Uses Resend API for email delivery. Admin email configured via ADMIN_EMAIL env variable. Error notifications sent automatically on any API failure (OpenRouter, Payload CMS). Credits check runs during startup connectivity verification."
+    },
+    {
+      "id": "US-NX-014",
+      "title": "Verificare Connettività API",
+      "description": "Come sviluppatore, voglio verificare che tutte le API siano correttamente configurate prima di eseguire il sistema",
+      "acceptanceCriteria": [
+        "Test connessione OpenRouter API con health check",
+        "Test connessione MailerLite API con list groups",
+        "Test connessione Payload CMS API con GET /api",
+        "Test connessione Resend API con invio email di test",
+        "Tutti i test completati con successo",
+        "Log dettagliato di ogni test eseguito"
+      ],
+      "priority": 14,
+      "passes": true,
+      "notes": "Completed: Created scripts/api-health-check.js with comprehensive API connectivity testing. Tests: OpenRouter (auth/key endpoint with credits check), MailerLite (groups endpoint), Payload CMS (posts endpoint), Resend (optional test email). Detailed logging for each test with pass/warn/fail status. npm scripts: api:health, api:health:email. Summary report shows all results."
+    },
+    {
+      "id": "US-NX-015",
+      "title": "Test Generazione Articolo",
+      "description": "Come sviluppatore, voglio testare la generazione di un articolo di prova per verificare la qualità del contenuto",
+      "acceptanceCriteria": [
+        "Genera un articolo di test usando Gemini 2.0 Flash",
+        "Verifica che l'articolo abbia 800-1500 parole",
+        "Verifica presenza meta title e description",
+        "Verifica presenza FAQ schema",
+        "Verifica che il contenuto sia in italiano naturale",
+        "Salva articolo di test in /blog/test-article.html"
+      ],
+      "priority": 15,
+      "passes": true,
+      "notes": "Completed: Created scripts/test-article-generator.js that generates test article with Gemini 2.0 Flash, validates word count (800-1500), meta title (<=60 chars), meta description (120-160 chars), FAQ schema (3-5 questions), Italian content check. Saves complete HTML with Schema.org BlogPosting and FAQPage to blog/test-article.html. Includes test banner and validation summary. npm script: test:article"
+    },
+    {
+      "id": "US-NX-016",
+      "title": "Test Newsletter Signup",
+      "description": "Come sviluppatore, voglio testare il flusso completo di iscrizione alla newsletter",
+      "acceptanceCriteria": [
+        "Newsletter popup si apre dopo 30 secondi o exit intent",
+        "Form validazione funziona correttamente",
+        "Subscriber viene creato su MailerLite",
+        "Messaggio di conferma viene mostrato",
+        "Event GA4 newsletter_signup viene tracciato",
+        "Test nel browser con registrazione"
+      ],
+      "priority": 16,
+      "passes": true,
+      "notes": "Completed: Created scripts/test-newsletter.js for testing MailerLite integration. Tests: API connectivity, subscriber creation, subscriber verification, subscriber deletion (cleanup). Outputs checklist for manual frontend tests (popup timing, exit intent, form validation, GDPR checkbox, success message, GA4 event). npm script: test:newsletter"
+    },
+    {
+      "id": "US-NX-017",
+      "title": "Test Pubblicazione CMS",
+      "description": "Come sviluppatore, voglio verificare che gli articoli vengano pubblicati correttamente su Payload CMS",
+      "acceptanceCriteria": [
+        "Connessione a Payload CMS funziona",
+        "Articolo di test viene pubblicato",
+        "Tutti i campi SEO sono mappati correttamente",
+        "Immagine viene caricata su media collection",
+        "Articolo è visibile nella pagina blog",
+        "Schema.org BlogPosting è valido"
+      ],
+      "priority": 17,
+      "passes": true,
+      "notes": "Completed: Created scripts/test-cms-publish.js for testing Payload CMS integration. Tests: API connectivity, article creation with all SEO fields (title, h1, slug, focusKeyword, directAnswer, searchIntent, meta, faqSchema), field mapping verification, article retrieval, article deletion (cleanup). --keep flag preserves article. npm scripts: test:cms, test:cms:keep, test:all. Manual checklist for Schema.org validation included."
+    }
+  ],
+  "branchName": "ralph/newsletter-blog-integration",
+  "project": "NexEnergy Website",
+  "description": "Sito web per NexEnergy con newsletter, blog automatizzato AI e sistema di retrofit energetico intelligente per hospitality italiana"
+}

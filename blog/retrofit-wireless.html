@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrofit Wireless Hotel Senza Cantieri | NexEnergy Blog</title>
+    <meta name="description"
+        content="Scopri come modernizzare il sistema energetico del tuo hotel senza opere murarie, senza chiudere camere e con installazione in un giorno.">
+    <link rel="canonical" href="https://nexenergy.it/blog/retrofit-wireless">
+
+    <style>
+        :root {
+            --color-primary: #00f2ff;
+            --color-secondary: #00ff9d;
+            --color-bg: #0b0f19;
+            --color-text: #e2e8f0;
+            --color-text-dim: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('../assets/images/blog/retrofit-wireless-hotel.webp') center/cover no-repeat fixed;
+            opacity: 0.6;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(11, 15, 25, 0.7), rgba(11, 15, 25, 0.95));
+            z-index: -1;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .article-hero {
+            padding: 80px 0 40px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .article-tag {
+            color: var(--color-primary);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .article-meta {
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .article-image {
+            width: 100%;
+            max-width: 1000px;
+            height: 500px;
+            margin: 0 auto 60px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: #cbd5e1;
+        }
+
+        .article-content h2 {
+            color: white;
+            font-size: 1.8rem;
+            margin-top: 60px;
+            margin-bottom: 25px;
+        }
+
+        .article-content h3 {
+            color: var(--color-secondary);
+            font-size: 1.4rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5em;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-bottom: 2em;
+            padding-left: 20px;
+        }
+
+        .article-content li {
+            margin-bottom: 10px;
+            color: var(--color-text-dim);
+        }
+
+        .article-content strong {
+            color: white;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.1), rgba(0, 255, 157, 0.05));
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: white;
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px 0;
+            text-align: center;
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+        }
+    </style>
+
+    <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "Article", "headline": "Retrofit Wireless Hotel Senza Cantieri", "image": "https://nexenergy.it/assets/images/blog/retrofit-wireless-hotel.webp", "author": { "@type": "Organization", "name": "NexEnergy" }, "publisher": { "@type": "Organization", "name": "NexEnergy" }, "datePublished": "2026-01-15" }
+  </script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container nav-flex"><a href="../index.html" class="logo">NexEnergy</a><a
+                href="../index.html#contatti" class="btn"
+                style="margin:0; padding: 10px 25px; font-size: 0.9rem;">Richiedi Demo</a></div>
+    </header>
+
+    <article>
+        <div class="container">
+            <header class="article-hero">
+                <span class="article-tag">Tecnologia</span>
+                <h1>Retrofit Wireless: Evolvi Senza Cantieri</h1>
+                <div class="article-meta"><span>4 min read</span><span>•</span><span>Gennaio 2026</span></div>
+            </header>
+
+            <div class="article-image"><img src="../assets/images/blog/retrofit-wireless-hotel.webp"
+                    alt="Wireless retrofit installation hotel"></div>
+
+            <div class="article-content">
+                <p><strong>Immagina di dovere rinnovare il sistema energetico del tuo hotel.</strong> Le soluzioni
+                    tradizionali richiedono demolizioni parziali, nuove predisposizioni elettriche, cantieri lunghi e
+                    invasivi (3-6 mesi), camere inutilizzabili e ospiti scontenti.</p>
+                <p>C'è un'alternativa. Non è una toppa. È un'evoluzione reale.</p>
+
+                <h2>Il Concetto di Retrofit Energetico: Evoluzione senza Rivoluzione</h2>
+                <p>Un retrofit energetico nativo per l'hospitality è una tecnologia progettata da ingegneri che
+                    conoscono le dinamiche alberghiere—da quelle della proprietà a quelle del direttore operativo, fino
+                    al comfort dell'ospite.</p>
+                <p>A differenza dei sistemi generalisti, un retrofit alberghiero comprende:</p>
+                <ul>
+                    <li><strong>La necessità di zero interruzioni operative</strong> (le camere devono rimanere
+                        disponibili)</li>
+                    <li><strong>La variabilità estrema dell'occupazione</strong> (non puoi prevedere chi arriverà
+                        domani)</li>
+                    <li><strong>Le aspettative di comfort dell'ospite</strong> (non puoi permetterti che la camera sia
+                        fredda all'arrivo)</li>
+                </ul>
+
+                <h3>Come funziona un retrofit wireless veramente efficace?</h3>
+                <p>L'hardware si installa sulle infrastrutture esistenti senza canaline visibili, opere murarie,
+                    interruzioni dell'operatività. Tutto accade in <strong>1 giorno di installazione</strong>, e il
+                    sistema inizia a funzionare e risparmiare immediatamente.</p>
+
+                <h2>L'Invisibilità come Vantaggio Competitivo</h2>
+                <p>Un grande albergatore italiano ha realizzato che il miglior sistema energetico è quello che
+                    <strong>l'ospite non vede</strong>. Se l'ospite nota il sistema, significa che sta tentando di
+                    controllarlo. E se lo controlla in modo evidente, l'ospite si sente controllato. Questo crea
+                    attrito.
+                </p>
+                <p>Una soluzione invisibile opera in background e migliora il margine operativo della struttura senza
+                    interfacce complicate.</p>
+
+                <div class="cta-box">
+                    <h3>Vuoi modernizzare senza cantieri?</h3>
+                    <p>Scopri come il retrofit wireless può trasformare i costi in margine.</p>
+                    <a href="../index.html#contatti" class="btn">Richiedi una Demo</a>
+                </div>
+
+                <h2>Vantaggi per la proprietà</h2>
+                <ol>
+                    <li><strong>Ritorno su investimento rapido</strong> (comunemente 2-4 anni)</li>
+                    <li><strong>Costi di installazione contenuti</strong> (nessun cantiere)</li>
+                    <li><strong>Efficienza energetica comprovata</strong> (dati day-1, non promesse teoriche)</li>
+                    <li><strong>Scalabilità</strong> (puoi partire da 10 camere pilota e espandere)</li>
+                    <li><strong>Sostenibilità comunicabile</strong> (elemento di marketing genuino)</li>
+                </ol>
+
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 60px 0;">
+                <p><strong>Conclusione</strong>: Retrofit non significa "molto tardi". Significa "intelligente adesso".
+                    Non stai ricostruendo. Stai evolvendo, invisibilmente, senza fermare nulla.</p>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 NexEnergy. | <a href="../index.html">Torna alla Home</a> | <a href="index.html">Tutti gli
+                    Articoli</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>

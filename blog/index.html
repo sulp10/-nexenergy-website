@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Efficienza Energetica Hotel | NexEnergy Articoli</title>
+    <meta name="description"
+        content="Approfondimenti tecnici su risparmio energetico, AI HVAC, retrofit wireless e ottimizzazione dei costi per hotel e strutture ricettive.">
+    <link rel="canonical" href="https://nexenergy.it/blog/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Blog Efficienza Energetica Hotel | NexEnergy">
+    <meta property="og:description" content="Approfondimenti tecnici su risparmio energetico, AI HVAC, retrofit e ottimizzazione costi per hotel.">
+    <meta property="og:url" content="https://nexenergy.it/blog/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="it_IT">
+
+    <!-- Schema.org Blog -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "NexEnergy Blog",
+        "description": "Approfondimenti su risparmio energetico, AI HVAC, retrofit e ottimizzazione costi per hotel.",
+        "url": "https://nexenergy.it/blog/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "NexEnergy",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://nexenergy.it/images/logo-nexenergy.svg"
+            }
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-primary: #00f2ff;
+            --color-secondary: #00ff9d;
+            --color-bg: #0b0f19;
+            --color-text: #e2e8f0;
+            --color-text-dim: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .page-header {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+        }
+
+        .page-header p {
+            color: var(--color-text-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--color-text-dim);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 242, 255, 0.1);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding-bottom: 80px;
+        }
+
+        .blog-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: block;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.15);
+        }
+
+        .blog-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .blog-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11, 15, 25, 0.9), transparent);
+        }
+
+        .blog-content {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .blog-content h2 {
+            font-size: 1.1rem;
+            margin: 0 0 10px;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .blog-content p {
+            font-size: 0.9rem;
+            color: var(--color-text-dim);
+            margin: 0;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-date {
+            font-size: 0.8rem;
+            color: var(--color-primary);
+            margin-top: 10px;
+            display: block;
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--color-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container nav-flex">
+            <a href="../index.html" class="logo">NexEnergy</a>
+            <a href="../index.html#contatti" class="btn">Richiedi Demo</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <header class="page-header">
+                <h1>I Nostri Articoli</h1>
+                <p>Approfondimenti tecnici e strategici sull'efficienza energetica per l'hospitality moderna.</p>
+            </header>
+
+            <!-- Loading State (shown while fetching from CMS) -->
+            <div id="loading-state" class="loading-state" hidden>
+                <div class="loading-spinner"></div>
+                <p>Caricamento articoli...</p>
+            </div>
+
+            <!-- Blog Grid -->
+            <div id="blog-grid" class="blog-grid">
+                <!-- Static fallback articles (replaced by CMS content when available) -->
+
+                <a href="/blog/paradosso-tessera.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/paradosso-tessera-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Il Paradosso della Tessera</h2>
+                        <p>Scopri perché il sistema a tessera per il risparmio energetico in hotel sta fallendo.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/retrofit-wireless.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/retrofit-wireless-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Retrofit Wireless: Evolvi Senza Cantieri</h2>
+                        <p>Come modernizzare l'impianto energetico del tuo hotel senza opere murarie.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/metodo-tesla.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/metodo-tesla-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Il Metodo Tesla per l'Hotel</h2>
+                        <p>Hardware pronto oggi, intelligenza che impara domani. Il futuro dell'hospitality.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/inerzia-termica.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/inerzia-termica-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Inerzia Termica e Previsioni Meteo</h2>
+                        <p>Come l'AI usa i dati meteo per ottimizzare il comfort e ridurre i consumi.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/hvac-invisibile.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/hvac-invisibile-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>HVAC Invisibile: Dynamic Occupancy</h2>
+                        <p>Il sistema che lavora in background senza disturbare l'ospite.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/preferenze-temperatura.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/preferenze-temperatura-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Preferenze Temperatura per Nazionalità</h2>
+                        <p>Come l'AI personalizza la temperatura in base al profilo dell'ospite.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/housekeeping-energy.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/housekeeping-energia-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Housekeeping &amp; Energy Integration</h2>
+                        <p>Integrare pulizie e gestione energetica per massimizzare l'efficienza.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/night-mode.html" class="blog-card">
+                    <div class="blog-img" style="background-image: url('../assets/images/blog/night-mode-hotel.webp');">
+                    </div>
+                    <div class="blog-content">
+                        <h2>Night Mode: Sonno Migliore, Meno Energia</h2>
+                        <p>Come il Night Mode migliora il comfort notturno riducendo i consumi.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/laundry-energy.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/laundry-energia-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Laundry Energy Trap: Il 15% Nascosto</h2>
+                        <p>I costi nascosti della lavanderia e come ottimizzarli.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/window-sensors.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/sensori-finestra-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Sensori Finestra Intelligenti</h2>
+                        <p>Come i sensori finestra prevengono sprechi energetici.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/pre-cooling.html" class="blog-card">
+                    <div class="blog-img"
+                        style="background-image: url('../assets/images/blog/pre-cooling-hotel.webp');"></div>
+                    <div class="blog-content">
+                        <h2>Pre-Arrival Cooling Perfetto</h2>
+                        <p>Preparare la camera alla temperatura ideale prima dell'arrivo.</p>
+                    </div>
+                </a>
+
+                <a href="/blog/umidita.html" class="blog-card">
+                    <div class="blog-img" style="background-image: url('../assets/images/blog/umidita-hotel.webp');">
+                    </div>
+                    <div class="blog-content">
+                        <h2>Umidità: Il Nemico Silenzioso</h2>
+                        <p>Gestire l'umidità per comfort e risparmio energetico.</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 NexEnergy. Tutti i diritti riservati. | <a href="../index.html">Torna alla Home</a></p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * Blog Articles Loader
+         * Fetches articles from Payload CMS with static fallback
+         */
+        (function() {
+            'use strict';
+
+            const PAYLOAD_CMS_URL = 'https://cms.immoby.org/api';
+            const ARTICLES_PER_PAGE = 12;
+
+            const loadingState = document.getElementById('loading-state');
+            const blogGrid = document.getElementById('blog-grid');
+
+            // Try to fetch from CMS on page load
+            document.addEventListener('DOMContentLoaded', tryFetchFromCMS);
+
+            async function tryFetchFromCMS() {
+                try {
+                    const response = await fetch(`${PAYLOAD_CMS_URL}/posts?limit=${ARTICLES_PER_PAGE}&sort=-createdAt&where[_status][equals]=published`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`CMS responded with ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    if (data.docs && data.docs.length > 0) {
+                        // CMS has articles, replace static content
+                        renderCMSArticles(data.docs);
+                        console.log('Blog articles loaded from CMS:', data.docs.length);
+                    } else {
+                        // No CMS articles, keep static fallback
+                        console.log('No CMS articles found, using static fallback');
+                    }
+                } catch (error) {
+                    // CMS unavailable, keep static fallback (already rendered in HTML)
+                    console.log('CMS unavailable, using static fallback:', error.message);
+                }
+
+                // Track page view
+                if (typeof gtag === 'function') {
+                    gtag('event', 'blog_page_view', {
+                        event_category: 'blog',
+                        event_label: 'index'
+                    });
+                }
+            }
+
+            function renderCMSArticles(articles) {
+                blogGrid.innerHTML = articles.map(article => {
+                    const slug = article.slug;
+                    const title = escapeHtml(article.h1 || article.title);
+                    const excerpt = escapeHtml(article.meta?.description || article.directAnswer || '');
+                    const image = article.heroImage?.url || article.heroImage || '../assets/images/blog/default-blog-image.webp';
+                    const date = article.createdAt ? formatDate(article.createdAt) : '';
+
+                    return `
+                        <a href="/blog/${slug}.html" class="blog-card">
+                            <div class="blog-img" style="background-image: url('${image}');"></div>
+                            <div class="blog-content">
+                                <h2>${title}</h2>
+                                ${excerpt ? `<p>${excerpt}</p>` : ''}
+                                ${date ? `<span class="blog-date">${date}</span>` : ''}
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('it-IT', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        })();
+    </script>
+
+</body>
+
+</html>

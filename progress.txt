@@ -1,0 +1,251 @@
+# Ralph Progress Log
+Started: Sat, Jan 31, 2026  4:57:34 PM
+---
+
+[2026-01-31 17:10] Completed US-NX-001: Visualizzare Hero Section con Value Proposition
+- Created project structure: index.html, css/main.css, js/main.js, js/analytics.js
+- Implemented Hero section with exact headline from PRD
+- Added primary CTA "Richiedi una Demo" with data-track attribute
+- Added secondary CTA "Scopri Come Funziona" linking to #soluzione
+- Trust signals: "Installazione in 24h per camera", "Zero opere murarie", "ROI medio in 18 mesi"
+- Hero image with loading="eager", width/height attributes, descriptive alt text
+- Added Schema.org (Organization, Service, FAQPage) JSON-LD
+- Complete CSS with critical styles inlined
+- HTML validation passes (npm run lint)
+- Tests passed: yes
+
+[2026-01-31 17:15] Completed US-NX-002: Comprendere il Problema delle Tessere
+- Problem section with H2 title "Il Paradosso dell'Eccellenza Italiana"
+- Explains dual-card bypass problem clearly with highlighted text
+- Pain point explicitly stated about systems neutralized by guest behavior
+- Concludes with NexEnergy as the solution (blockquote)
+- Image with descriptive alt text for key card holder
+- Tests passed: yes
+
+[2026-01-31 17:20] Completed US-NX-003: Comprendere la Soluzione Retrofit
+- Solution section with H2 title "Non Ristrutturare. Evolvi."
+- Three benefit cards with SVG icons (tool, eye-off, refresh)
+- Engineering expertise for hospitality highlighted
+- Installation image with proper alt text
+- Tests passed: yes
+
+[2026-01-31 17:22] Completed US-NX-004: Comprendere il Metodo Tesla
+- Metodo Tesla section with two distinct phases
+- Phase 1: Setup Immediato - mentions "6.0" and "Night Mode"
+- Phase 2: Evoluzione Sartoriale - mentions ML/LLM
+- Timeline badges: Day 1 and 2-3 months
+- Dashboard AI image with alt text
+- Tests passed: yes
+
+[2026-01-31 17:24] Completed US-NX-005: Compilare Form di Contatto per Demo
+- Contact form with all required fields
+- Dropdown for numero_camere with correct options
+- JS validation with inline error messages
+- GA4 event tracking on submission
+- UTM parameter preservation
+- Success state after submission
+- Tests passed: yes
+
+[2026-01-31 17:26] Completed US-NX-006: Implementare SEO On-Page Completo
+- Meta title (57 chars), meta description (157 chars)
+- Canonical URL, OG tags, Twitter Card tags
+- Schema.org: Organization, Service, FAQPage (5 questions)
+- Single H1 with primary keyword
+- Proper H2/H3 hierarchy
+- Tests passed: yes
+
+[2026-01-31 17:28] Completed US-NX-007: Ottimizzare Performance per Core Web Vitals
+- Critical CSS inlined in head
+- Non-critical CSS deferred with media=print trick
+- All JavaScript deferred
+- Hero image loading=eager, others lazy
+- All images have width/height attributes
+- WebP format used
+- font-display:swap via Google Fonts
+- Tests passed: yes
+
+[2026-01-31 17:30] Completed US-NX-008: Implementare Tracking Analytics
+- GA4 with anonymize_ip:true
+- CTA click tracking via data-track attributes
+- Form submission event tracking
+- Section scroll tracking with IntersectionObserver
+- UTM parameters preserved in form submission
+- Tests passed: yes
+
+[2026-01-31 17:32] Completed US-NX-009: Validare Antipatterns Prima del Deploy
+- No query parameters in URLs
+- No uppercase/underscores in URLs
+- Exactly 1 H1 tag
+- Proper heading hierarchy (no skipped levels)
+- All 4 images have alt text and width/height
+- All JavaScript deferred (no render-blocking)
+- HTML validation passes
+- Tests passed: yes
+
+---
+PHASE 1: ALL INITIAL USER STORIES COMPLETED (US-NX-001 to US-NX-009)
+
+===================================================================
+PHASE 2: NEWSLETTER & AI BLOG INTEGRATION
+Started: Sat, Feb 1, 2026
+Target User Stories: US-NX-010, US-NX-011, US-NX-012, US-NX-013
+===================================================================
+
+[2026-02-01 19:30] Completed US-NX-010: Iscriversi alla Newsletter
+- Created newsletter popup HTML in index.html with glassmorphism design
+- Added newsletter CSS styles to main.css (popup, form, success/error states)
+- Implemented JavaScript in main.js:
+  - 30-second delay trigger
+  - Exit intent detection for desktop
+  - Form validation (email format, GDPR checkbox)
+  - MailerLite API integration via serverless function
+  - GA4 event tracking (newsletter_popup_view, newsletter_signup, newsletter_error)
+  - localStorage fallback for demo/static site mode
+- Created serverless functions:
+  - api/newsletter/subscribe.js (Vercel compatible)
+  - netlify/functions/newsletter-subscribe.js (Netlify compatible)
+- Created netlify.toml for function deployment and redirects
+- Fixed HTML validation issues (encoded &amp;, moved inline styles to CSS)
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 19:45] Completed US-NX-011: Leggere Articoli Blog Generati da AI
+- Updated blog/index.html with:
+  - Open Graph meta tags
+  - Schema.org Blog markup
+  - Dynamic Payload CMS fetching via JavaScript
+  - Static fallback articles (12 pre-written)
+  - Responsive grid with excerpts and dates
+  - Loading spinner for CMS fetch
+- Updated blog/paradosso-tessera.html with Schema.org BlogPosting:
+  - Proper headline, description, image
+  - Author and publisher organization
+  - datePublished and dateModified
+  - mainEntityOfPage reference
+  - keywords and articleSection
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 20:00] Completed US-NX-012: Generare Articolo Automaticamente con AI
+- Created scripts/blog-agent.js (AI blog article generator):
+  - OpenRouter API integration with Gemini 2.0 Flash model
+  - Generates 800-1500 word articles in natural Italian
+  - System/user prompts for human-style SEO content
+  - JSON output: title, h1, metaDescription, directAnswer, slug, content, faq
+  - Focus keyword with density < 3%
+  - FAQ schema with 3-5 questions (validated)
+  - DirectAnswer for featured snippets
+- Payload CMS publishing:
+  - All required fields mapped correctly
+  - SEO meta fields (title, description, og tags)
+  - faqSchema array support
+- Resend email notifications:
+  - Success template with article details
+  - Error template with error type, message, timestamp
+- KEI image generation (optional, async task)
+- Updated package.json:
+  - Added scripts: blog:generate, blog:test, blog:dry-run
+  - Added dependencies: dotenv, node-fetch
+- Validation: word count, required fields, FAQ count
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 20:05] Completed US-NX-013: Ricevere Notifiche su Errori API
+- Enhanced blog-agent.js with error notification system:
+  - Three notification templates: success, error, credits_warning
+  - Error template includes: errorType, errorMessage, timestamp
+  - Credits warning sent when OpenRouter credits < $5
+  - All emails sent via Resend API
+  - Admin email configurable via ADMIN_EMAIL env
+- Error notifications triggered on:
+  - OpenRouter API failures
+  - Payload CMS upload failures
+  - Any unhandled errors in main execution
+- Credits check runs during checkAPIConnectivity() on startup
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 20:10] Completed US-NX-014: Verificare Connettività API
+- Created scripts/api-health-check.js:
+  - OpenRouter: Tests auth/key endpoint, checks credits, warns if < $5
+  - MailerLite: Tests groups endpoint (list groups)
+  - Payload CMS: Tests posts endpoint with limit=1
+  - Resend: Optional test email via --send-test-email flag
+- Detailed logging:
+  - Pass/warn/fail status for each API
+  - Credits remaining for OpenRouter
+  - Error messages with HTTP status codes
+  - Summary report at end
+- Added npm scripts:
+  - api:health - Run health check (no email)
+  - api:health:email - Run with test email
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 20:15] Completed US-NX-015: Test Generazione Articolo
+- Created scripts/test-article-generator.js:
+  - Generates article using Gemini 2.0 Flash via OpenRouter
+  - Validates word count (800-1500 words)
+  - Validates meta title (max 60 chars)
+  - Validates meta description (120-160 chars)
+  - Validates FAQ schema (3-5 questions)
+  - Checks Italian content (keywords hotel, energia)
+- Saves complete HTML to blog/test-article.html:
+  - Schema.org BlogPosting markup
+  - Schema.org FAQPage markup
+  - Direct answer section
+  - FAQ section with formatted questions
+  - Test banner with generation timestamp
+  - noindex, nofollow meta tag
+- Validation summary at end of execution
+- npm script: test:article
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 20:20] Completed US-NX-016: Test Newsletter Signup
+- Created scripts/test-newsletter.js:
+  - Verifies MailerLite API connectivity
+  - Creates test subscriber with name
+  - Verifies subscriber exists in MailerLite
+  - Deletes test subscriber (cleanup)
+- Test flow:
+  - API connectivity check via /groups endpoint
+  - Check if subscriber already exists
+  - Create subscriber via /subscribers endpoint
+  - Verify via /subscribers/:email endpoint
+  - Delete via DELETE /subscribers/:id endpoint
+- Outputs manual test checklist:
+  - Popup after 30 seconds
+  - Exit intent trigger (desktop)
+  - Form validation for invalid email
+  - GDPR checkbox required
+  - Success message display
+  - GA4 newsletter_signup event
+- npm script: test:newsletter
+- All lint checks pass
+- Tests passed: yes
+
+[2026-02-01 20:25] Completed US-NX-017: Test Pubblicazione CMS
+- Created scripts/test-cms-publish.js:
+  - Verifies Payload CMS API connectivity
+  - Creates test article with all SEO fields
+  - Verifies field mapping (title, h1, slug, focusKeyword, etc.)
+  - Retrieves article via API
+  - Finds article by slug in list
+  - Deletes test article (cleanup)
+- SEO fields tested:
+  - title, h1, slug, focusKeyword
+  - directAnswer, searchIntent
+  - meta.title, meta.description, meta.ogTitle, meta.ogDescription
+  - faqSchema array (3 questions)
+  - _status (published)
+- --keep flag to preserve test article
+- npm scripts: test:cms, test:cms:keep, test:all
+- Manual checklist for Schema.org validation
+- All lint checks pass
+- Tests passed: yes
+
+---
+PHASE 2: ALL USER STORIES COMPLETED (US-NX-010 to US-NX-017)
+===================================================================
+

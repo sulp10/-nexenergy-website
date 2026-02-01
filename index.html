@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Primary -->
+  <title>NexEnergy | Retrofit Energetico Intelligente per Hotel Italia</title>
+  <meta name="description"
+    content="Riduci i costi energetici del tuo hotel senza cantieri. Sistema retrofit con AI che impara dalla tua struttura. Risparmio attivo dal giorno uno. Richiedi demo.">
+  <link rel="canonical" href="https://nexenergy.it/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="NexEnergy | Retrofit Energetico Intelligente per Hotel">
+  <meta property="og:description"
+    content="Riduci i costi energetici del tuo hotel senza cantieri. Sistema retrofit con AI che impara dalla tua struttura.">
+  <meta property="og:image" content="https://nexenergy.it/images/nexenergy-retrofit-energetico-hotel-og.webp">
+  <meta property="og:url" content="https://nexenergy.it/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NexEnergy | Retrofit Energetico Intelligente per Hotel">
+  <meta name="twitter:description" content="Riduci i costi energetici del tuo hotel senza cantieri.">
+  <meta name="twitter:image" content="https://nexenergy.it/images/nexenergy-retrofit-energetico-hotel-og.webp">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <!-- Fonts with font-display: swap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Critical CSS inlined -->
+  <style>
+    :root {
+      /* Futuristic Dark Palette - High Contrast for Readability */
+      --color-primary: #00d4ff;
+      /* Neon Cyan */
+      --color-primary-dark: #0099cc;
+      --color-secondary: #00ff9d;
+      /* Neon Mint */
+      --color-accent: #ffaa00;
+      /* Neon Amber */
+
+      --color-text: #ffffff;
+      /* Pure white for max readability */
+      --color-text-light: #cbd5e1;
+      /* Lighter grey for better contrast */
+
+      --color-bg: #0b0f19;
+      /* Deep Space Black */
+      --color-bg-alt: #161e2e;
+      --color-border: #475569;
+      /* Higher visibility border */
+
+      --color-glass: rgba(15, 23, 42, 0.6);
+      /* Darker glass for better text readability */
+      --color-glass-border: rgba(255, 255, 255, 0.15);
+
+      --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      --container-max: 1200px;
+
+      /* Generous Spacing for Touch Targets */
+      --spacing-xs: 0.75rem;
+      --spacing-sm: 1.5rem;
+      --spacing-md: 2rem;
+      --spacing-lg: 3rem;
+      --spacing-xl: 4rem;
+      --spacing-2xl: 6rem;
+
+      --shadow-glow: 0 0 25px rgba(0, 212, 255, 0.25);
+      --shadow-card: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-family);
+      font-size: 18px;
+      /* Larger base font for 40+ demographic */
+      line-height: 1.7;
+      /* Relaxed line height */
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      background-image:
+        radial-gradient(circle at 15% 50%, rgba(0, 212, 255, 0.1), transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(0, 255, 157, 0.1), transparent 40%);
+      background-attachment: fixed;
+      background-size: 200% 200%;
+      animation: nebulaPulse 15s ease-in-out infinite alternate;
+      overflow-x: hidden;
+    }
+
+    @keyframes nebulaPulse {
+      0% {
+        background-position: 0% 50%;
+        opacity: 0.8;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        background-position: 100% 50%;
+        opacity: 0.8;
+      }
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    /* Header - Glassmorphism */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 15, 25, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-glass-border);
+      z-index: 1000;
+      padding: var(--spacing-sm) 0;
+    }
+
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 0%, var(--color-primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .nav {
+        display: flex;
+        gap: var(--spacing-lg);
+        align-items: center;
+      }
+    }
+
+    .nav a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .nav a:hover {
+      color: var(--color-primary);
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.75rem;
+      border-radius: 50px;
+      /* More futuristic pill shape */
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      color: #0b0f19;
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.1) inset;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(0, 212, 255, 0.1);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3) inset;
+      text-shadow: 0 0 5px rgba(0, 212, 255, 0.8);
+    }
+
+    /* Hero Section - Background Image Design */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 140px;
+      padding-bottom: 80px;
+      position: relative;
+      text-align: center;
+      /* Background Image with Overlay */
+      background: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.75)), url('/images/hero/hotel-risparmio-energetico-nexenergy.webp');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .hero .container {
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 5;
+      /* Content above background/glows */
+    }
+
+    /* Header Stack - Centered Massive Text */
+    .hero-header-stack {
+      max-width: 900px;
+      margin-bottom: var(--spacing-xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+      /* Text is king */
+    }
+
+    /* Trust Pills - (Hidden/Removed) */
+    .trust-signals-top {
+      display: none;
+    }
+
+    /* Massive Headline with Cyber-Tech Effects */
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: var(--spacing-md);
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      position: relative;
+
+      /* Full Text Gradient: Azure Fluo -> Green Fluo */
+      background: linear-gradient(90deg, #00f2ff 0%, #00ff9d 50%, #00f2ff 100%);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+
+      /* Effects */
+      animation: gradient-flow 3s linear infinite;
+      filter: drop-shadow(0 0 25px rgba(0, 242, 255, 0.4));
+    }
+
+    @keyframes gradient-flow {
+      0% {
+        background-position: 0% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Helper for non-gradient fallback if needed, but we assume modern browser */
+    .hero h1 span {
+      /* No longer needed as separate span, but keeping clean cleanup */
+    }
+
+    @keyframes text-breathing {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.01);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1 .text-gradient {
+        animation: none;
+      }
+    }
+
+    .hero-headline {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-lg);
+      max-width: 700px;
+      line-height: 1.6;
+      background: rgba(11, 15, 25, 0.4);
+      /* Slight backing for readability */
+      backdrop-filter: blur(4px);
+      padding: 10px;
+      border-radius: 12px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .btn-lg {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+    }
+
+    /* Hero Image Container - Hidden (Moved to Background) */
+    .hero-image-container {
+      display: none !important;
+    }
+
+    .hero-glow {
+      display: none;
+    }
+
+    @keyframes floatImg {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(5deg);
+        border-radius: 56% 44% 71% 29% / 50% 54% 46% 50%;
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(8deg);
+        border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+      }
+    }
+
+    /* Mobile menu toggle */
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    @media (min-width: 768px) {
+      .menu-toggle {
+        display: none;
+      }
+    }
+
+    .menu-toggle span {
+      width: 25px;
+      height: 2px;
+      background-color: var(--color-text);
+      transition: all 0.3s;
+    }
+
+    /* Section base styles */
+    section {
+      padding: var(--spacing-2xl) 0;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--color-text-light);
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+
+  <!-- Non-critical CSS deferred -->
+  <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="/css/main.css">
+  </noscript>
+
+  <!-- Schema.org Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://nexenergy.it/#organization",
+    "name": "NexEnergy",
+    "description": "Sistema di retrofit energetico intelligente per l'hospitality italiana",
+    "url": "https://nexenergy.it",
+    "logo": "https://nexenergy.it/images/logo-nexenergy.svg",
+    "knowsAbout": [
+      "Energy Efficiency",
+      "Hotel Automation",
+      "IoT in Hospitality",
+      "Smart Building",
+      "Sustainable Tourism"
+    ],
+    "sameAs": [],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "email": "info@nexenergy.it",
+      "availableLanguage": "Italian"
+    }
+  }
+  </script>
+
+  <!-- Schema.org Service -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Retrofit Energetico NexEnergy",
+    "description": "Sistema di efficientamento energetico per hotel con AI adattiva. Installazione senza opere murarie, risparmio immediato, evoluzione continua.",
+    "provider": {
+      "@type": "Organization",
+      "name": "NexEnergy"
+    },
+    "serviceType": "Energy Management System",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Italy"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Soluzioni NexEnergy",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Setup Immediato (Fase 1)"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Evoluzione AI (Fase 2)"
+          }
+        }
+      ]
+    }
+  }
+  </script>
+
+  <!-- Schema.org FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Quanto tempo richiede l'installazione del sistema NexEnergy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "L'installazione richiede circa 1-2 ore per camera e può essere effettuata senza interrompere l'operatività della struttura. Non sono necessarie opere murarie."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Il sistema NexEnergy richiede opere murarie?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, il sistema è progettato per installarsi sulle infrastrutture esistenti senza alcuna opera muraria. Le camere rimangono operative durante l'installazione."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto posso risparmiare con NexEnergy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Il risparmio varia in base alla struttura, ma mediamente i nostri clienti registrano una riduzione dei costi energetici del 20-35% con un ROI medio di 18 mesi."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Come funziona l'AI di NexEnergy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "L'AI analizza i dati di consumo di ogni singola stanza per 2-3 mesi, poi crea un profilo energetico personalizzato basato su esposizione, isolamento termico e pattern di utilizzo reale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Perché il sistema a tessera non funziona?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "I sistemi a tessera vengono facilmente aggirati: basta che l'ospite richieda una seconda card per tenerla inserita h24, neutralizzando completamente il risparmio."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="/" class="logo">NexEnergy</a>
+      <nav class="nav" aria-label="Navigazione principale">
+        <a href="#problema">Il Problema</a>
+        <a href="#soluzione">La Soluzione</a>
+        <a href="#metodo">Il Metodo</a>
+        <a href="#contatti" class="btn btn-primary">Richiedi Demo</a>
+      </nav>
+      <button type="button" class="menu-toggle" aria-label="Apri menu di navigazione">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="container">
+      <div class="hero-header-stack">
+
+        <h1>TAGLIA I COSTI ENERGETICI<br>DEL TUO HOTEL DA SUBITO.</h1>
+
+        <p class="hero-headline">
+          Paghi solo il 20% grazie agli incentivi. <br>
+          Il sistema che si installa in un giorno e si paga da solo.
+        </p>
+
+        <div class="process-pill-container"
+          style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom: 2rem; max-width: 800px;">
+          <div class="process-step"
+            style="background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); text-align:left;">
+            <span class="step-num" style="color:var(--color-secondary); font-weight:800; margin-right:5px;">1.</span>
+            <span class="step-text" style="color:#cbd5e1; font-size:0.9rem;"><strong>Setup Immediato:</strong> Risparmio
+              attivo dal Day 1 senza opere murarie.</span>
+          </div>
+          <div class="process-step"
+            style="background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); text-align:left;">
+            <span class="step-num" style="color:var(--color-primary); font-weight:800; margin-right:5px;">2.</span>
+            <span class="step-text" style="color:#cbd5e1; font-size:0.9rem;"><strong>Evoluzione AI:</strong> Dopo 3
+              mesi, il sistema personalizza i consumi H24.</span>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a href="#contatti" class="btn btn-primary btn-lg" data-track="cta_hero_primary">Calcola il Tuo Risparmio</a>
+          <a href="#soluzione" class="btn btn-secondary btn-lg" data-track="cta_hero_secondary">Come Funzionano gli
+            Incentivi</a>
+        </div>
+      </div>
+
+      <div class="hero-image-container">
+        <img src="/images/hero/hotel-risparmio-energetico-nexenergy.webp" alt="Suite Hotel con Sistema NexEnergy"
+          width="1200" height="675" loading="eager" class="hero-img-main">
+        <div class="hero-glow"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Problema Section -->
+  <section id="problema" class="problema">
+    <div class="container">
+      <h2 class="section-title">Il Paradosso dell'Eccellenza Italiana</h2>
+      <p class="section-subtitle">(e l'illusione del risparmio)</p>
+
+      <div class="problema-content">
+        <div class="problema-text">
+          <p class="problema-intro">L'Italia vanta un patrimonio ricettivo unico, ma le infrastrutture energetiche sono
+            spesso ferme a decenni fa. Chi gestisce un hotel oggi si trova davanti a un bivio: affrontare
+            ristrutturazioni invasive e costose, o affidarsi a soluzioni palliative ormai obsolete.</p>
+
+          <h3>Il Fallimento del Sistema a Tessera</h3>
+          <p>Molte strutture si affidano ai classici taschini per l'attivazione della luce, convinte di risparmiare. La
+            realtà operativa, però, è diversa.</p>
+          <p class="problema-highlight">Basta che un ospite richieda una seconda tessera (per il partner o per comodità)
+            per aggirare l'intero sistema: una card rimane inserita h24, mantenendo luci e clima attivi anche a camera
+            vuota.</p>
+          <p class="pain-point">Un'infrastruttura che dovrebbe far risparmiare, ma che di fatto viene neutralizzata dal
+            comportamento naturale dell'ospite.</p>
+
+          <blockquote class="problema-conclusion">
+            <p>NexEnergy nasce per risolvere esattamente questo cortocircuito tra teoria e realtà.</p>
+          </blockquote>
+        </div>
+        <div class="problema-image">
+          <img src="/images/sections/sistema-tessera-hotel-problema.webp"
+            alt="Taschino porta tessera hotel che viene aggirato con doppia card" width="800" height="600"
+            loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Soluzione Section - Bento Grid -->
+  <section id="soluzione" class="soluzione">
+    <div class="container">
+      <h2 class="section-title">Non Ristrutturare. Evolvi.</h2>
+      <p class="section-intro">La prima tecnologia di retrofit energetico nativo per l'hospitality. Ingegneria
+        energetica e AI fuse in un unico ecosistema invisibile.</p>
+
+      <div class="features-grid">
+        <!-- Feature 1: Installazione -->
+        <div class="feature-card">
+          <div class="feature-visual">
+            <img src="/images/sections/installazione-retrofit-camera-hotel.webp" alt="Installazione Non Invasiva"
+              loading="lazy">
+          </div>
+          <div class="feature-content">
+            <h3>Installazione Non Invasiva</h3>
+            <p>Il nostro hardware si installa sulle infrastrutture esistenti senza opere murarie e senza fermare
+              l'operatività delle camere. Nessun cantiere, zero polvere.</p>
+          </div>
+        </div>
+
+        <!-- Feature 2: Ecosistema -->
+        <div class="feature-card text-only">
+          <div class="feature-content">
+            <div class="feature-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M2 12h20" />
+              </svg>
+            </div>
+            <h3>Ecosistema Invisibile</h3>
+            <p>Lavora in background. L'ospite percepisce solo il comfort perfetto, tu vedi solo il risparmio.</p>
+          </div>
+        </div>
+
+        <!-- Feature 3: ROI -->
+        <div class="feature-card text-only">
+          <div class="feature-content">
+            <div class="feature-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
+            </div>
+            <h3>ROI in 18 Mesi</h3>
+            <p>Rientro dell'investimento da record grazie al risparmio immediato.</p>
+          </div>
+        </div>
+
+        <!-- Feature 4: Machine Learning -->
+        <div class="feature-card">
+          <div class="feature-visual">
+            <img src="/images/sections/dashboard-ai-energy-management-hotel.webp" alt="Machine Learning Adattivo"
+              loading="lazy">
+          </div>
+          <div class="feature-content">
+            <h3>Machine Learning Adattivo</h3>
+            <p>Ogni camera ha un'esposizione diversa. Il nostro sistema impara e si adatta h24 per massimizzare
+              l'efficienza senza compromessi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI Calculator Section (NEW) -->
+  <section id="roi-calculator" class="roi-section">
+    <div class="container">
+      <div class="roi-container">
+        <div class="roi-header">
+          <h2>Calcola il tuo Potenziale Risparmio</h2>
+          <p>Scopri quanto la tua struttura spreca ogni anno con i sistemi tradizionali.</p>
+        </div>
+
+        <div class="roi-calculator-grid">
+          <div class="roi-inputs">
+            <div class="roi-input-group">
+              <label for="calc-rooms">Numero Camere</label>
+              <input type="range" id="calc-rooms" min="10" max="200" value="50" oninput="updateRoi()">
+              <span id="roi-rooms-val" class="roi-val">50</span>
+            </div>
+            <div class="roi-input-group">
+              <label for="calc-occupancy">Occupazione Media (%)</label>
+              <input type="range" id="calc-occupancy" min="30" max="100" value="70" oninput="updateRoi()">
+              <span id="roi-occupancy-val" class="roi-val">70%</span>
+            </div>
+            <div class="roi-input-group">
+              <label for="calc-energy-cost">Costo Energia (€/kWh)</label>
+              <div class="energy-control">
+                <button type="button" id="energy-minus" class="energy-btn" aria-label="Diminuisci costo">-</button>
+                <div class="energy-display">
+                  <span id="energy-display-val">0.25</span>
+                  <span class="unit">€</span>
+                </div>
+                <button type="button" id="energy-plus" class="energy-btn" aria-label="Aumenta costo">+</button>
+                <input type="hidden" id="calc-energy-cost" value="0.25">
+              </div>
+            </div>
+          </div>
+
+          <div class="roi-results">
+            <div class="roi-results-header">
+              <span class="roi-label">Risparmio Annuo Stimato</span>
+              <h3 id="roi-savings-year">€ 0</h3>
+            </div>
+
+            <div class="roi-dual-container">
+              <!-- Standard ROI -->
+              <div class="roi-item standard">
+                <span class="roi-label-sm">ROI Standard</span>
+                <div class="roi-number" id="roi-months-standard">-- Mesi</div>
+                <div class="roi-cost-note">Costo: 100%</div>
+              </div>
+
+              <!-- Incentivized ROI -->
+              <div class="roi-item incentivized">
+                <span class="roi-badge">CON INCENTIVI ZES/4.0</span>
+                <div class="roi-number highlight" id="roi-months-incentivized">-- Mesi</div>
+                <div class="roi-cost-note highlight-text">Paghi solo il 20%!</div>
+              </div>
+            </div>
+
+            <div class="roi-investment-breakdown">
+              <p>Investimento Stimato: <span id="roi-investment-total">€ 0</span> <span class="arrow">➔</span> <span
+                  id="roi-investment-discounted" class="discounted">€ 0</span></p>
+            </div>
+
+            <p class="roi-disclaimer">*Stime basate su media nazionale hotel 3-4 stelle. Costi hardware + software
+              inclusi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metodo Tesla Section - Scroll Timeline -->
+  <section id="metodo" class="metodo">
+    <div class="container">
+      <h2 class="section-title">Hardware Oggi, Intelligenza Domani.</h2>
+      <p class="section-intro">Il Metodo Evolutivo: il sistema migliora mentre lo usi.</p>
+
+      <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item reveal-left">
+          <div class="timeline-marker">1</div>
+          <div class="timeline-content">
+            <h3>Day 1: Setup Immediato</h3>
+            <p>L'hardware prende il controllo di clima e luce. Stop immediato agli sprechi macroscopici.</p>
+            <ul class="check-list">
+              <li>Night Mode automatica</li>
+              <li>Rilevamento presenza reale</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal-right">
+          <div class="timeline-marker">2</div>
+          <div class="timeline-content">
+            <h3>Month 3: Apprendimento AI</h3>
+            <p>Il sistema ha analizzato migliaia di ore di utilizzo. Rilasciamo il primo aggiornamento custom.</p>
+            <ul class="check-list">
+              <li>Profilo termico stanza per stanza</li>
+              <li>Previsione occupazione</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal-left">
+          <div class="timeline-marker">3</div>
+          <div class="timeline-content">
+            <h3>Year 1: Ecosistema Predittivo</h3>
+            <p>Il sistema anticipa le esigenze. Accende il clima prima che l'ospite rientri, basandosi sulle abitudini.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog/Articles Preview Section -->
+  <section id="blog-preview"
+    style="padding: 100px 0; background: var(--color-bg); position: relative; overflow: hidden;">
+    <div class="container">
+      <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+        <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 20px;">I NOSTRI <span
+            class="text-gradient">ARTICOLI</span></h2>
+        <p style="color: var(--color-text-dim); max-width: 600px; margin: 0 auto;">Approfondimenti tecnici e strategici
+          sull'efficienza energetica per l'hospitality moderna.</p>
+      </div>
+
+      <!-- Auto-scrolling Carousel -->
+      <div class="blog-carousel-wrapper" style="position: relative; overflow: hidden; margin-bottom: 50px;">
+        <div id="blogCarousel" class="blog-carousel"
+          style="display: flex; gap: 25px; transition: transform 0.5s ease-in-out;">
+
+          <!-- Card 1 -->
+          <a href="/blog/paradosso-tessera.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div
+              style="height: 180px; background: url('assets/images/blog/paradosso-tessera-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Il Paradosso della Tessera</h3>
+            </div>
+          </a>
+
+          <!-- Card 2 -->
+          <a href="/blog/retrofit-wireless.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div
+              style="height: 180px; background: url('assets/images/blog/retrofit-wireless-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Retrofit Wireless</h3>
+            </div>
+          </a>
+
+          <!-- Card 3 -->
+          <a href="/blog/metodo-tesla.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/metodo-tesla-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Il Metodo Tesla</h3>
+            </div>
+          </a>
+
+          <!-- Card 4 -->
+          <a href="/blog/inerzia-termica.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/inerzia-termica-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Inerzia Termica e Meteo</h3>
+            </div>
+          </a>
+
+          <!-- Card 5 -->
+          <a href="/blog/hvac-invisibile.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/hvac-invisibile-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">HVAC Invisibile</h3>
+            </div>
+          </a>
+
+          <!-- Card 6 -->
+          <a href="/blog/preferenze-temperatura.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div
+              style="height: 180px; background: url('assets/images/blog/preferenze-temperatura-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Preferenze Temperatura</h3>
+            </div>
+          </a>
+
+          <!-- Card 7 -->
+          <a href="/blog/housekeeping-energy.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div
+              style="height: 180px; background: url('assets/images/blog/housekeeping-energia-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Housekeeping &amp; Energy</h3>
+            </div>
+          </a>
+
+          <!-- Card 8 -->
+          <a href="/blog/night-mode.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/night-mode-hotel.webp') center/cover;"></div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Night Mode</h3>
+            </div>
+          </a>
+
+          <!-- Card 9 -->
+          <a href="/blog/laundry-energy.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/laundry-energia-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Laundry Energy Trap</h3>
+            </div>
+          </a>
+
+          <!-- Card 10 -->
+          <a href="/blog/window-sensors.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/sensori-finestra-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Sensori Finestra</h3>
+            </div>
+          </a>
+
+          <!-- Card 11 -->
+          <a href="/blog/pre-cooling.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/pre-cooling-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Pre-Arrival Cooling</h3>
+            </div>
+          </a>
+
+          <!-- Card 12 -->
+          <a href="/blog/umidita.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/umidita-hotel.webp') center/cover;"></div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Umidità: Il Nemico</h3>
+            </div>
+          </a>
+
+          <!-- Card 13 -->
+          <a href="/blog/roi-room-by-room.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/roi-stanza-hotel.webp') center/cover;"></div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">ROI Room-by-Room</h3>
+            </div>
+          </a>
+
+          <!-- Card 14 -->
+          <a href="/blog/cascata-termica.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/cascata-termica-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Cascata Termica</h3>
+            </div>
+          </a>
+
+          <!-- Card 15 -->
+          <a href="/blog/ai-learning-feedback.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/ai-learning-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">AI che Impara</h3>
+            </div>
+          </a>
+
+          <!-- Card 16 -->
+          <a href="/blog/fasce-orarie.html" class="carousel-card"
+            style="min-width: 300px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-decoration: none; flex-shrink: 0;">
+            <div style="height: 180px; background: url('assets/images/blog/fasce-orarie-hotel.webp') center/cover;">
+            </div>
+            <div style="padding: 20px; text-align: center;">
+              <h3 style="color: white; font-size: 1rem; margin: 0;">Fasce Orarie Critiche</h3>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div style="text-align: center;">
+        <a href="/blog/index.html" class="btn-primary"
+          style="display: inline-block; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: #000; padding: 16px 40px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 1rem; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          Leggi gli altri articoli
+        </a>
+      </div>
+    </div>
+
+    <script>
+      // Auto-scroll carousel every 3 seconds
+      (function () {
+        const carousel = document.getElementById('blogCarousel');
+        if (!carousel) return;
+
+        const cards = carousel.querySelectorAll('.carousel-card');
+        const cardWidth = 325; // 300px + 25px gap
+        let currentIndex = 0;
+        const totalCards = cards.length;
+
+        function scrollNext() {
+          currentIndex++;
+          if (currentIndex >= totalCards - 2) {
+            // Reset to beginning smoothly
+            currentIndex = 0;
+            carousel.style.transition = 'none';
+            carousel.style.transform = 'translateX(0)';
+            setTimeout(() => {
+              carousel.style.transition = 'transform 0.5s ease-in-out';
+            }, 50);
+          } else {
+            carousel.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+          }
+        }
+
+        // Auto-scroll every 3 seconds
+        setInterval(scrollNext, 3000);
+
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => carousel.dataset.paused = 'true');
+        carousel.addEventListener('mouseleave', () => carousel.dataset.paused = 'false');
+      })();
+    </script>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contatti" class="contatti">
+    <div class="container">
+      <h2 class="section-title">Pronto a Trasformare i Costi in Margine?</h2>
+      <p class="section-subtitle">Richiedi un'analisi gratuita dei consumi della tua struttura.</p>
+
+      <form id="contact-form" class="contact-form" data-track="form_submit_demo" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nome">Nome e Cognome <span class="required">*</span></label>
+            <input type="text" id="nome" name="nome" placeholder="Nome e Cognome" required>
+            <span class="error-message">Inserisci il tuo nome</span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email aziendale <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="Email aziendale" required>
+            <span class="error-message">Inserisci un'email valida</span>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Telefono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Telefono (opzionale)">
+          </div>
+
+          <div class="form-group">
+            <label for="nome_struttura">Nome Hotel/Struttura <span class="required">*</span></label>
+            <input type="text" id="nome_struttura" name="nome_struttura" placeholder="Nome Hotel/Struttura" required>
+            <span class="error-message">Inserisci il nome della struttura</span>
+          </div>
+
+          <div class="form-group">
+            <label for="numero_camere">Numero camere <span class="required">*</span></label>
+            <select id="numero_camere" name="numero_camere" required>
+              <option value="">Seleziona...</option>
+              <option value="10-30">10-30 camere</option>
+              <option value="31-60">31-60 camere</option>
+              <option value="61-100">61-100 camere</option>
+              <option value="100+">100+ camere</option>
+            </select>
+            <span class="error-message">Seleziona il numero di camere</span>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="messaggio">Messaggio</label>
+            <textarea id="messaggio" name="messaggio" rows="4" placeholder="Raccontaci le tue esigenze..."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-submit">Richiedi Consulenza Gratuita</button>
+
+        <p class="privacy-note">I tuoi dati saranno trattati secondo la nostra <a href="/privacy-policy">Privacy
+            Policy</a>. Non condividiamo informazioni con terze parti.</p>
+      </form>
+
+      <div class="form-success" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        <h3>Grazie per averci contattato!</h3>
+        <p>Ti risponderemo entro 24 ore lavorative.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="/" class="logo">NexEnergy</a>
+          <p>Sistema di retrofit energetico intelligente per l'hospitality italiana.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Navigazione</h4>
+          <nav aria-label="Navigazione footer">
+            <a href="#problema">Il Problema</a>
+            <a href="#soluzione">La Soluzione</a>
+            <a href="#metodo">Il Metodo</a>
+            <a href="#contatti">Contatti</a>
+          </nav>
+        </div>
+        <div class="footer-contact">
+          <h4>Contatti</h4>
+          <p>Email: <a href="mailto:info@nexenergy.it">info@nexenergy.it</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 NexEnergy. Tutti i diritti riservati.</p>
+        <nav class="footer-legal" aria-label="Link legali">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/cookie-policy">Cookie Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Newsletter Popup -->
+  <div id="newsletter-popup" class="newsletter-popup" hidden>
+    <div class="newsletter-popup-overlay" data-close-popup></div>
+    <div class="newsletter-popup-content">
+      <button type="button" class="newsletter-popup-close" data-close-popup aria-label="Chiudi popup">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="newsletter-popup-header">
+        <div class="newsletter-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <h3>Risparmio Energetico: Resta Aggiornato</h3>
+        <p>Ricevi consigli esclusivi, guide pratiche e le ultime novità sull'efficienza energetica per hotel.</p>
+      </div>
+
+      <form id="newsletter-form" class="newsletter-form" novalidate>
+        <div class="newsletter-form-group">
+          <label for="newsletter-email" class="sr-only">Email</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="La tua email" required>
+          <span class="newsletter-error-message">Inserisci un'email valida</span>
+        </div>
+
+        <div class="newsletter-form-group">
+          <label for="newsletter-name" class="sr-only">Nome (opzionale)</label>
+          <input type="text" id="newsletter-name" name="name" placeholder="Nome (opzionale)">
+        </div>
+
+        <div class="newsletter-form-group newsletter-checkbox-group">
+          <label class="newsletter-checkbox-label">
+            <input type="checkbox" id="newsletter-gdpr" name="gdpr_consent" required>
+            <span class="newsletter-checkbox-custom"></span>
+            <span class="newsletter-checkbox-text">
+              Accetto di ricevere comunicazioni via email da NexEnergy. Posso disiscrivermi in qualsiasi momento.
+              <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+            </span>
+          </label>
+          <span class="newsletter-error-message">Devi accettare per continuare</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary newsletter-submit">
+          <span class="newsletter-submit-text">Iscriviti alla Newsletter</span>
+          <span class="newsletter-submit-loading" hidden>
+            <svg class="spinner" viewBox="0 0 24 24" width="20" height="20">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4" stroke-dashoffset="10"></circle>
+            </svg>
+          </span>
+        </button>
+      </form>
+
+      <div class="newsletter-success" hidden>
+        <div class="newsletter-success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h3>Grazie per l'iscrizione!</h3>
+        <p>Riceverai presto i nostri migliori contenuti sull'efficienza energetica per hotel.</p>
+      </div>
+
+      <div class="newsletter-error-state" hidden>
+        <div class="newsletter-error-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3>Si è verificato un errore</h3>
+        <p>Riprova più tardi o contattaci direttamente a info@nexenergy.it</p>
+        <button type="button" class="btn btn-secondary newsletter-retry">Riprova</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript deferred -->
+  <script defer src="/js/main.js"></script>
+  <script defer src="/js/analytics.js"></script>
+</body>
+
+</html>

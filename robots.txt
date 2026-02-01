@@ -1,0 +1,8 @@
+# NexEnergy Robots.txt
+# https://nexenergy.it/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://nexenergy.it/sitemap.xml

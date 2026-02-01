@@ -390,6 +390,9 @@ async function generateImage(topic) {
  * Publish article to Payload CMS
  */
 async function publishToCMS(article, imageUrl) {
+  console.log('   >>> publishToCMS called');
+  console.log('   >>> Article title:', article?.title || 'MISSING');
+
   // Truncate directAnswer to max 160 chars (Payload CMS limit)
   const truncatedDirectAnswer = article.directAnswer && article.directAnswer.length > 160
     ? article.directAnswer.substring(0, 157) + '...'
@@ -405,12 +408,19 @@ async function publishToCMS(article, imageUrl) {
 
   console.log(`   Content nodes: ${contentLexical.root.children.length}`);
 
+  // Ensure required fields have values
+  const h1Value = article.h1 || article.title || 'Articolo';
+  const focusKeywordValue = article.slug ? article.slug.replace(/-/g, ' ') : 'efficienza energetica hotel';
+
+  console.log(`   H1: ${h1Value}`);
+  console.log(`   Focus Keyword: ${focusKeywordValue}`);
+
   const payload = {
     title: article.title,
-    h1: article.h1,
+    h1: h1Value,
     slug: article.slug,
     content: contentLexical,
-    focusKeyword: article.slug.replace(/-/g, ' '),
+    focusKeyword: focusKeywordValue,
     directAnswer: truncatedDirectAnswer,
     searchIntent: 'informational',
     meta: {
@@ -436,12 +446,24 @@ async function publishToCMS(article, imageUrl) {
     body: JSON.stringify(payload)
   });
 
+  console.log('   HTTP Status:', response.status);
+
+  const responseData = await response.json().catch((e) => {
+    console.error('   Failed to parse response:', e.message);
+    return {};
+  });
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(`Payload CMS error: ${response.status} - ${JSON.stringify(errorData)}`);
+    console.error('   CMS Response:', JSON.stringify(responseData, null, 2));
+    throw new Error(`Payload CMS error: ${response.status} - ${JSON.stringify(responseData)}`);
   }
 
-  return await response.json();
+  const docId = responseData.doc?.id || responseData.id;
+  const docSlug = responseData.doc?.slug || responseData.slug;
+  console.log('   Published ID:', docId || 'unknown');
+  console.log('   Published Slug:', docSlug || 'unknown');
+
+  return responseData.doc || responseData;
 }
 
 /**

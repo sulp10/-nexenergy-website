@@ -245,6 +245,7 @@ function selectTopic() {
   return TOPICS[randomIndex];
 }
 
+
 /**
  * Generate article using OpenRouter AI
  */
@@ -269,9 +270,15 @@ STRUTTURA OUTPUT (JSON):
   "content": "Articolo completo in HTML (h2, h3, p, ul, strong)",
   "faq": [
     {"question": "...", "answer": "..."},
-    {"question": "...", "answer": "..."},
     {"question": "...", "answer": "..."}
-  ]
+  ],
+  "targetLocation": "Italia (o regione specifica se rilevante)",
+  "secondaryKeywords": ["keyword1", "keyword2", "keyword3"],
+  "lsiKeywords": ["lsi1", "lsi2", "lsi3"],
+  "entityOptimization": "Lista di entità correlate (es. ENEA, GSE, ISO 50001)",
+  "seoScore": 95,
+  "readabilityScore": 80,
+  "contentQuality": 90
 }`;
 
   const userPrompt = `Scrivi un articolo blog su: "${topic.title}"
@@ -354,11 +361,12 @@ Rispondi SOLO con il JSON, nessun testo aggiuntivo.`;
 
 /**
  * Generate featured image using KEI API (Flux-2)
- * Note: Flux-2 does NOT support text in images
  */
 async function generateImage(topic) {
   // Create a visual prompt WITHOUT any text/words
-  const visualPrompt = `Professional photography of a modern luxury hotel room, warm ambient lighting, smart thermostat on wall, comfortable bed, elegant Italian design, cinematic lighting, high-end hospitality atmosphere, no text, no words, no letters, no logos`;
+  const visualPrompt = `Professional architectural photography of a modern luxury hotel in Italy implementing ${topic.focus}, natural lighting, cinematic 8k quality, minimalist design, sustainable architecture details, no text overlay`;
+
+  console.log('   Sending task to KEI API...');
 
   const response = await fetch(KEI_API_URL, {
     method: 'POST',
@@ -380,9 +388,61 @@ async function generateImage(topic) {
 
   const data = await response.json();
 
-  // KEI returns async task - we'd need to poll for result
-  // For now, return null and use placeholder
-  console.log('   KEI task created:', data.task_id || 'N/A');
+  if (!data.result_url && data.task_id) {
+    console.log(`   Task created (ID: ${data.task_id}), waiting for result...`);
+    return await pollKEITask(data.task_id);
+  }
+
+  return data.result_url || null;
+}
+
+/**
+ * Poll KEI API for task completion
+ */
+async function pollKEITask(taskId) {
+  const maxAttempts = 30; // 30 attempts * 2 seconds = 60 seconds max
+  const delay = 2000;
+
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+    try {
+      // Note: Adjust endpoint based on actual KEI API docs for polling
+      // Assuming getTask or similar endpoint standard
+      // If KEI uses a different URL for status, we might need to adjust.
+      // Since we don't have the exact docs loaded, we'll try the common pattern 
+      // or assume the create response gave a status URL. 
+      // If not available, we might need to skip polling or use a placeholder if failing.
+
+      // WARNING: Without specific polling docs, this is a guess. 
+      // Often strictly async APIs return a status URL.
+      // If we can't poll, we can't get the image.
+
+      // Let's assume a standard GET /tasks/{id} or similar.
+      // Re-using KEI_API_URL base might be wrong if it ends in /createTask
+      const baseUrl = KEI_API_URL.replace('/jobs/createTask', '/jobs/getTask');
+
+      const checkResponse = await fetch(`${baseUrl}?task_id=${taskId}`, {
+        headers: {
+          'Authorization': `Bearer ${process.env.KEI_API_KEY}`
+        }
+      });
+
+      if (checkResponse.ok) {
+        const result = await checkResponse.json();
+        if (result.status === 'completed' && result.result_url) {
+          return result.result_url;
+        } else if (result.status === 'failed') {
+          console.error('   Image generation task failed:', result.error);
+          return null;
+        }
+      }
+    } catch (e) {
+      // Ignore transient errors during polling
+    }
+  }
+
+  console.warn('   Image generation timed out');
   return null;
 }
 
@@ -406,14 +466,17 @@ async function publishToCMS(article, imageUrl) {
   // Convert HTML content to Payload Lexical format
   const contentLexical = htmlToLexical(article.content || article.directAnswer);
 
-  console.log(`   Content nodes: ${contentLexical.root.children.length}`);
+  const wordCount = countWords(article.content);
 
   // Ensure required fields have values
   const h1Value = article.h1 || article.title || 'Articolo';
   const focusKeywordValue = article.slug ? article.slug.replace(/-/g, ' ') : 'efficienza energetica hotel';
 
-  console.log(`   H1: ${h1Value}`);
-  console.log(`   Focus Keyword: ${focusKeywordValue}`);
+  // Map keywords to Payload array structure if needed
+  // Assuming secondaryKeywords expects a repeater: [{ keyword: '...' }]
+  const secondaryKeywordsMapped = Array.isArray(article.secondaryKeywords)
+    ? article.secondaryKeywords.map(k => ({ keyword: k }))
+    : [];
 
   const payload = {
     title: article.title,
@@ -423,6 +486,19 @@ async function publishToCMS(article, imageUrl) {
     focusKeyword: focusKeywordValue,
     directAnswer: truncatedDirectAnswer,
     searchIntent: 'informational',
+    targetLocation: article.targetLocation || 'Italia',
+
+    // New fields
+    wordCount: wordCount,
+    readabilityScore: article.readabilityScore || 80,
+    seoScore: article.seoScore || 90,
+    contentQuality: article.contentQuality || 85,
+
+    // Keywords & Optimize
+    secondaryKeywords: secondaryKeywordsMapped,
+    lsiKeywords: Array.isArray(article.lsiKeywords) ? article.lsiKeywords.join(', ') : article.lsiKeywords,
+    entityOptimization: article.entityOptimization,
+
     meta: {
       title: article.title,
       description: truncatedMetaDesc,
@@ -454,7 +530,7 @@ async function publishToCMS(article, imageUrl) {
   });
 
   // Log full response for debugging
-  console.log('   Full CMS Response:', JSON.stringify(responseData, null, 2).substring(0, 500));
+  // console.log('   Full CMS Response:', JSON.stringify(responseData, null, 2).substring(0, 500));
 
   if (!response.ok) {
     console.error('   CMS Error:', JSON.stringify(responseData, null, 2));

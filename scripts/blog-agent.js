@@ -466,7 +466,10 @@ async function publishToCMS(article, imageUrl) {
   // Convert HTML content to Payload Lexical format
   const contentLexical = htmlToLexical(article.content || article.directAnswer);
 
+
   const wordCount = countWords(article.content);
+  const timeToRead = Math.ceil(wordCount / 200);
+  const canonicalUrl = `${CONFIG.siteUrl}/blog/${article.slug}`;
 
   // Ensure required fields have values
   const h1Value = article.h1 || article.title || 'Articolo';
@@ -503,7 +506,10 @@ async function publishToCMS(article, imageUrl) {
       title: article.title,
       description: truncatedMetaDesc,
       ogTitle: article.title,
-      ogDescription: truncatedMetaDesc
+      ogDescription: truncatedMetaDesc,
+      articleSection: 'Efficienza Energetica', // Default section
+      timeToRead: timeToRead,
+      canonicalUrl: canonicalUrl
     },
     faqSchema: article.faq,
     _status: 'published'

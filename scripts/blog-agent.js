@@ -390,13 +390,21 @@ async function generateImage(topic) {
  * Publish article to Payload CMS
  */
 async function publishToCMS(article, imageUrl) {
+  // Truncate directAnswer to max 160 chars (Payload CMS limit)
+  const truncatedDirectAnswer = article.directAnswer && article.directAnswer.length > 160
+    ? article.directAnswer.substring(0, 157) + '...'
+    : article.directAnswer;
+
+  // Ensure content is not empty
+  const contentHtml = article.content || `<p>${article.directAnswer}</p>`;
+
   const payload = {
     title: article.title,
     h1: article.h1,
     slug: article.slug,
-    content: article.content,
+    content: contentHtml,
     focusKeyword: article.slug.replace(/-/g, ' '),
-    directAnswer: article.directAnswer,
+    directAnswer: truncatedDirectAnswer,
     searchIntent: 'informational',
     meta: {
       title: article.title,
@@ -484,7 +492,7 @@ async function sendNotification(type, data) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      from: 'NexEnergy Blog <no-reply@nexenergy.it>',
+      from: 'NexEnergy Blog <onboarding@resend.dev>',
       to: [process.env.ADMIN_EMAIL],
       subject: template.subject,
       html: template.html

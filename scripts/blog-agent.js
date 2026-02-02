@@ -204,8 +204,8 @@ async function checkAPIConnectivity() {
       const remaining = creditsData.data?.limit_remaining;
       if (remaining !== undefined) {
         console.log(`   OpenRouter credits: ${remaining}`);
-        // Warn if credits are low (< 2 USD)
-        if (remaining < 2) {
+        // Warn if credits are low (< 2 USD) and not null
+        if (remaining !== null && remaining < 2) {
           console.log('   WARNING: OpenRouter credits running low!');
           await sendNotification('credits_warning', {
             serviceName: 'OpenRouter',
@@ -400,7 +400,7 @@ async function generateImage(topic) {
  * Poll KEI API for task completion
  */
 async function pollKEITask(taskId) {
-  const maxAttempts = 30; // 60 seconds
+  const maxAttempts = 150; // 150 attempts * 2s = 300s (5 mins)
   const delay = 2000;
   const pollUrl = 'https://api.kie.ai/api/v1/jobs/getTask';
 
@@ -499,6 +499,13 @@ async function uploadImageToPayload(imageUrl, title) {
 async function publishToCMS(article, imageUrl) {
   console.log('   >>> publishToCMS called');
   console.log('   >>> Article title:', article?.title || 'MISSING');
+
+  // Ensure slug is unique by appending short timestamp
+  const uniqueSuffix = Date.now().toString().slice(-6);
+  if (!article.slug.endsWith(uniqueSuffix)) {
+    article.slug = `${article.slug}-${uniqueSuffix}`;
+  }
+  console.log('   >>> Unique Slug:', article.slug);
 
   // Truncate directAnswer to max 160 chars
   const truncatedDirectAnswer = article.directAnswer && article.directAnswer.length > 160

@@ -27,7 +27,7 @@ const CONFIG = {
   minWords: 800,
   maxWords: 1500,
   language: 'it',
-  siteUrl: process.env.SITE_URL || 'https://nexenergy.it',
+  siteUrl: process.env.SITE_URL || 'https://nex-energy.it',
   siteName: process.env.SITE_NAME || 'NexEnergy Blog Agent'
 };
 
@@ -204,8 +204,8 @@ async function checkAPIConnectivity() {
       const remaining = creditsData.data?.limit_remaining;
       if (remaining !== undefined) {
         console.log(`   OpenRouter credits: ${remaining}`);
-        // Warn if credits are low (< 5 USD)
-        if (remaining < 5) {
+        // Warn if credits are low (< 2 USD)
+        if (remaining < 2) {
           console.log('   WARNING: OpenRouter credits running low!');
           await sendNotification('credits_warning', {
             serviceName: 'OpenRouter',
@@ -245,7 +245,6 @@ function selectTopic() {
   return TOPICS[randomIndex];
 }
 
-
 /**
  * Generate article using OpenRouter AI
  */
@@ -269,6 +268,7 @@ STRUTTURA OUTPUT (JSON):
   "slug": "url-slug-lowercase-hyphen",
   "content": "Articolo completo in HTML (h2, h3, p, ul, strong)",
   "faq": [
+    {"question": "...", "answer": "..."},
     {"question": "...", "answer": "..."},
     {"question": "...", "answer": "..."}
   ],
@@ -321,10 +321,9 @@ Rispondi SOLO con il JSON, nessun testo aggiuntivo.`;
     throw new Error('Empty response from OpenRouter');
   }
 
-  // Parse JSON from response (handle markdown code blocks)
+  // Parse JSON from response
   let articleJson;
   try {
-    // Remove markdown code blocks if present
     let jsonStr = content.trim();
     if (jsonStr.startsWith('```json')) {
       jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/\s*```$/, '');
@@ -351,19 +350,13 @@ Rispondi SOLO con il JSON, nessun testo aggiuntivo.`;
     console.warn(`   Warning: Article has ${wordCount} words (minimum: ${CONFIG.minWords})`);
   }
 
-  // Validate FAQ count
-  if (!Array.isArray(articleJson.faq) || articleJson.faq.length < 3) {
-    throw new Error('FAQ must have at least 3 questions');
-  }
-
   return articleJson;
 }
 
 /**
- * Generate featured image using KEI API (Flux-2)
+ * Generate featured image using KEI API
  */
 async function generateImage(topic) {
-  // Create a visual prompt WITHOUT any text/words
   const visualPrompt = `Professional architectural photography of a modern luxury hotel in Italy implementing ${topic.focus}, natural lighting, cinematic 8k quality, minimalist design, sustainable architecture details, no text overlay`;
 
   console.log('   Sending task to KEI API...');
@@ -407,11 +400,8 @@ async function generateImage(topic) {
  * Poll KEI API for task completion
  */
 async function pollKEITask(taskId) {
-  const maxAttempts = 30;
+  const maxAttempts = 30; // 60 seconds
   const delay = 2000;
-
-  // Correct URL based on KEI standard patterns (usually /jobs/getTask or /market/common/get-task-detail)
-  // Let's assume standard convention for this provider set
   const pollUrl = 'https://api.kie.ai/api/v1/jobs/getTask';
 
   for (let i = 0; i < maxAttempts; i++) {
@@ -430,29 +420,77 @@ async function pollKEITask(taskId) {
 
         if (!taskData) continue;
 
-        // Check various success states common in this API style
         if (taskData.status === 'success' || taskData.status === 'completed') {
-          // Extract result URL
-          // Flux-2 often returns results array
           if (taskData.results && taskData.results.length > 0 && taskData.results[0].url) {
             return taskData.results[0].url;
           }
           if (taskData.result_url) return taskData.result_url;
           if (taskData.url) return taskData.url;
-
-          return null; // Completed but no URL found?
+          return null;
         } else if (taskData.status === 'failed') {
           console.error('   Image generation task failed:', taskData.error);
           return null;
         }
       }
     } catch (e) {
-      console.log('   Polling retry:', e.message);
+      // Ignore
     }
   }
 
   console.warn('   Image generation timed out');
   return null;
+}
+
+/**
+ * Download image from URL and upload to Payload CMS Media collection
+ */
+async function uploadImageToPayload(imageUrl, title) {
+  console.log('   Downloading image from:', imageUrl);
+
+  // 1. Download image
+  const imgResponse = await fetch(imageUrl);
+  if (!imgResponse.ok) {
+    throw new Error(`Failed to download image: ${imgResponse.statusText}`);
+  }
+  const imgBuffer = await imgResponse.buffer();
+
+  // 2. Prepare multipart form data manually
+  const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
+  const filename = `hero-${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}.webp`;
+
+  let body = '';
+  // File part
+  body += `--${boundary}\r\n`;
+  body += `Content-Disposition: form-data; name="file"; filename="${filename}"\r\n`;
+  body += `Content-Type: image/webp\r\n\r\n`;
+
+  // Combine body parts with buffer
+  const preBuffer = Buffer.from(body, 'utf-8');
+  const postBuffer = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf-8');
+  const finalBuffer = Buffer.concat([preBuffer, imgBuffer, postBuffer]);
+
+  console.log(`   Uploading to Payload Media (${finalBuffer.length} bytes)...`);
+
+  // 3. Upload to Payload
+  const uploadResponse = await fetch(`${PAYLOAD_CMS_URL}/media`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.PAYLOAD_API_KEY}`,
+      'Content-Type': `multipart/form-data; boundary=${boundary}`
+    },
+    body: finalBuffer
+  });
+
+  if (!uploadResponse.ok) {
+    const err = await uploadResponse.text();
+    console.error('   Media Upload Error:', err);
+    throw new Error(`Failed to upload media: ${uploadResponse.status} - ${err}`);
+  }
+
+  const mediaData = await uploadResponse.json();
+  console.log('   Media uploaded successfully. ID:', mediaData.doc?.id || mediaData.id);
+
+  return mediaData.doc?.id || mediaData.id;
 }
 
 /**
@@ -462,7 +500,7 @@ async function publishToCMS(article, imageUrl) {
   console.log('   >>> publishToCMS called');
   console.log('   >>> Article title:', article?.title || 'MISSING');
 
-  // Truncate directAnswer to max 160 chars (Payload CMS limit)
+  // Truncate directAnswer to max 160 chars
   const truncatedDirectAnswer = article.directAnswer && article.directAnswer.length > 160
     ? article.directAnswer.substring(0, 157) + '...'
     : article.directAnswer;
@@ -472,9 +510,8 @@ async function publishToCMS(article, imageUrl) {
     ? article.metaDescription.substring(0, 157) + '...'
     : article.metaDescription;
 
-  // Convert HTML content to Payload Lexical format
+  // Convert HTML content to Payload Lexical format (simplified)
   const contentLexical = htmlToLexical(article.content || article.directAnswer);
-
 
   const wordCount = countWords(article.content);
   const timeToRead = Math.ceil(wordCount / 200);
@@ -484,8 +521,7 @@ async function publishToCMS(article, imageUrl) {
   const h1Value = article.h1 || article.title || 'Articolo';
   const focusKeywordValue = article.slug ? article.slug.replace(/-/g, ' ') : 'efficienza energetica hotel';
 
-  // Map keywords to Payload array structure if needed
-  // Assuming secondaryKeywords expects a repeater: [{ keyword: '...' }]
+  // Map keywords
   const secondaryKeywordsMapped = Array.isArray(article.secondaryKeywords)
     ? article.secondaryKeywords.map(k => ({ keyword: k }))
     : [];
@@ -516,7 +552,7 @@ async function publishToCMS(article, imageUrl) {
       description: truncatedMetaDesc,
       ogTitle: article.title,
       ogDescription: truncatedMetaDesc,
-      articleSection: 'Efficienza Energetica', // Default section
+      articleSection: 'Efficienza Energetica',
       timeToRead: timeToRead,
       canonicalUrl: canonicalUrl
     },
@@ -534,7 +570,6 @@ async function publishToCMS(article, imageUrl) {
       }
     } catch (uploadError) {
       console.error('   Failed to upload hero image:', uploadError.message);
-      // Continue without image is better than failing completely
     }
   }
 
@@ -553,9 +588,6 @@ async function publishToCMS(article, imageUrl) {
     console.error('   Failed to parse response:', e.message);
     return {};
   });
-
-  // Log full response for debugging
-  // console.log('   Full CMS Response:', JSON.stringify(responseData, null, 2).substring(0, 500));
 
   if (!response.ok) {
     console.error('   CMS Error:', JSON.stringify(responseData, null, 2));
@@ -642,64 +674,7 @@ async function sendNotification(type, data) {
 
 /**
  * Convert HTML content to Payload CMS Lexical format
- * Lexical uses a tree structure with root > children nodes
- */
-/**
- * Download image from URL and upload to Payload CMS Media collection
- */
-async function uploadImageToPayload(imageUrl, title) {
-  console.log('   Downloading image from:', imageUrl);
-
-  // 1. Download image
-  const imgResponse = await fetch(imageUrl);
-  if (!imgResponse.ok) {
-    throw new Error(`Failed to download image: ${imgResponse.statusText}`);
-  }
-  const imgBuffer = await imgResponse.buffer();
-
-  // 2. Prepare multipart form data manually (since we don't have form-data package)
-  const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
-  const filename = `hero-${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}.webp`;
-
-  let body = '';
-  // File part
-  body += `--${boundary}\r\n`;
-  body += `Content-Disposition: form-data; name="file"; filename="${filename}"\r\n`;
-  body += `Content-Type: image/webp\r\n\r\n`;
-
-  // Combine body parts with buffer
-  const preBuffer = Buffer.from(body, 'utf-8');
-  const postBuffer = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf-8');
-  const finalBuffer = Buffer.concat([preBuffer, imgBuffer, postBuffer]);
-
-  console.log(`   Uploading to Payload Media (${finalBuffer.length} bytes)...`);
-
-  // 3. Upload to Payload
-  const uploadResponse = await fetch(`${PAYLOAD_CMS_URL}/media`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.PAYLOAD_API_KEY}`,
-      'Content-Type': `multipart/form-data; boundary=${boundary}`
-    },
-    body: finalBuffer
-  });
-
-  if (!uploadResponse.ok) {
-    const err = await uploadResponse.text();
-    console.error('   Media Upload Error:', err);
-    throw new Error(`Failed to upload media: ${uploadResponse.status} - ${err}`);
-  }
-
-  const mediaData = await uploadResponse.json();
-  console.log('   Media uploaded successfully. ID:', mediaData.doc?.id || mediaData.id);
-
-  return mediaData.doc?.id || mediaData.id;
-}
-
-
-/**
- * Convert HTML content to Payload CMS Lexical format
- * Fixes List Node structure to avoid Lexical Error #17
+ * SIMPLIFIED VERSION: Flattens lists to paragraphs to avoid Lexical Error #17
  */
 function htmlToLexical(html) {
   if (!html) {
@@ -726,11 +701,18 @@ function htmlToLexical(html) {
 
   const children = [];
 
-  // Split by HTML tags
-  const parts = html.split(/(<\/?(?:h[1-6]|p|ul|ol|li|strong|em)[^>]*>)/gi);
+  // Convert lists to plain text with bullets before splitting
+  let processedHtml = html
+    .replace(/<ul>/gi, '')
+    .replace(/<\/ul>/gi, '')
+    .replace(/<ol>/gi, '')
+    .replace(/<\/ol>/gi, '')
+    .replace(/<li>/gi, '<p>• ') // Convert list items to paragraphs with bullet
+    .replace(/<\/li>/gi, '</p>');
+
+  const parts = processedHtml.split(/(<\/?(?:h[1-6]|p)[^>]*>)/gi);
 
   let currentParagraphChildren = [];
-  let listNode = null;
 
   function flushParagraph() {
     if (currentParagraphChildren.length > 0) {
@@ -772,60 +754,18 @@ function htmlToLexical(html) {
         i++; // Skip content
       }
     }
-    // Paragraph Start
+    // Paragraph Start (or converted list item)
     else if (/^<p/.test(lowerPart)) {
       flushParagraph();
     }
-    // List Start
-    else if (/^<ul/.test(lowerPart) || /^<ol/.test(lowerPart)) {
-      flushParagraph();
-      listNode = {
-        type: 'list',
-        listType: /^<ol/.test(lowerPart) ? 'number' : 'bullet',
-        tag: /^<ol/.test(lowerPart) ? 'ol' : 'ul',
-        start: 1,
-        children: [],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1
-      };
-    }
-    // List End
-    else if (/^<\/ul>/.test(lowerPart) || /^<\/ol>/.test(lowerPart)) {
-      if (listNode && listNode.children.length > 0) {
-        children.push(listNode);
-      }
-      listNode = null;
-    }
-    // List Item
-    else if (/^<li/.test(lowerPart)) {
-      if (listNode) {
-        const nextPart = parts[i + 1] || '';
-        const text = nextPart.replace(/<[^>]*>/g, '').trim();
-        if (text) {
-          listNode.children.push({
-            type: 'listitem',
-            value: listNode.children.length + 1,
-            children: [{ type: 'text', text: text, version: 1 }],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1
-          });
-          i++; // Skip content
-        }
-      }
-    }
-    // Closing tags that just need skipping
+    // Closing tags
     else if (/^<\//.test(lowerPart)) {
       continue;
     }
-    // Text Content (not inside tag)
+    // Text Content
     else if (!/^<[^>]*>/.test(part)) {
-      const text = part.trim();
+      const text = part.replace(/•/g, '• ').trim(); // Ensure space after bullet
       if (text) {
-        // Plain text is stripped of tags just in case
         currentParagraphChildren.push({
           type: 'text',
           text: text,
@@ -837,11 +777,11 @@ function htmlToLexical(html) {
 
   flushParagraph();
 
-  // Fallback if empty
+  // Fallback
   if (children.length === 0) {
     children.push({
       type: 'paragraph',
-      children: [{ type: 'text', text: 'Contenuto non disponibile.', version: 1 }],
+      children: [{ type: 'text', text: 'Contenuto.', version: 1 }],
       direction: 'ltr',
       format: '',
       indent: 0,

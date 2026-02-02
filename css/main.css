@@ -1163,16 +1163,16 @@ input[type=range] {
   transition: transform 0.2s;
 }
 
-.newsletter-checkbox-label input[type="checkbox"]:checked + .newsletter-checkbox-custom {
+.newsletter-checkbox-label input[type="checkbox"]:checked+.newsletter-checkbox-custom {
   border-color: var(--color-secondary);
   background: rgba(0, 255, 157, 0.1);
 }
 
-.newsletter-checkbox-label input[type="checkbox"]:checked + .newsletter-checkbox-custom::after {
+.newsletter-checkbox-label input[type="checkbox"]:checked+.newsletter-checkbox-custom::after {
   transform: scale(1);
 }
 
-.newsletter-checkbox-label input[type="checkbox"]:focus + .newsletter-checkbox-custom {
+.newsletter-checkbox-label input[type="checkbox"]:focus+.newsletter-checkbox-custom {
   box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.3);
 }
 
@@ -1202,8 +1202,13 @@ input[type=range] {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .newsletter-success,
@@ -1274,239 +1279,244 @@ input[type=range] {
   section {
     page-break-inside: avoid;
   }
-}/* ========================
+}
+
+/* ========================
    MOBILE OPTIMIZATIONS (USER FEEDBACK FIXES)
    ======================== */
 
 @media (max-width: 768px) {
 
-    /* 1. Newsletter Popup Fixes */
-    .newsletter-popup-content {
-        max-width: 90%;
-        /* Prevent edge-to-edge */
-        padding: 20px !important;
-        /* Reduce padding */
-        margin: 0 auto;
-        overflow-y: auto;
-        max-height: 90vh;
-    }
+  /* 1. Newsletter Popup Fixes */
+  .newsletter-popup-content {
+    max-width: 90%;
+    /* Prevent edge-to-edge */
+    padding: 20px !important;
+    /* Reduce padding */
+    margin: 0 auto;
+    overflow-y: auto;
+    max-height: 90vh;
+  }
 
-    .newsletter-popup-close {
-        top: 10px;
-        right: 10px;
-        width: 36px;
-        height: 36px;
-        background: rgba(255, 255, 255, 0.15);
-        /* More visible */
-    }
+  .newsletter-popup-close {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.15);
+    /* More visible */
+  }
 
-    /* 2. Glow Effects onCards (Permanent on mobile) */
-    .feature-card {
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.15) !important;
-        border-color: rgba(0, 212, 255, 0.2) !important;
-    }
+  /* 2. Glow Effects onCards (Permanent on mobile) */
+  .feature-card {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.15) !important;
+    border-color: rgba(0, 212, 255, 0.2) !important;
+  }
 
-    .feature-visual img {
-        transform: scale(1.02);
-        /* Slight zoom for dynamic feel */
-    }
+  .feature-visual img {
+    transform: scale(1.02);
+    /* Slight zoom for dynamic feel */
+  }
 
-    /* 3. ROI Calculator Fixes */
-    .roi-results {
-        padding: 15px;
-        width: 100%;
-        box-sizing: border-box;
-        /* Ensure padding doesn't increase width */
-    }
+  /* 3. ROI Calculator Fixes */
+  .roi-results {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    /* Ensure padding doesn't increase width */
+  }
 
-    .roi-dual-container {
-        grid-template-columns: 1fr;
-        /* Stack vertically */
-        gap: 10px;
-    }
+  .roi-dual-container {
+    grid-template-columns: 1fr;
+    /* Stack vertically */
+    gap: 10px;
+  }
 
-    .roi-container {
-        padding: 20px;
-    }
+  .roi-container {
+    padding: 20px;
+  }
 
-    /* 4. Contact Form Fixes */
-    .contact-form {
-        padding: 20px;
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-    }
+  /* 4. Contact Form Fixes */
+  .contact-form {
+    padding: 20px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
 
-    /* 5. Paradosso & Evolvi Backgrounds */
-    /* Ensure backgrounds are visible and not just flat colors */
-    body {
-        background-attachment: scroll !important;
-        /* Fix fixed bg on mobile */
-    }
+  /* 5. Paradosso & Evolvi Backgrounds */
+  /* Ensure backgrounds are visible and not just flat colors */
+  body {
+    background-attachment: scroll !important;
+    /* Fix fixed bg on mobile */
+  }
 
-    .feature-card.text-only .feature-content {
-        background: linear-gradient(135deg, rgba(11, 15, 25, 0.9), rgba(0, 212, 255, 0.1));
-    }
+  .feature-card.text-only .feature-content {
+    background: linear-gradient(135deg, rgba(11, 15, 25, 0.9), rgba(0, 212, 255, 0.1));
+  }
 }
+
 /* ========================
    MOBILE BACKGROUND FIXES
    ======================== */
 
 @media (max-width: 768px) {
 
-    /* Disable the huge body gradient that gets lost on long mobile pages */
-    body {
-        background-image: none !important;
-        background-color: var(--color-bg);
-    }
+  /* Disable the huge body gradient that gets lost on long mobile pages */
+  body {
+    background-image: none !important;
+    background-color: var(--color-bg);
+  }
 
-    /* Add specific gradients to each section to ensure visual interest */
-    .problema {
-        background-image: radial-gradient(circle at 0% 0%, rgba(0, 212, 255, 0.15), transparent 60%);
-        background-repeat: no-repeat;
-    }
+  /* Add specific gradients to each section to ensure visual interest */
+  .problema {
+    background-image: radial-gradient(circle at 0% 0%, rgba(0, 212, 255, 0.15), transparent 60%);
+    background-repeat: no-repeat;
+  }
 
-    .soluzione {
-        background-image: radial-gradient(circle at 100% 100%, rgba(0, 255, 157, 0.15), transparent 60%);
-        background-repeat: no-repeat;
-    }
+  .soluzione {
+    background-image: radial-gradient(circle at 100% 100%, rgba(0, 255, 157, 0.15), transparent 60%);
+    background-repeat: no-repeat;
+  }
 
-    .metodo {
-        background-image: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1), transparent 60%);
-        background-repeat: no-repeat;
-    }
+  .metodo {
+    background-image: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1), transparent 60%);
+    background-repeat: no-repeat;
+  }
 
-    /* Ensure Hero has a strong background */
-    .hero {
-        background-attachment: scroll !important;
-        background-position: center top !important;
-    }
+  /* Ensure Hero has a strong background */
+  .hero {
+    background-attachment: scroll !important;
+    background-position: center top !important;
+  }
 
-    /* Boost ROI section gradient */
-    .roi-section {
-        background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 157, 0.08) 100%) !important;
-    }
+  /* Boost ROI section gradient */
+  .roi-section {
+    background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 157, 0.08) 100%) !important;
+  }
 }
+
 /* ========================
    FUTURISTIC ANIMATIONS
    ======================== */
 
 /* 1. Cyber Glitch Effect (User Request: "No glow, something innovative") */
 .futuristic-title {
-    font-size: clamp(3rem, 5vw, 4.5rem);
-    line-height: 1.1;
-    color: #fff;
-    margin-bottom: 2rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -1px;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -1px;
 }
 
 .cyber-glitch {
-    position: relative;
-    color: var(--color-secondary);
-    font-weight: 900;
-    letter-spacing: 2px;
-    display: inline-block;
+  position: relative;
+  color: var(--color-secondary);
+  font-weight: 900;
+  letter-spacing: 2px;
+  display: inline-block;
 }
 
 .cyber-glitch::before,
 .cyber-glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--color-bg);
-    /* Match bg to hide original */
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg);
+  /* Match bg to hide original */
 }
 
 .cyber-glitch::before {
-    left: 2px;
-    text-shadow: -1px 0 #ff00c1;
-    clip-path: inset(44% 0 61% 0);
-    animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip-path: inset(44% 0 61% 0);
+  animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
 }
 
 .cyber-glitch::after {
-    left: -2px;
-    text-shadow: -1px 0 #00fff9;
-    clip-path: inset(50% 0 30% 0);
-    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+  left: -2px;
+  text-shadow: -1px 0 #00fff9;
+  clip-path: inset(50% 0 30% 0);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
 }
 
 @keyframes glitch-anim-1 {
-    0% {
-        clip-path: inset(20% 0 80% 0);
-    }
+  0% {
+    clip-path: inset(20% 0 80% 0);
+  }
 
-    20% {
-        clip-path: inset(60% 0 10% 0);
-    }
+  20% {
+    clip-path: inset(60% 0 10% 0);
+  }
 
-    40% {
-        clip-path: inset(40% 0 50% 0);
-    }
+  40% {
+    clip-path: inset(40% 0 50% 0);
+  }
 
-    60% {
-        clip-path: inset(80% 0 5% 0);
-    }
+  60% {
+    clip-path: inset(80% 0 5% 0);
+  }
 
-    80% {
-        clip-path: inset(10% 0 70% 0);
-    }
+  80% {
+    clip-path: inset(10% 0 70% 0);
+  }
 
-    100% {
-        clip-path: inset(30% 0 20% 0);
-    }
+  100% {
+    clip-path: inset(30% 0 20% 0);
+  }
 }
 
 @keyframes glitch-anim-2 {
-    0% {
-        clip-path: inset(10% 0 60% 0);
-    }
+  0% {
+    clip-path: inset(10% 0 60% 0);
+  }
 
-    20% {
-        clip-path: inset(80% 0 5% 0);
-    }
+  20% {
+    clip-path: inset(80% 0 5% 0);
+  }
 
-    40% {
-        clip-path: inset(30% 0 20% 0);
-    }
+  40% {
+    clip-path: inset(30% 0 20% 0);
+  }
 
-    60% {
-        clip-path: inset(15% 0 80% 0);
-    }
+  60% {
+    clip-path: inset(15% 0 80% 0);
+  }
 
-    80% {
-        clip-path: inset(55% 0 10% 0);
-    }
+  80% {
+    clip-path: inset(55% 0 10% 0);
+  }
 
-    100% {
-        clip-path: inset(40% 0 30% 0);
-    }
+  100% {
+    clip-path: inset(40% 0 30% 0);
+  }
 }
 
 /* 2. Magnetic Buttons */
 .btn-magnetic {
-    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
 }
 
 /* 3. Smooth Reveal (Scroll) */
 .reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-    filter: blur(10px);
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+  filter: blur(10px);
 }
 
 .reveal-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
+
 /* ========================
    CRITICAL MOBILE FIXES
    ======================== */
@@ -1514,25 +1524,25 @@ input[type=range] {
 /* 1. Prevent Horizontal Scroll / Bounce */
 html,
 body {
-    overflow-x: hidden !important;
-    width: 100%;
-    position: relative;
+  overflow-x: hidden !important;
+  width: 100%;
+  position: relative;
 }
 
 /* 2. Safety Net for Scroll Reveals on Mobile */
 /* Ensure content is visible even if JS fails or intersection is wonky */
 @media (max-width: 768px) {
-    .reveal-on-scroll {
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
-    }
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 /* 3. ROI Calculator Input Fixes */
 input[type="range"] {
-    touch-action: manipulation;
-    /* Improve touch sliding */
+  touch-action: manipulation;
+  /* Improve touch sliding */
 }
 
 /* FAILSAFE: Ensure content is visible if JS fails */

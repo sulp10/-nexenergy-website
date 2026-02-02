@@ -180,6 +180,7 @@
         <a href="#problema">Il Problema</a>
         <a href="#soluzione">La Soluzione</a>
         <a href="#metodo">Il Metodo</a>
+        <a href="/blog/">Blog</a>
         <a href="#contatti" class="btn btn-primary">Richiedi Demo</a>
       </nav>
     `;
@@ -320,7 +321,7 @@
       return isValid;
     }
 
-    function submitForm(form) {
+    async function submitForm(form) {
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
 
@@ -332,14 +333,47 @@
         }
       });
 
-      // For demo purposes, just show success
-      // In production, send to actual endpoint
-      console.log('Form data:', data);
+      // Show loading state
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Invio in corso...';
 
-      // Show success message
-      form.style.display = 'none';
-      if (successMessage) {
-        successMessage.hidden = false;
+      try {
+        // Try multiple endpoints
+        const endpoints = [
+          '/api/contact/submit',
+          '/.netlify/functions/contact-submit'
+        ];
+
+        let response;
+        for (const endpoint of endpoints) {
+          try {
+            response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            if (response.status !== 404) break;
+          } catch (e) {
+            console.log(`Endpoint ${endpoint} not available`);
+          }
+        }
+
+        if (response && response.ok) {
+          // Show success message
+          form.style.display = 'none';
+          if (successMessage) {
+            successMessage.hidden = false;
+          }
+        } else {
+          throw new Error('Errore invio');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert('Si è verificato un errore. Riprova o contattaci direttamente via email.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
       }
     }
   }
@@ -458,12 +492,12 @@
     }
 
     // Close button handlers
-    closeButtons.forEach(function(btn) {
+    closeButtons.forEach(function (btn) {
       btn.addEventListener('click', hidePopup);
     });
 
     // Close on Escape key
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !popup.hidden) {
         hidePopup();
       }
@@ -498,17 +532,17 @@
     }
 
     // Clear errors on input
-    emailInput.addEventListener('input', function() {
+    emailInput.addEventListener('input', function () {
       this.closest('.newsletter-form-group').classList.remove('has-error');
       this.classList.remove('error');
     });
 
-    gdprCheckbox.addEventListener('change', function() {
+    gdprCheckbox.addEventListener('change', function () {
       this.closest('.newsletter-form-group').classList.remove('has-error');
     });
 
     // Form submission
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
       if (!validateForm()) return;
@@ -561,7 +595,7 @@
 
     // Retry button
     if (retryBtn) {
-      retryBtn.addEventListener('click', function() {
+      retryBtn.addEventListener('click', function () {
         errorState.hidden = true;
         form.hidden = false;
       });

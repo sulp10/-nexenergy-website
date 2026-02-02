@@ -1408,6 +1408,8 @@ input[type=range] {
   margin-bottom: 2rem;
   font-weight: 800;
   text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: break-word;
   letter-spacing: -1px;
 }
 

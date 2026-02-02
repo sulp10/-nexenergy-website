@@ -1507,3 +1507,30 @@ input[type=range] {
     transform: translateY(0) scale(1);
     filter: blur(0);
 }
+/* ========================
+   CRITICAL MOBILE FIXES
+   ======================== */
+
+/* 1. Prevent Horizontal Scroll / Bounce */
+html,
+body {
+    overflow-x: hidden !important;
+    width: 100%;
+    position: relative;
+}
+
+/* 2. Safety Net for Scroll Reveals on Mobile */
+/* Ensure content is visible even if JS fails or intersection is wonky */
+@media (max-width: 768px) {
+    .reveal-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+}
+
+/* 3. ROI Calculator Input Fixes */
+input[type="range"] {
+    touch-action: manipulation;
+    /* Improve touch sliding */
+}

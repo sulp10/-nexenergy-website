@@ -137,27 +137,25 @@
      * Scroll Reveal Animations
      */
     function initScrollAnimations() {
-      // Add .reveal class to elements we want to animate
-      const elementsToReveal = document.querySelectorAll('.benefit-card, .phase, .problema-content > *, .contact-form, .metodo-quote');
-
-      elementsToReveal.forEach(el => {
-        el.classList.add('reveal');
-      });
+      // Add .reveal-on-scroll class to elements we want to animate
+      const elementsToReveal = document.querySelectorAll('.benefit-card, .phase, .problema-content > *, .contact-form, .metodo-quote, .feature-card, .reveal-on-scroll');
 
       const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target); // Animate only once
+            entry.target.classList.add('is-visible'); // Match CSS
+            entry.target.classList.add('active'); // Keep for legacy
+            observer.unobserve(entry.target);
           }
         });
       }, {
         root: null,
-        threshold: 0.15, // Trigger when 15% visible
-        rootMargin: "0px 0px -50px 0px"
+        threshold: 0.10, // Lower threshold for mobile
+        rootMargin: "0px 0px -20px 0px"
       });
 
       elementsToReveal.forEach(el => {
+        el.classList.add('reveal-on-scroll'); // Ensure class exists
         revealObserver.observe(el);
       });
     }
@@ -696,39 +694,4 @@
     }
 
   }) ();
-   * Buttons move slightly towards the cursor
-    */
-  function initMagneticButtons() {
-    const buttons = document.querySelectorAll('.btn');
-
-    // Add magnetic class to all buttons
-    buttons.forEach(btn => btn.classList.add('btn-magnetic'));
-
-    buttons.forEach(btn => {
-      btn.addEventListener('mousemove', function (e) {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        // Intensity of attraction (pixel movement)
-        const intensity = 5;
-
-        // Apply transform
-        btn.style.transform = `translate(${x / intensity}px, ${y / intensity}px) scale(1.05)`;
-
-        // Add spotlight effect
-        /*
-        btn.style.background = `radial-gradient(circle at ${e.offsetX}px ${e.offsetY}px, 
-                               rgba(255, 255, 255, 0.3) 0%, 
-                               rgba(255, 255, 255, 0) 60%),
-                               linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))`;
-        */
-      });
-
-      btn.addEventListener('mouseleave', function () {
-        btn.style.transform = 'translate(0, 0) scale(1)';
-        // btn.style.background = ''; // Reset background if using spotlight
-      });
-    });
-  }
 })();

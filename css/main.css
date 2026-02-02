@@ -1348,3 +1348,42 @@ input[type=range] {
         background: linear-gradient(135deg, rgba(11, 15, 25, 0.9), rgba(0, 212, 255, 0.1));
     }
 }
+/* ========================
+   MOBILE BACKGROUND FIXES
+   ======================== */
+
+@media (max-width: 768px) {
+
+    /* Disable the huge body gradient that gets lost on long mobile pages */
+    body {
+        background-image: none !important;
+        background-color: var(--color-bg);
+    }
+
+    /* Add specific gradients to each section to ensure visual interest */
+    .problema {
+        background-image: radial-gradient(circle at 0% 0%, rgba(0, 212, 255, 0.15), transparent 60%);
+        background-repeat: no-repeat;
+    }
+
+    .soluzione {
+        background-image: radial-gradient(circle at 100% 100%, rgba(0, 255, 157, 0.15), transparent 60%);
+        background-repeat: no-repeat;
+    }
+
+    .metodo {
+        background-image: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1), transparent 60%);
+        background-repeat: no-repeat;
+    }
+
+    /* Ensure Hero has a strong background */
+    .hero {
+        background-attachment: scroll !important;
+        background-position: center top !important;
+    }
+
+    /* Boost ROI section gradient */
+    .roi-section {
+        background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 157, 0.08) 100%) !important;
+    }
+}

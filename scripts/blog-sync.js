@@ -5,6 +5,7 @@
  * 
  * Run: node scripts/blog-sync.js
  * Schedule: Every 12 hours via cron or GitHub Actions
+ * Last Updated: 2026-02-02 (CI Trigger)
  */
 
 const fs = require('fs');

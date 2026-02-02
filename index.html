@@ -186,24 +186,40 @@
       color: white;
       text-decoration: none;
       letter-spacing: -0.5px;
-      /* Gradient Text */
-      background: linear-gradient(135deg, #fff 0%, var(--color-primary) 100%);
+
+      /* Holographic Tech Gradient (No Blur) */
+      background: linear-gradient(to right, #ffffff 0%, #a4e5ff 50%, #ffffff 100%);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
 
-      /* Logo Super Glow */
-      text-shadow:
-        0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 40px var(--color-primary),
-        0 0 80px var(--color-primary),
-        0 0 120px var(--color-primary);
-      animation: logoFlip 10s infinite ease-in-out, logoPulse 3s infinite alternate;
-      /* 360 Rotation */
+      /* Dynamic Shine Animation */
+      animation: logoShine 5s linear infinite, logoFloat 6s ease-in-out infinite;
+
+      /* Crisp Shadow for Depth (No Bloom) */
+      filter: drop-shadow(0 2px 5px rgba(0, 212, 255, 0.3));
+
       transform-style: preserve-3d;
-      backface-visibility: visible;
       perspective: 1000px;
+    }
+
+    @keyframes logoShine {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    @keyframes logoFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-3px);
+      }
     }
 
     @keyframes logoFlip {

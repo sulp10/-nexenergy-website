@@ -11,7 +11,8 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="Blog Efficienza Energetica Hotel | NexEnergy">
-    <meta property="og:description" content="Approfondimenti tecnici su risparmio energetico, AI HVAC, retrofit e ottimizzazione costi per hotel.">
+    <meta property="og:description"
+        content="Approfondimenti tecnici su risparmio energetico, AI HVAC, retrofit e ottimizzazione costi per hotel.">
     <meta property="og:url" content="https://nexenergy.it/blog/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="it_IT">
@@ -138,7 +139,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .blog-grid {
@@ -233,129 +236,31 @@
     <main>
         <div class="container">
             <header class="page-header">
-                <h1>I Nostri Articoli</h1>
-                <p>Approfondimenti tecnici e strategici sull'efficienza energetica per l'hospitality moderna.</p>
+                <h1>Blog</h1>
+                <p>Articoli generati con AI su efficienza energetica, incentivi e innovazione per l'hospitality.</p>
             </header>
 
-            <!-- Loading State (shown while fetching from CMS) -->
-            <div id="loading-state" class="loading-state" hidden>
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
                 <div class="loading-spinner"></div>
                 <p>Caricamento articoli...</p>
             </div>
 
-            <!-- Blog Grid -->
-            <div id="blog-grid" class="blog-grid">
-                <!-- Static fallback articles (replaced by CMS content when available) -->
-
-                <a href="/blog/paradosso-tessera.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/paradosso-tessera-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Il Paradosso della Tessera</h2>
-                        <p>Scopri perché il sistema a tessera per il risparmio energetico in hotel sta fallendo.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/retrofit-wireless.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/retrofit-wireless-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Retrofit Wireless: Evolvi Senza Cantieri</h2>
-                        <p>Come modernizzare l'impianto energetico del tuo hotel senza opere murarie.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/metodo-tesla.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/metodo-tesla-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Il Metodo Tesla per l'Hotel</h2>
-                        <p>Hardware pronto oggi, intelligenza che impara domani. Il futuro dell'hospitality.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/inerzia-termica.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/inerzia-termica-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Inerzia Termica e Previsioni Meteo</h2>
-                        <p>Come l'AI usa i dati meteo per ottimizzare il comfort e ridurre i consumi.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/hvac-invisibile.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/hvac-invisibile-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>HVAC Invisibile: Dynamic Occupancy</h2>
-                        <p>Il sistema che lavora in background senza disturbare l'ospite.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/preferenze-temperatura.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/preferenze-temperatura-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Preferenze Temperatura per Nazionalità</h2>
-                        <p>Come l'AI personalizza la temperatura in base al profilo dell'ospite.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/housekeeping-energy.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/housekeeping-energia-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Housekeeping &amp; Energy Integration</h2>
-                        <p>Integrare pulizie e gestione energetica per massimizzare l'efficienza.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/night-mode.html" class="blog-card">
-                    <div class="blog-img" style="background-image: url('../assets/images/blog/night-mode-hotel.webp');">
-                    </div>
-                    <div class="blog-content">
-                        <h2>Night Mode: Sonno Migliore, Meno Energia</h2>
-                        <p>Come il Night Mode migliora il comfort notturno riducendo i consumi.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/laundry-energy.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/laundry-energia-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Laundry Energy Trap: Il 15% Nascosto</h2>
-                        <p>I costi nascosti della lavanderia e come ottimizzarli.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/window-sensors.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/sensori-finestra-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Sensori Finestra Intelligenti</h2>
-                        <p>Come i sensori finestra prevengono sprechi energetici.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/pre-cooling.html" class="blog-card">
-                    <div class="blog-img"
-                        style="background-image: url('../assets/images/blog/pre-cooling-hotel.webp');"></div>
-                    <div class="blog-content">
-                        <h2>Pre-Arrival Cooling Perfetto</h2>
-                        <p>Preparare la camera alla temperatura ideale prima dell'arrivo.</p>
-                    </div>
-                </a>
-
-                <a href="/blog/umidita.html" class="blog-card">
-                    <div class="blog-img" style="background-image: url('../assets/images/blog/umidita-hotel.webp');">
-                    </div>
-                    <div class="blog-content">
-                        <h2>Umidità: Il Nemico Silenzioso</h2>
-                        <p>Gestire l'umidità per comfort e risparmio energetico.</p>
-                    </div>
-                </a>
-
+            <!-- Empty State -->
+            <div id="empty-state" class="loading-state" hidden>
+                <p>Nessun articolo disponibile al momento.</p>
+                <p style="margin-top: 10px;"><a href="../index.html" style="color: var(--color-primary);">Torna alla
+                        homepage</a> per leggere gli articoli statici.</p>
             </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="loading-state" hidden>
+                <p>Errore nel caricamento degli articoli.</p>
+                <button onclick="location.reload()" class="btn" style="margin-top: 20px;">Riprova</button>
+            </div>
+
+            <!-- Blog Grid (populated dynamically from CMS) -->
+            <div id="blog-grid" class="blog-grid" hidden></div>
         </div>
     </main>
 
@@ -367,47 +272,62 @@
 
     <script>
         /**
-         * Blog Articles Loader
-         * Fetches articles from Payload CMS with static fallback
+         * Blog Articles Loader - Fetches from Payload CMS ONLY
+         * No static fallback - shows empty state if CMS unavailable
          */
-        (function() {
+        (function () {
             'use strict';
 
             const PAYLOAD_CMS_URL = 'https://cms.immoby.org/api';
-            const ARTICLES_PER_PAGE = 12;
+            const ARTICLES_PER_PAGE = 20;
 
             const loadingState = document.getElementById('loading-state');
+            const emptyState = document.getElementById('empty-state');
+            const errorState = document.getElementById('error-state');
             const blogGrid = document.getElementById('blog-grid');
 
-            // Try to fetch from CMS on page load
-            document.addEventListener('DOMContentLoaded', tryFetchFromCMS);
+            document.addEventListener('DOMContentLoaded', fetchCMSArticles);
 
-            async function tryFetchFromCMS() {
+            async function fetchCMSArticles() {
                 try {
-                    const response = await fetch(`${PAYLOAD_CMS_URL}/posts?limit=${ARTICLES_PER_PAGE}&sort=-createdAt&where[_status][equals]=published`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
+                    // Try local proxy first (works on Netlify), then direct CMS
+                    const endpoints = [
+                        '/api/blog/posts?limit=20',
+                        '/.netlify/functions/blog-posts?limit=20',
+                        'https://cms.immoby.org/api/posts?limit=20&sort=-createdAt'
+                    ];
 
-                    if (!response.ok) {
-                        throw new Error(`CMS responded with ${response.status}`);
+                    let data = null;
+                    for (const url of endpoints) {
+                        try {
+                            const response = await fetch(url);
+                            if (response.ok) {
+                                data = await response.json();
+                                break;
+                            }
+                        } catch (e) {
+                            console.log('Endpoint unavailable:', url);
+                        }
                     }
 
-                    const data = await response.json();
+                    loadingState.hidden = true;
+
+                    if (!data) {
+                        throw new Error('No endpoint available');
+                    }
 
                     if (data.docs && data.docs.length > 0) {
-                        // CMS has articles, replace static content
-                        renderCMSArticles(data.docs);
+                        renderArticles(data.docs);
+                        blogGrid.hidden = false;
                         console.log('Blog articles loaded from CMS:', data.docs.length);
                     } else {
-                        // No CMS articles, keep static fallback
-                        console.log('No CMS articles found, using static fallback');
+                        emptyState.hidden = false;
+                        console.log('No CMS articles found');
                     }
                 } catch (error) {
-                    // CMS unavailable, keep static fallback (already rendered in HTML)
-                    console.log('CMS unavailable, using static fallback:', error.message);
+                    loadingState.hidden = true;
+                    errorState.hidden = false;
+                    console.error('CMS fetch error:', error.message);
                 }
 
                 // Track page view
@@ -419,16 +339,17 @@
                 }
             }
 
-            function renderCMSArticles(articles) {
+            function renderArticles(articles) {
                 blogGrid.innerHTML = articles.map(article => {
                     const slug = article.slug;
                     const title = escapeHtml(article.h1 || article.title);
                     const excerpt = escapeHtml(article.meta?.description || article.directAnswer || '');
-                    const image = article.heroImage?.url || article.heroImage || '../assets/images/blog/default-blog-image.webp';
+                    const image = article.heroImage?.url || '../assets/images/blog/default-blog-image.webp';
                     const date = article.createdAt ? formatDate(article.createdAt) : '';
 
+                    // Link to CMS-generated article page (Payload serves these)
                     return `
-                        <a href="/blog/${slug}.html" class="blog-card">
+                        <a href="${PAYLOAD_CMS_URL.replace('/api', '')}/posts/${slug}" class="blog-card" target="_blank" rel="noopener">
                             <div class="blog-img" style="background-image: url('${image}');"></div>
                             <div class="blog-content">
                                 <h2>${title}</h2>

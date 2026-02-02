@@ -250,6 +250,8 @@ FORMATO OUTPUT (JSON PURO):
   "faq": [{"question": "...", "answer": "..."}, {"question": "...", "answer": "..."}],
   "targetLocation": "Italia",
   "secondaryKeywords": ["kw1", "kw2", "kw3"],
+  "lsiKeywords": "parole correlate semanticamente, separate da virgola",
+  "entityOptimization": "entità rilevanti per SEO: nomi brand, associazioni, normative, es: ENEA, GSE, Federalberghi",
   "seoScore": 90
 }`;
 

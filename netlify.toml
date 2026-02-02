@@ -15,6 +15,11 @@
   to = "/.netlify/functions/contact-submit"
   status = 200
 
+[[redirects]]
+  from = "/api/blog/posts"
+  to = "/.netlify/functions/blog-posts"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]

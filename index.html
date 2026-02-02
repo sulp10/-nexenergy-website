@@ -30,10 +30,14 @@
   <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
-  <!-- Fonts with font-display: swap -->
+  <!-- Fonts - Non-render-blocking with preload and optional display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional">
+  </noscript>
 
   <!-- Critical CSS inlined -->
   <style>
@@ -384,18 +388,8 @@
       letter-spacing: -2px;
       text-transform: uppercase;
       position: relative;
-
-      /* Full Text Gradient: Azure Fluo -> Green Fluo */
-      background: linear-gradient(90deg, #00f2ff 0%, #00ff9d 50%, #00f2ff 100%);
-      background-size: 200% auto;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-
-      /* Effects */
-      animation: gradient-flow 3s linear infinite;
-      filter: drop-shadow(0 0 25px rgba(0, 242, 255, 0.4));
+      color: #ffffff;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
 
     @keyframes gradient-flow {
@@ -525,12 +519,148 @@
       margin-left: auto;
       margin-right: auto;
     }
+
+    /* Cookie Banner */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 15, 25, 0.98);
+      border-top: 1px solid rgba(0, 212, 255, 0.3);
+      padding: 20px;
+      z-index: 10000;
+      backdrop-filter: blur(10px);
+    }
+
+    .cookie-banner-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-banner-text .cookie-banner-title {
+      margin: 0 0 8px;
+      color: var(--color-primary);
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: block;
+    }
+
+    /* Footer heading style (replaces H4) */
+    .footer-heading {
+      display: block;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .cookie-banner-text p {
+      margin: 0;
+      color: var(--color-text-light);
+      font-size: 0.9rem;
+    }
+
+    .cookie-banner-text a {
+      color: var(--color-primary);
+    }
+
+    .cookie-banner-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .cookie-reject {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--color-text-light);
+    }
+
+    .cookie-reject:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Privacy Consent Checkbox in Form */
+    .privacy-consent {
+      margin-top: 1rem;
+    }
+
+    .consent-checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .consent-checkbox-label input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .consent-checkbox-custom {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--color-border);
+      border-radius: 4px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .consent-checkbox-label input:checked+.consent-checkbox-custom {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    .consent-checkbox-label input:checked+.consent-checkbox-custom::after {
+      content: '✓';
+      color: #000;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .consent-checkbox-text {
+      color: var(--color-text-light);
+      line-height: 1.5;
+    }
+
+    .consent-checkbox-text a {
+      color: var(--color-primary);
+    }
+
+    .privacy-consent .error-message {
+      margin-left: 34px;
+    }
+
+    @media (max-width: 768px) {
+      .cookie-banner-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cookie-banner-actions {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 
-  <!-- Non-critical CSS deferred -->
-  <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all'">
+  <!-- Non-critical CSS deferred (minified for production) -->
+  <link rel="stylesheet" href="/css/main.min.css" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="/css/main.css?v=2.2">
+    <link rel="stylesheet" href="/css/main.min.css?v=2.2">
   </noscript>
 
   <!-- Schema.org Organization -->
@@ -766,7 +896,7 @@
     <section id="soluzione" class="soluzione">
       <div class="container">
         <h2 class="section-title futuristic-title">
-          Non Ristrutturare.<br><span class="cyber-glitch" data-text="EVOLVI.">EVOLVI.</span>
+          Non Ristrutturare.<br><span class="cyber-glitch" data-text="POTENZIA.">POTENZIA.</span>
         </h2>
         <p class="section-intro">La prima tecnologia di retrofit energetico nativo per l'hospitality. Ingegneria
           energetica e AI fuse in un unico ecosistema invisibile.</p>
@@ -1261,304 +1391,178 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-brand">
-            <a href="/" class="logo">NexEnergy</a>
-            <p>Sistema di retrofit energetico intelligente per l'hospitality italiana.</p>
-          </div>
-          <div class="footer-links">
-            <h4>Navigazione</h4>
-            <nav aria-label="Navigazione footer">
-              <a href="#problema">Il Problema</a>
-              <a href="#soluzione">La Soluzione</a>
-              <a href="#metodo">Il Metodo</a>
-              <a href="/blog/">Blog</a>
-              <a href="#contatti">Contatti</a>
-            </nav>
-          </div>
-          <div class="footer-contact">
-            <h4>Contatti</h4>
-            <p>Email: <a href="mailto:info@nex-energy.it">info@nex-energy.it</a></p>
-          </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="/" class="logo">NexEnergy</a>
+          <p>Sistema di retrofit energetico intelligente per l'hospitality italiana.</p>
         </div>
-        <div class="footer-bottom">
-          <p>&copy; 2026 NexEnergy. Tutti i diritti riservati.</p>
-          <nav class="footer-legal" aria-label="Link legali">
-            <a href="/privacy-policy">Privacy Policy</a>
-            <a href="/cookie-policy">Cookie Policy</a>
+        <div class="footer-links">
+          <strong class="footer-heading">Navigazione</strong>
+          <nav aria-label="Navigazione footer">
+            <a href="#problema">Il Problema</a>
+            <a href="#soluzione">La Soluzione</a>
+            <a href="#metodo">Il Metodo</a>
+            <a href="/blog/">Blog</a>
+            <a href="#contatti">Contatti</a>
           </nav>
         </div>
+        <div class="footer-contact">
+          <strong class="footer-heading">Contatti</strong>
+          <p>Email: <a href="mailto:info@nex-energy.it">info@nex-energy.it</a></p>
+        </div>
       </div>
-    </footer>
+      <div class="footer-bottom">
+        <p>&copy; 2026 NexEnergy. Tutti i diritti riservati.</p>
+        <nav class="footer-legal" aria-label="Link legali">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/cookie-policy">Cookie Policy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Newsletter Popup -->
-    <div id="newsletter-popup" class="newsletter-popup" hidden>
-      <div class="newsletter-popup-overlay" data-close-popup></div>
-      <div class="newsletter-popup-content">
-        <button type="button" class="newsletter-popup-close" data-close-popup aria-label="Chiudi popup">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+  <!-- Newsletter Popup -->
+  <div id="newsletter-popup" class="newsletter-popup" hidden>
+    <div class="newsletter-popup-overlay" data-close-popup></div>
+    <div class="newsletter-popup-content">
+      <button type="button" class="newsletter-popup-close" data-close-popup aria-label="Chiudi popup">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="newsletter-popup-header">
+        <div class="newsletter-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
-        </button>
+        </div>
+        <h3>Risparmio Energetico: Resta Aggiornato</h3>
+        <p>Ricevi consigli esclusivi, guide pratiche e le ultime novità sull'efficienza energetica per hotel.</p>
+      </div>
 
-        <div class="newsletter-popup-header">
-          <div class="newsletter-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-          </div>
-          <h3>Risparmio Energetico: Resta Aggiornato</h3>
-          <p>Ricevi consigli esclusivi, guide pratiche e le ultime novità sull'efficienza energetica per hotel.</p>
+      <form id="newsletter-form" class="newsletter-form" novalidate>
+        <div class="newsletter-form-group">
+          <label for="newsletter-email" class="sr-only">Email</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="La tua email" required>
+          <span class="newsletter-error-message">Inserisci un'email valida</span>
         </div>
 
-        <form id="newsletter-form" class="newsletter-form" novalidate>
-          <div class="newsletter-form-group">
-            <label for="newsletter-email" class="sr-only">Email</label>
-            <input type="email" id="newsletter-email" name="email" placeholder="La tua email" required>
-            <span class="newsletter-error-message">Inserisci un'email valida</span>
-          </div>
+        <div class="newsletter-form-group">
+          <label for="newsletter-name" class="sr-only">Nome (opzionale)</label>
+          <input type="text" id="newsletter-name" name="name" placeholder="Nome (opzionale)">
+        </div>
 
-          <div class="newsletter-form-group">
-            <label for="newsletter-name" class="sr-only">Nome (opzionale)</label>
-            <input type="text" id="newsletter-name" name="name" placeholder="Nome (opzionale)">
-          </div>
-
-          <div class="newsletter-form-group newsletter-checkbox-group">
-            <label class="newsletter-checkbox-label">
-              <input type="checkbox" id="newsletter-gdpr" name="gdpr_consent" required>
-              <span class="newsletter-checkbox-custom"></span>
-              <span class="newsletter-checkbox-text">
-                Accetto di ricevere comunicazioni via email da NexEnergy. Posso disiscrivermi in qualsiasi momento.
-                <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
-              </span>
-            </label>
-            <span class="newsletter-error-message">Devi accettare per continuare</span>
-          </div>
-
-          <button type="submit" class="btn btn-primary newsletter-submit">
-            <span class="newsletter-submit-text">Iscriviti alla Newsletter</span>
-            <span class="newsletter-submit-loading" hidden>
-              <svg class="spinner" viewBox="0 0 24 24" width="20" height="20">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none"
-                  stroke-dasharray="31.4" stroke-dashoffset="10"></circle>
-              </svg>
+        <div class="newsletter-form-group newsletter-checkbox-group">
+          <label class="newsletter-checkbox-label">
+            <input type="checkbox" id="newsletter-gdpr" name="gdpr_consent" required>
+            <span class="newsletter-checkbox-custom"></span>
+            <span class="newsletter-checkbox-text">
+              Accetto di ricevere comunicazioni via email da NexEnergy. Posso disiscrivermi in qualsiasi momento.
+              <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
             </span>
-          </button>
-        </form>
-
-        <div class="newsletter-success" hidden>
-          <div class="newsletter-success-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-          </div>
-          <h3>Grazie per l'iscrizione!</h3>
-          <p>Riceverai presto i nostri migliori contenuti sull'efficienza energetica per hotel.</p>
+          </label>
+          <span class="newsletter-error-message">Devi accettare per continuare</span>
         </div>
 
-        <div class="newsletter-error-state" hidden>
-          <div class="newsletter-error-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        <button type="submit" class="btn btn-primary newsletter-submit">
+          <span class="newsletter-submit-text">Iscriviti alla Newsletter</span>
+          <span class="newsletter-submit-loading" hidden>
+            <svg class="spinner" viewBox="0 0 24 24" width="20" height="20">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4"
+                stroke-dashoffset="10"></circle>
             </svg>
-          </div>
-          <h3>Si è verificato un errore</h3>
-          <p>Riprova più tardi o contattaci direttamente a info@nexenergy.it</p>
-          <button type="button" class="btn btn-secondary newsletter-retry">Riprova</button>
+          </span>
+        </button>
+      </form>
+
+      <div class="newsletter-success" hidden>
+        <div class="newsletter-success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
         </div>
+        <h3>Grazie per l'iscrizione!</h3>
+        <p>Riceverai presto i nostri migliori contenuti sull'efficienza energetica per hotel.</p>
+      </div>
+
+      <div class="newsletter-error-state" hidden>
+        <div class="newsletter-error-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3>Si è verificato un errore</h3>
+        <p>Riprova più tardi o contattaci direttamente a info@nexenergy.it</p>
+        <button type="button" class="btn btn-secondary newsletter-retry">Riprova</button>
       </div>
     </div>
+  </div>
 
-    <!-- JavaScript deferred -->
-    <script defer src="/js/main.js"></script>
-    <script defer src="/js/analytics.js"></script>
+  <!-- JavaScript deferred (minified for production) -->
+  <script defer src="/js/main.min.js"></script>
+  <script defer src="/js/analytics.min.js"></script>
 
-    <!-- Cookie Consent Banner -->
-    <div id="cookie-banner" class="cookie-banner" hidden>
-      <div class="cookie-banner-content">
-        <div class="cookie-banner-text">
-          <h4>🍪 Utilizziamo i cookie</h4>
-          <p>Questo sito usa cookie tecnici necessari e, con il tuo consenso, cookie analitici per migliorare la tua
-            esperienza.
-            <a href="/cookie-policy.html">Scopri di più</a>
-          </p>
-        </div>
-        <div class="cookie-banner-actions">
-          <button type="button" class="btn btn-secondary cookie-reject">Solo necessari</button>
-          <button type="button" class="btn btn-primary cookie-accept">Accetta tutti</button>
-        </div>
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-banner" class="cookie-banner" hidden>
+    <div class="cookie-banner-content">
+      <div class="cookie-banner-text">
+        <p class="cookie-banner-title">🍪 Utilizziamo i cookie</p>
+        <p>Questo sito usa cookie tecnici necessari e, con il tuo consenso, cookie analitici per migliorare la tua
+          esperienza.
+          <a href="/cookie-policy.html">Scopri di più</a>
+        </p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button type="button" class="btn btn-secondary cookie-reject">Solo necessari</button>
+        <button type="button" class="btn btn-primary cookie-accept">Accetta tutti</button>
       </div>
     </div>
+  </div>
 
-    <style>
-      /* Cookie Banner */
-      .cookie-banner {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(11, 15, 25, 0.98);
-        border-top: 1px solid rgba(0, 212, 255, 0.3);
-        padding: 20px;
-        z-index: 10000;
-        backdrop-filter: blur(10px);
+  <script>
+    // Cookie Consent Logic
+    (function () {
+      const banner = document.getElementById('cookie-banner');
+      const acceptBtn = banner.querySelector('.cookie-accept');
+      const rejectBtn = banner.querySelector('.cookie-reject');
+
+      // Check if consent already given
+      const consent = localStorage.getItem('cookie_consent');
+      if (!consent) {
+        banner.hidden = false;
       }
 
-      .cookie-banner-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-      }
-
-      .cookie-banner-text h4 {
-        margin: 0 0 8px;
-        color: var(--color-primary);
-        font-size: 1.1rem;
-      }
-
-      .cookie-banner-text p {
-        margin: 0;
-        color: var(--color-text-light);
-        font-size: 0.9rem;
-      }
-
-      .cookie-banner-text a {
-        color: var(--color-primary);
-      }
-
-      .cookie-banner-actions {
-        display: flex;
-        gap: 12px;
-        flex-shrink: 0;
-      }
-
-      .cookie-reject {
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: var(--color-text-light);
-      }
-
-      .cookie-reject:hover {
-        background: rgba(255, 255, 255, 0.1);
-      }
-
-      /* Privacy Consent Checkbox in Form */
-      .privacy-consent {
-        margin-top: 1rem;
-      }
-
-      .consent-checkbox-label {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        cursor: pointer;
-        font-size: 0.9rem;
-      }
-
-      .consent-checkbox-label input[type="checkbox"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
-      .consent-checkbox-custom {
-        flex-shrink: 0;
-        width: 22px;
-        height: 22px;
-        border: 2px solid var(--color-border);
-        border-radius: 4px;
-        background: transparent;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-      }
-
-      .consent-checkbox-label input:checked+.consent-checkbox-custom {
-        background: var(--color-primary);
-        border-color: var(--color-primary);
-      }
-
-      .consent-checkbox-label input:checked+.consent-checkbox-custom::after {
-        content: '✓';
-        color: #000;
-        font-weight: bold;
-        font-size: 14px;
-      }
-
-      .consent-checkbox-text {
-        color: var(--color-text-light);
-        line-height: 1.5;
-      }
-
-      .consent-checkbox-text a {
-        color: var(--color-primary);
-      }
-
-      .privacy-consent .error-message {
-        margin-left: 34px;
-      }
-
-      @media (max-width: 768px) {
-        .cookie-banner-content {
-          flex-direction: column;
-          text-align: center;
+      acceptBtn.addEventListener('click', function () {
+        localStorage.setItem('cookie_consent', 'all');
+        banner.hidden = true;
+        // Enable analytics if available
+        if (typeof gtag === 'function') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
         }
+      });
 
-        .cookie-banner-actions {
-          width: 100%;
-          justify-content: center;
-        }
-      }
-    </style>
-
-    <script>
-      // Cookie Consent Logic
-      (function () {
-        const banner = document.getElementById('cookie-banner');
-        const acceptBtn = banner.querySelector('.cookie-accept');
-        const rejectBtn = banner.querySelector('.cookie-reject');
-
-        // Check if consent already given
-        const consent = localStorage.getItem('cookie_consent');
-        if (!consent) {
-          banner.hidden = false;
-        }
-
-        acceptBtn.addEventListener('click', function () {
-          localStorage.setItem('cookie_consent', 'all');
-          banner.hidden = true;
-          // Enable analytics if available
-          if (typeof gtag === 'function') {
-            gtag('consent', 'update', { analytics_storage: 'granted' });
-          }
-        });
-
-        rejectBtn.addEventListener('click', function () {
-          localStorage.setItem('cookie_consent', 'necessary');
-          banner.hidden = true;
-          // Keep analytics disabled
-        });
-      })();
-    </script>
-    <script src="/js/main.js?v=2.2"></script>
+      rejectBtn.addEventListener('click', function () {
+        localStorage.setItem('cookie_consent', 'necessary');
+        banner.hidden = true;
+        // Keep analytics disabled
+      });
+    })();
+  </script>
 </body>
 
 </html>

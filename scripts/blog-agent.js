@@ -400,15 +400,17 @@ async function generateImage(topic) {
  * Poll KEI API for task completion
  */
 async function pollKEITask(taskId) {
-  const maxAttempts = 150; // 150 attempts * 2s = 300s (5 mins)
-  const delay = 2000;
-  const pollUrl = 'https://api.kie.ai/api/v1/jobs/getTask';
+  const maxAttempts = 180; // 180 attempts * 10s = 1800s (30 mins)
+  const delay = 10000; // 10 seconds
+  const pollUrl = 'https://api.kie.ai/api/v1/jobs/recordInfo';
+
+  console.log(`   Polling KEI task ${taskId} every 10s for up to 30m...`);
 
   for (let i = 0; i < maxAttempts; i++) {
     await new Promise(resolve => setTimeout(resolve, delay));
 
     try {
-      const checkResponse = await fetch(`${pollUrl}?task_id=${taskId}`, {
+      const checkResponse = await fetch(`${pollUrl}?taskId=${taskId}`, {
         headers: {
           'Authorization': `Bearer ${process.env.KEI_API_KEY}`
         }
@@ -416,28 +418,35 @@ async function pollKEITask(taskId) {
 
       if (checkResponse.ok) {
         const resultBody = await checkResponse.json();
-        const taskData = resultBody.data;
+        // User requested strict loop until success with URL
+        // Endpoint: /jobs/recordInfo
+        // Response format usually contains data.status or data.data.status
+        const taskData = resultBody.data || resultBody;
 
-        if (!taskData) continue;
+        // Log status occasionally
+        if (i % 6 === 0) console.log(`   [${i + 1}/${maxAttempts}] Status: ${taskData.status || 'unknown'}`);
 
-        if (taskData.status === 'success' || taskData.status === 'completed') {
-          if (taskData.results && taskData.results.length > 0 && taskData.results[0].url) {
-            return taskData.results[0].url;
-          }
+        if (taskData.status === 'success' || taskData.status === 'completed' || taskData.status === 'succeeded') {
           if (taskData.result_url) return taskData.result_url;
           if (taskData.url) return taskData.url;
-          return null;
+
+          if (taskData.results && taskData.results.length > 0) {
+            return taskData.results[0].url || taskData.results[0];
+          }
+
+          if (taskData.result && taskData.result.url) return taskData.result.url;
+
         } else if (taskData.status === 'failed') {
-          console.error('   Image generation task failed:', taskData.error);
+          console.error('   Image generation task failed:', taskData.error || taskData.failReason);
           return null;
         }
       }
     } catch (e) {
-      // Ignore
+      console.log(`   Polling Exception: ${e.message}`);
     }
   }
 
-  console.warn('   Image generation timed out');
+  console.warn('   Image generation timed out after 30 mins');
   return null;
 }
 

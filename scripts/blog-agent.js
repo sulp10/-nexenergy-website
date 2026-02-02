@@ -241,7 +241,7 @@ REGOLE SEO:
 
 FORMATO OUTPUT (JSON PURO):
 {
-  "title": "Meta title SEO max 60 chars con hook",
+  "title": "Meta title SEO max 55 chars STRICT (essenziale per Google)",
   "h1": "H1 diverso dal title, con keyword",
   "metaDescription": "Meta description 120-160 chars, verbo d'azione iniziale",
   "directAnswer": "Risposta diretta 2-3 frasi per featured snippet Google",
@@ -331,13 +331,19 @@ async function publishToCMS(article) {
     ? article.metaDescription.substring(0, 157) + '...'
     : article.metaDescription;
 
+  // Truncate Title (Strict 60 chars for Payload)
+  let truncTitle = article.title;
+  if (truncTitle.length > 60) {
+    truncTitle = truncTitle.substring(0, 57) + '...';
+  }
+
   // Convert to Lexical
   const contentLexical = htmlToLexical(article.content);
   const wordCount = countWords(article.content);
 
   const payload = {
-    title: article.title,
-    h1: article.h1 || article.title,
+    title: truncTitle,
+    h1: article.h1 || truncTitle,
     slug: article.slug,
     content: contentLexical,
     focusKeyword: article.slug.replace(/-/g, ' '),
@@ -349,9 +355,9 @@ async function publishToCMS(article) {
     seoScore: article.seoScore || 85,
     secondaryKeywords: (article.secondaryKeywords || []).map(k => ({ keyword: k })),
     meta: {
-      title: article.title,
+      title: truncTitle,
       description: truncMeta,
-      ogTitle: article.title,
+      ogTitle: truncTitle,
       ogDescription: truncMeta,
       articleSection: 'Efficienza Energetica',
       timeToRead: Math.ceil(wordCount / 200),

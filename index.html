@@ -192,8 +192,9 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
 
-      /* Special Effects */
-      text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+      /* Logo Enhanced Glow */
+      text-shadow: 0 0 30px rgba(0, 212, 255, 0.8), 0 0 60px rgba(0, 212, 255, 0.4);
+
       /* Glow */
       animation: logoFlip 10s infinite ease-in-out;
       /* 360 Rotation */
@@ -683,6 +684,10 @@
           width="1200" height="675" loading="eager" class="hero-img-main">
         <div class="hero-glow"></div>
       </div>
+      <!-- Smooth Transition Fade -->
+      <div
+        style="position:absolute; bottom:0; left:0; right:0; height:150px; background: linear-gradient(to bottom, transparent, var(--color-bg)); pointer-events:none; z-index:10;">
+      </div>
 
     </div>
   </section>
@@ -727,8 +732,10 @@
   <section id="soluzione" class="soluzione">
     <div class="container">
       <h2 class="section-title"
-        style="font-size: clamp(2.5rem, 4vw, 3.5rem); background: linear-gradient(135deg, #fff 0%, #00d4ff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(0, 212, 255, 0.2);">
-        Non Ristrutturare. Evolvi.</h2>
+        style="font-size: clamp(3rem, 5vw, 4.5rem); line-height:1.1; background: linear-gradient(135deg, #fff 0%, #00d4ff 50%, #fff 100%); background-size: 200% auto; animation: gradient-flow 3s linear infinite; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(0, 212, 255, 0.4); margin-bottom: 2rem;">
+        Non Ristrutturare.<br><span
+          style="color:var(--color-secondary); -webkit-text-fill-color: #00ff9d; text-shadow: 0 0 50px rgba(0, 255, 157, 0.6);">EVOLVI.</span>
+      </h2>
       <p class="section-intro">La prima tecnologia di retrofit energetico nativo per l'hospitality. Ingegneria
         energetica e AI fuse in un unico ecosistema invisibile.</p>
 
@@ -849,12 +856,12 @@
             </div>
 
             <div class="roi-investment-breakdown">
-              <p>Investimento Stimato: <span id="roi-investment-total">€ 0</span> <span class="arrow">➔</span> <span
-                  id="roi-investment-discounted" class="discounted">€ 0</span></p>
+              <p style="font-size: 1.2rem;">Investimento Stimato: <span id="roi-investment-total">€ 0</span> <span
+                  class="arrow">➔</span> <span id="roi-investment-discounted" class="discounted"
+                  style="font-size: 1.8rem; text-shadow: 0 0 20px rgba(0, 255, 157, 0.5);">€ 0</span></p>
             </div>
 
-            <p class="roi-disclaimer">*Stime basate su media nazionale hotel 3-4 stelle. Costi hardware + software
-              inclusi.</p>
+            <p class="roi-disclaimer">*Valori indicativi.</p>
           </div>
         </div>
       </div>

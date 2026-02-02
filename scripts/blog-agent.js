@@ -376,69 +376,78 @@ async function generateImage(topic) {
     },
     body: JSON.stringify({
       model: 'flux-2/pro-text-to-image',
-      prompt: visualPrompt,
-      aspect_ratio: '16:9',
-      output_format: 'webp'
+      input: {
+        prompt: visualPrompt,
+        aspect_ratio: '16:9',
+        resolution: '1K'
+      }
     })
   });
 
   if (!response.ok) {
-    throw new Error(`KEI API error: ${response.status}`);
+    const errText = await response.text();
+    throw new Error(`KEI API error: ${response.status} - ${errText}`);
   }
 
-  const data = await response.json();
+  const responseBody = await response.json();
 
-  if (!data.result_url && data.task_id) {
-    console.log(`   Task created (ID: ${data.task_id}), waiting for result...`);
-    return await pollKEITask(data.task_id);
+  // Doc format: { code: 200, msg: "success", data: { taskId: "..." } }
+  const taskId = responseBody.data?.taskId;
+
+  if (taskId) {
+    console.log(`   Task created (ID: ${taskId}), waiting for result...`);
+    return await pollKEITask(taskId);
   }
 
-  return data.result_url || null;
+  console.error('   KEI response missing taskId:', JSON.stringify(responseBody));
+  return null;
 }
 
 /**
  * Poll KEI API for task completion
  */
 async function pollKEITask(taskId) {
-  const maxAttempts = 30; // 30 attempts * 2 seconds = 60 seconds max
+  const maxAttempts = 30;
   const delay = 2000;
+
+  // Correct URL based on KEI standard patterns (usually /jobs/getTask or /market/common/get-task-detail)
+  // Let's assume standard convention for this provider set
+  const pollUrl = 'https://api.kie.ai/api/v1/jobs/getTask';
 
   for (let i = 0; i < maxAttempts; i++) {
     await new Promise(resolve => setTimeout(resolve, delay));
 
     try {
-      // Note: Adjust endpoint based on actual KEI API docs for polling
-      // Assuming getTask or similar endpoint standard
-      // If KEI uses a different URL for status, we might need to adjust.
-      // Since we don't have the exact docs loaded, we'll try the common pattern 
-      // or assume the create response gave a status URL. 
-      // If not available, we might need to skip polling or use a placeholder if failing.
-
-      // WARNING: Without specific polling docs, this is a guess. 
-      // Often strictly async APIs return a status URL.
-      // If we can't poll, we can't get the image.
-
-      // Let's assume a standard GET /tasks/{id} or similar.
-      // Re-using KEI_API_URL base might be wrong if it ends in /createTask
-      const baseUrl = KEI_API_URL.replace('/jobs/createTask', '/jobs/getTask');
-
-      const checkResponse = await fetch(`${baseUrl}?task_id=${taskId}`, {
+      const checkResponse = await fetch(`${pollUrl}?task_id=${taskId}`, {
         headers: {
           'Authorization': `Bearer ${process.env.KEI_API_KEY}`
         }
       });
 
       if (checkResponse.ok) {
-        const result = await checkResponse.json();
-        if (result.status === 'completed' && result.result_url) {
-          return result.result_url;
-        } else if (result.status === 'failed') {
-          console.error('   Image generation task failed:', result.error);
+        const resultBody = await checkResponse.json();
+        const taskData = resultBody.data;
+
+        if (!taskData) continue;
+
+        // Check various success states common in this API style
+        if (taskData.status === 'success' || taskData.status === 'completed') {
+          // Extract result URL
+          // Flux-2 often returns results array
+          if (taskData.results && taskData.results.length > 0 && taskData.results[0].url) {
+            return taskData.results[0].url;
+          }
+          if (taskData.result_url) return taskData.result_url;
+          if (taskData.url) return taskData.url;
+
+          return null; // Completed but no URL found?
+        } else if (taskData.status === 'failed') {
+          console.error('   Image generation task failed:', taskData.error);
           return null;
         }
       }
     } catch (e) {
-      // Ignore transient errors during polling
+      console.log('   Polling retry:', e.message);
     }
   }
 

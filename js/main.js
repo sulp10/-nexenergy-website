@@ -6,8 +6,9 @@
 (function () {
   'use strict';
 
-  // Debug Log
-  console.log('NexEnergy Main JS V2.1 Started');
+  // Debug mode (disable in production)
+  var DEBUG = false;
+  if (DEBUG) console.log('NexEnergy Main JS V2.1 Started');
 
   // Failsafe: Mark body as JS-loaded to enable animations
   document.body.classList.add('js-loaded');

@@ -34,7 +34,7 @@
       'allow_ad_personalization_signals': false
     });
 
-    console.log('GA4 initialized with ID:', GA_MEASUREMENT_ID);
+    // GA4 initialized (debug log removed for production)
   }
 
   // Check for consent before loading (placeholder for cookie consent integration)

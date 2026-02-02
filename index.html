@@ -388,8 +388,18 @@
       letter-spacing: -2px;
       text-transform: uppercase;
       position: relative;
-      color: #ffffff;
-      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+
+      /* Full Text Gradient: Azure Fluo -> Green Fluo */
+      background: linear-gradient(90deg, #00f2ff 0%, #00ff9d 50%, #00f2ff 100%);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+
+      /* Effects */
+      animation: gradient-flow 3s linear infinite;
+      filter: drop-shadow(0 0 25px rgba(0, 242, 255, 0.4));
     }
 
     @keyframes gradient-flow {
@@ -896,7 +906,7 @@
     <section id="soluzione" class="soluzione">
       <div class="container">
         <h2 class="section-title futuristic-title">
-          Non Ristrutturare.<br><span class="cyber-glitch" data-text="POTENZIA.">POTENZIA.</span>
+          Non Ristrutturare.<br><span class="cyber-glitch" data-text="EVOLVI.">EVOLVI.</span>
         </h2>
         <p class="section-intro">La prima tecnologia di retrofit energetico nativo per l'hospitality. Ingegneria
           energetica e AI fuse in un unico ecosistema invisibile.</p>

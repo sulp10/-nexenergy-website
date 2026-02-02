@@ -454,16 +454,27 @@ function generateArticleHtml(article) {
       text-decoration: none;
     }
     .btn {
-      display: inline-block;
-      padding: 16px 32px; /* Larger touch target for 50+ */
-      min-height: 56px; /* Minimum 56px for accessibility */
-      background: var(--color-primary);
-      color: #000;
-      border-radius: 12px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px 28px;
+      min-height: 52px;
+      background: linear-gradient(135deg, #00d4ff 0%, #00ff9d 100%);
+      color: #0b0f19;
+      border-radius: 50px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 1.1rem;
-      line-height: 1.4;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+      background: linear-gradient(135deg, #00ff9d 0%, #00d4ff 100%);
     }
     
     /* Mobile optimizations for 50+ users */

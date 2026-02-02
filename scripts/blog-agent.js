@@ -242,7 +242,7 @@ REGOLE SEO:
 FORMATO OUTPUT (JSON PURO):
 {
   "title": "Meta title SEO max 55 chars STRICT (essenziale per Google)",
-  "h1": "H1 diverso dal title, con keyword",
+  "h1": "H1 max 65 chars STRICT (diverso dal title)",
   "metaDescription": "Meta description 120-160 chars, verbo d'azione iniziale",
   "directAnswer": "Risposta diretta 2-3 frasi per featured snippet Google",
   "slug": "url-slug-lowercase-con-trattini",
@@ -341,9 +341,15 @@ async function publishToCMS(article) {
   const contentLexical = htmlToLexical(article.content);
   const wordCount = countWords(article.content);
 
+  // Truncate H1 (Strict 70 chars for Payload)
+  let truncH1 = article.h1 || truncTitle;
+  if (truncH1.length > 70) {
+    truncH1 = truncH1.substring(0, 67) + '...';
+  }
+
   const payload = {
     title: truncTitle,
-    h1: article.h1 || truncTitle,
+    h1: truncH1,
     slug: article.slug,
     content: contentLexical,
     focusKeyword: article.slug.replace(/-/g, ' '),

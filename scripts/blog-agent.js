@@ -10,7 +10,6 @@
  * - PAYLOAD_API_KEY: Payload CMS API key
  * - RESEND_API_KEY: Resend email API key
  * - ADMIN_EMAIL: Admin notification email
- * - KEI_API_KEY: (Optional) KEI image generation API key
  */
 
 require('dotenv').config();
@@ -19,7 +18,6 @@ const fetch = require('node-fetch');
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const PAYLOAD_CMS_URL = 'https://cms.immoby.org/api';
 const RESEND_API_URL = 'https://api.resend.com/emails';
-const KEI_API_URL = 'https://api.kie.ai/api/v1/jobs/createTask';
 
 // Configuration
 const CONFIG = {
@@ -28,51 +26,78 @@ const CONFIG = {
   maxWords: 1500,
   language: 'it',
   siteUrl: process.env.SITE_URL || 'https://nex-energy.it',
-  siteName: process.env.SITE_NAME || 'NexEnergy Blog Agent'
+  siteName: process.env.SITE_NAME || 'NexEnergy'
 };
 
-// Topics pool for random selection
+// 50 Topics pool - Energia, Incentivi, Hotel, Building Automation
 const TOPICS = [
-  {
-    focus: 'risparmio energetico hotel estate',
-    title: 'Come Risparmiare Energia in Hotel Durante l\'Estate',
-    angle: 'Strategie per ottimizzare i consumi HVAC nei mesi caldi'
-  },
-  {
-    focus: 'efficienza energetica strutture ricettive',
-    title: 'Guida all\'Efficienza Energetica per Strutture Ricettive',
-    angle: 'Best practice per ridurre i costi operativi mantenendo il comfort'
-  },
-  {
-    focus: 'automazione climatizzazione hotel',
-    title: 'Automazione della Climatizzazione negli Hotel',
-    angle: 'Come i sistemi smart riducono sprechi e migliorano l\'esperienza ospite'
-  },
-  {
-    focus: 'gestione consumi energetici albergo',
-    title: 'Gestione Intelligente dei Consumi Energetici in Albergo',
-    angle: 'Dashboard e analytics per il controllo in tempo reale'
-  },
-  {
-    focus: 'retrofit energetico hotel senza cantiere',
-    title: 'Retrofit Energetico senza Cantiere: È Possibile?',
-    angle: 'Soluzioni non invasive per modernizzare gli impianti'
-  },
-  {
-    focus: 'sensori presenza camera hotel',
-    title: 'Sensori di Presenza nelle Camere d\'Hotel',
-    angle: 'Tecnologia che riconosce quando la stanza è realmente occupata'
-  },
-  {
-    focus: 'costi energia hotel italia 2026',
-    title: 'Costi Energetici Hotel Italia: Scenario 2026',
-    angle: 'Analisi dell\'andamento prezzi e strategie di mitigazione'
-  },
-  {
-    focus: 'sostenibilità hotel green hospitality',
-    title: 'Sostenibilità nell\'Hospitality: Oltre il Greenwashing',
-    angle: 'Azioni concrete per ridurre l\'impatto ambientale'
-  }
+  // INCENTIVI E BANDI NAZIONALI
+  { focus: 'bonus alberghi 2025 fri-tur', title: 'Bonus Alberghi FRI-Tur: Come Accedere agli Incentivi PNRR', angle: 'Guida pratica al credito d\'imposta fino all\'80% per efficienza energetica hotel' },
+  { focus: 'transizione 5.0 hotel credito imposta', title: 'Transizione 5.0 per Hotel: Credito d\'Imposta fino al 45%', angle: 'Requisiti e scadenze per accedere ai fondi efficientamento energetico' },
+  { focus: 'zes unica mezzogiorno hotel incentivi', title: 'ZES Unica Mezzogiorno: Incentivi per Strutture Ricettive del Sud', angle: 'Credito d\'imposta 15-60% per investimenti in efficienza energetica' },
+  { focus: 'conto termico 3.0 hotel 2025', title: 'Conto Termico 3.0: Contributi a Fondo Perduto per Hotel', angle: 'Come ottenere fino al 65% per impianti termici e solari' },
+  { focus: 'ecobonus hotel detrazioni fiscali', title: 'Ecobonus per Strutture Ricettive: Guida alle Detrazioni', angle: 'Interventi ammissibili e percentuali di detrazione 2025-2027' },
+  { focus: 'pnrr turismo riqualificazione energetica', title: 'PNRR Turismo: Fondi per la Riqualificazione Energetica', angle: 'Panoramica completa degli incentivi Missione 1 Componente 3' },
+  { focus: 'fondo turismo sostenibile hotel', title: 'Fondo Turismo Sostenibile: 25 Milioni per la Transizione Green', angle: 'Contributi a fondo perduto per certificazioni e sostenibilità' },
+  { focus: 'invitalia finanziamenti hotel energia', title: 'Finanziamenti Invitalia per Hotel: Guida Completa', angle: 'Accesso ai fondi agevolati per efficientamento strutture ricettive' },
+
+  // BANDI REGIONALI
+  { focus: 'bandi regionali turismo sicilia 2025', title: 'Sicilia: 135 Milioni per Ammodernamento Strutture Turistiche', angle: 'Come accedere ai fondi regionali per efficienza energetica' },
+  { focus: 'incentivi hotel calabria sostenibilità', title: 'Calabria: Bandi per Turismo di Qualità e Sostenibilità', angle: 'Requisiti minimi 3 stelle e interventi ammissibili' },
+  { focus: 'contributi hotel veneto rigenerazione', title: 'Veneto: Rigenerazione Imprese Turistico-Ricettive', angle: 'Opportunità di finanziamento per modernizzazione energetica' },
+  { focus: 'bandi turismo campania eco-sociale', title: 'Campania: Turismo Eco-Sociale e Destinazioni Sostenibili', angle: 'Fondi per accessibilità e transizione ecologica' },
+
+  // BUILDING AUTOMATION E BMS
+  { focus: 'building management system hotel', title: 'BMS per Hotel: Gestione Intelligente degli Impianti', angle: 'Come un Building Management System riduce i costi del 35%' },
+  { focus: 'automazione hvac hotel risparmio', title: 'Automazione HVAC: Il Cuore del Risparmio Energetico in Hotel', angle: 'Sistemi intelligenti per climatizzazione e ventilazione' },
+  { focus: 'sensori presenza camera occupazione', title: 'Sensori di Presenza: Oltre la Tessera Tradizionale', angle: 'Tecnologia che riconosce l\'occupazione reale delle camere' },
+  { focus: 'termostati smart hotel gestione centralizzata', title: 'Termostati Smart per Hotel: Controllo Centralizzato del Clima', angle: 'Bilanciare comfort ospite e risparmio energetico' },
+  { focus: 'domotica alberghiera retrofit', title: 'Domotica Alberghiera: Retrofit Senza Opere Murarie', angle: 'Soluzioni wireless per modernizzare strutture esistenti' },
+  { focus: 'integrazione pms hvac hotel', title: 'Integrazione PMS-HVAC: Climatizzazione Basata sulle Prenotazioni', angle: 'Pre-condizionamento camere e ottimizzazione check-in/check-out' },
+
+  // EFFICIENZA ENERGETICA OPERATIVA
+  { focus: 'risparmio energetico hotel estate', title: 'Risparmiare Energia in Hotel d\'Estate: Strategie Concrete', angle: 'Ottimizzare i consumi HVAC nei mesi di picco' },
+  { focus: 'efficienza energetica hotel inverno', title: 'Efficienza Energetica Invernale: Riscaldamento Intelligente', angle: 'Ridurre i costi di riscaldamento senza sacrificare il comfort' },
+  { focus: 'consumo energetico camera hotel media', title: 'Quanto Consuma una Camera d\'Hotel? Analisi dei Costi Reali', angle: 'Benchmark di settore e strategie di ottimizzazione' },
+  { focus: 'sprechi energetici hotel camere vuote', title: 'Lo Spreco delle Camere Vuote: Quantificare il Problema', angle: 'Dati reali su quanto costa climatizzare stanze inoccupate' },
+  { focus: 'night mode hvac hotel risparmio', title: 'Night Mode HVAC: Risparmiare Energia Durante la Notte', angle: 'Algoritmi per comfort notturno e riduzione consumi' },
+  { focus: 'pre-cooling arrivo ospiti hotel', title: 'Pre-Cooling Intelligente: Camera Fresca all\'Arrivo dell\'Ospite', angle: 'Ottimizzare il comfort senza sprecare energia' },
+  { focus: 'finestre aperte climatizzazione spreco', title: 'Finestre Aperte e Clima Acceso: Un Problema da 15.000€/Anno', angle: 'Sensori e automazioni per eliminare questo spreco' },
+  { focus: 'cascata termica stanze hotel', title: 'Cascata Termica: Come le Camere Si Influenzano a Vicenda', angle: 'Effetto domino del clima e strategie di mitigazione' },
+
+  // TECNOLOGIE SPECIFICHE
+  { focus: 'pompe di calore hotel efficienza', title: 'Pompe di Calore per Hotel: Efficienza e Risparmio', angle: 'Quando conviene sostituire caldaie tradizionali' },
+  { focus: 'fotovoltaico hotel autoconsumo', title: 'Fotovoltaico per Hotel: Autoconsumo e Indipendenza Energetica', angle: 'ROI e dimensionamento per strutture ricettive' },
+  { focus: 'led illuminazione hotel risparmio', title: 'Illuminazione LED in Hotel: Risparmio e Qualità della Luce', angle: 'Retrofitting e domotica per illuminazione intelligente' },
+  { focus: 'sistemi vrf hotel climatizzazione', title: 'Sistemi VRF per Hotel: Climatizzazione Zona per Zona', angle: 'Vantaggi dei Variable Refrigerant Flow per l\'hospitality' },
+  { focus: 'coibentazione hotel interventi', title: 'Coibentazione Hotel: Interventi Prioritari per Isolare', angle: 'Tetti, pareti e infissi - dove investire prima' },
+
+  // ROI E BUSINESS CASE
+  { focus: 'roi efficienza energetica hotel', title: 'ROI dell\'Efficienza Energetica: Quando Si Ripaga l\'Investimento?', angle: 'Calcoli reali per strutture da 30 a 200 camere' },
+  { focus: 'costo energia hotel italia 2026', title: 'Costo Energia Hotel Italia 2026: Scenari e Previsioni', angle: 'Andamento prezzi e strategie di mitigazione' },
+  { focus: 'audit energetico hotel diagnosi', title: 'Audit Energetico per Hotel: Prima di Investire, Diagnostica', angle: 'Cosa aspettarsi da una diagnosi energetica professionale' },
+  { focus: 'certificazione energetica hotel classe', title: 'Certificazione Energetica: Cosa Significa Passare di Classe', angle: 'Impatto su valore immobiliare e costi operativi' },
+  { focus: 'esco hotel efficienza contratto', title: 'Contratti ESCo per Hotel: Efficienza Senza Investimento Iniziale', angle: 'Come funzionano e quando convengono' },
+
+  // SOSTENIBILITÀ E MARKETING
+  { focus: 'hotel green certificazioni sostenibilità', title: 'Certificazioni Green per Hotel: Quali Scegliere?', angle: 'LEED, BREEAM, Green Key - confronto e vantaggi' },
+  { focus: 'ospiti eco-consapevoli hotel', title: 'Ospiti Eco-Consapevoli: Un Mercato in Crescita del 30%', angle: 'Come l\'efficienza energetica attrae clienti premium' },
+  { focus: 'comunicare sostenibilità hotel no greenwashing', title: 'Comunicare la Sostenibilità: Evitare il Greenwashing', angle: 'Strategie autentiche per valorizzare gli investimenti green' },
+  { focus: 'carbon footprint hotel riduzione', title: 'Carbon Footprint per Hotel: Misurare e Ridurre le Emissioni', angle: 'Dalla diagnosi all\'offset - percorso completo' },
+
+  // CASI SPECIFICI
+  { focus: 'hotel stagionale efficienza energetica', title: 'Hotel Stagionali: Efficienza Energetica con Apertura Limitata', angle: 'Strategie per strutture che operano 6-8 mesi l\'anno' },
+  { focus: 'agriturismo risparmio energetico', title: 'Agriturismi e Risparmio Energetico: Opportunità Specifiche', angle: 'Bandi e tecnologie per strutture rurali' },
+  { focus: 'b&b efficienza energetica piccole strutture', title: 'B&B ed Efficienza Energetica: Soluzioni per Piccole Strutture', angle: 'Investimenti proporzionati e ROI per under 10 camere' },
+  { focus: 'resort spa consumi energetici', title: 'Resort con SPA: Gestire i Consumi delle Aree Benessere', angle: 'Piscine, saune e jacuzzi - ottimizzazione energetica' },
+  { focus: 'hotel montagna riscaldamento efficiente', title: 'Hotel di Montagna: Riscaldamento Efficiente ad Alta Quota', angle: 'Sfide climatiche e soluzioni per località alpine' },
+
+  // TENDENZE E FUTURO
+  { focus: 'intelligenza artificiale hotel energia', title: 'AI per l\'Energia in Hotel: Oltre l\'Automazione Base', angle: 'Machine learning predittivo per ottimizzazione consumi' },
+  { focus: 'iot hotel building automation', title: 'IoT in Hotel: Sensori Connessi per Edifici Intelligenti', angle: 'L\'Internet of Things applicato all\'hospitality' },
+  { focus: 'digital twin hotel simulazione energetica', title: 'Digital Twin per Hotel: Simulare Prima di Investire', angle: 'Gemelli digitali per testare strategie di efficientamento' },
+  { focus: 'normative efficienza energetica hotel 2025', title: 'Normative Energetiche 2025: Cosa Cambia per gli Hotel', angle: 'Nuovi obblighi e scadenze per le strutture ricettive' },
+  { focus: 'hotel net zero carbon neutral', title: 'Hotel Net Zero: È Realmente Raggiungibile?', angle: 'Percorso verso la neutralità carbonica nell\'hospitality' }
 ];
 
 /**
@@ -93,45 +118,29 @@ async function main() {
 
   try {
     // Step 1: Check API connectivity
-    console.log('\n[1/6] Checking API connectivity...');
+    console.log('\n[1/4] Checking API connectivity...');
     await checkAPIConnectivity();
 
     // Step 2: Select topic
-    console.log('\n[2/6] Selecting topic...');
+    console.log('\n[2/4] Selecting topic...');
     const topic = selectTopic();
     console.log(`   Topic: ${topic.focus}`);
     console.log(`   Title: ${topic.title}`);
 
     // Step 3: Generate article content
-    console.log('\n[3/6] Generating article content...');
+    console.log('\n[3/4] Generating article content...');
     const article = await generateArticle(topic);
     console.log(`   Words: ${countWords(article.content)}`);
-    console.log(`   FAQs: ${article.faq.length}`);
+    console.log(`   FAQs: ${article.faq?.length || 0}`);
 
-    // Step 4: Generate featured image (optional)
-    let imageUrl = null;
-    if (process.env.KEI_API_KEY && !isDryRun) {
-      console.log('\n[4/6] Generating featured image...');
-      try {
-        imageUrl = await generateImage(topic);
-        console.log(`   Image: ${imageUrl || 'Using placeholder'}`);
-      } catch (imgError) {
-        console.log(`   Image generation failed: ${imgError.message}`);
-        console.log('   Using placeholder image');
-      }
-    } else {
-      console.log('\n[4/6] Skipping image generation (no KEI_API_KEY or dry run)');
-    }
-
-    // Step 5: Publish to CMS
+    // Step 4: Publish to CMS
     if (!isDryRun) {
-      console.log('\n[5/6] Publishing to Payload CMS...');
-      const published = await publishToCMS(article, imageUrl);
+      console.log('\n[4/4] Publishing to Payload CMS...');
+      const published = await publishToCMS(article);
       console.log(`   Status: Published`);
       console.log(`   Slug: ${published.slug}`);
 
-      // Step 6: Send notification
-      console.log('\n[6/6] Sending notification email...');
+      // Send notification
       await sendNotification('success', {
         title: article.title,
         slug: published.slug,
@@ -139,23 +148,15 @@ async function main() {
       });
       console.log('   Email sent to admin');
     } else {
-      console.log('\n[5/6] Skipping CMS publish (dry run)');
-      console.log('\n[6/6] Skipping notification (dry run)');
-
-      // Output article for review
+      console.log('\n[4/4] Skipping CMS publish (dry run)');
       console.log('\n' + '='.repeat(60));
       console.log('GENERATED ARTICLE (DRY RUN)');
       console.log('='.repeat(60));
       console.log(`\nTitle: ${article.title}`);
       console.log(`H1: ${article.h1}`);
-      console.log(`Meta Description: ${article.metaDescription}`);
+      console.log(`Meta: ${article.metaDescription}`);
       console.log(`\nDirect Answer:\n${article.directAnswer}`);
-      console.log(`\nContent Preview (first 500 chars):\n${article.content.substring(0, 500)}...`);
-      console.log(`\nFAQ Schema:`);
-      article.faq.forEach((q, i) => {
-        console.log(`  ${i + 1}. Q: ${q.question}`);
-        console.log(`     A: ${q.answer.substring(0, 100)}...`);
-      });
+      console.log(`\nContent Preview:\n${article.content.substring(0, 800)}...`);
     }
 
     console.log('\n' + '='.repeat(60));
@@ -164,8 +165,6 @@ async function main() {
 
   } catch (error) {
     console.error('\n[ERROR]', error.message);
-
-    // Send error notification
     if (!isDryRun) {
       try {
         await sendNotification('error', {
@@ -177,7 +176,6 @@ async function main() {
         console.error('Failed to send error notification:', notifyError.message);
       }
     }
-
     process.exit(1);
   }
 }
@@ -186,55 +184,30 @@ async function main() {
  * Check API connectivity and credits
  */
 async function checkAPIConnectivity() {
-  // Check OpenRouter
-  if (!process.env.OPENROUTER_API_KEY) {
-    throw new Error('OPENROUTER_API_KEY not configured');
-  }
-  console.log('   OpenRouter: OK (key present)');
+  if (!process.env.OPENROUTER_API_KEY) throw new Error('OPENROUTER_API_KEY not configured');
+  console.log('   OpenRouter: OK');
 
-  // Check OpenRouter credits
   try {
     const creditsResponse = await fetch('https://openrouter.ai/api/v1/auth/key', {
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`
-      }
+      headers: { 'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}` }
     });
     if (creditsResponse.ok) {
       const creditsData = await creditsResponse.json();
       const remaining = creditsData.data?.limit_remaining;
-      if (remaining !== undefined) {
-        console.log(`   OpenRouter credits: ${remaining}`);
-        // Warn if credits are low (< 2 USD) and not null
-        if (remaining !== null && remaining < 2) {
-          console.log('   WARNING: OpenRouter credits running low!');
-          await sendNotification('credits_warning', {
-            serviceName: 'OpenRouter',
-            creditsRemaining: remaining
-          });
+      if (remaining !== undefined && remaining !== null) {
+        console.log(`   Credits: ${remaining}`);
+        if (remaining < 2) {
+          await sendNotification('credits_warning', { serviceName: 'OpenRouter', creditsRemaining: remaining });
         }
       }
     }
-  } catch (e) {
-    console.log('   OpenRouter credits: Unable to check');
-  }
+  } catch (e) { /* ignore */ }
 
-  // Check Payload CMS
-  if (!process.env.PAYLOAD_API_KEY) {
-    throw new Error('PAYLOAD_API_KEY not configured');
-  }
-  console.log('   Payload CMS: OK (key present)');
+  if (!process.env.PAYLOAD_API_KEY) throw new Error('PAYLOAD_API_KEY not configured');
+  console.log('   Payload CMS: OK');
 
-  // Check Resend
-  if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured');
-  }
-  console.log('   Resend: OK (key present)');
-
-  // Check Admin Email
-  if (!process.env.ADMIN_EMAIL) {
-    throw new Error('ADMIN_EMAIL not configured');
-  }
-  console.log('   Admin Email: OK');
+  if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY not configured');
+  console.log('   Resend: OK');
 }
 
 /**
@@ -249,46 +222,46 @@ function selectTopic() {
  * Generate article using OpenRouter AI
  */
 async function generateArticle(topic) {
-  const systemPrompt = `Sei un esperto copywriter italiano specializzato in efficienza energetica per l'hospitality.
+  const systemPrompt = `Sei un giornalista esperto di energia e hospitality italiano. Scrivi per direttori d'hotel.
 
-REGOLE FONDAMENTALI:
-1. Scrivi SEMPRE in italiano naturale e colloquiale, come un professionista del settore
-2. Lunghezza: 800-1500 parole (OBBLIGATORIO)
-3. Usa la keyword focus "${topic.focus}" naturalmente, densità < 3%
-4. NESSUN pattern ripetitivo AI (non iniziare paragrafi con le stesse parole)
-5. Includi esempi concreti di hotel italiani
-6. Tono: professionale ma accessibile, mai accademico
+STILE DI SCRITTURA (CRITICO):
+- Scrivi come un GIORNALISTA PROFESSIONISTA, non come una AI
+- Usa frasi di lunghezza variabile (corte e lunghe alternate)
+- Inizia i paragrafi con parole DIVERSE (mai ripetere lo stesso pattern)
+- Includi aneddoti specifici, nomi di hotel italiani reali se pertinente
+- Usa espressioni colloquiali italiane naturali ("diciamo la verità", "ecco il punto")
+- Evita: elenchi puntati eccessivi, frasi generiche, tono accademico
+- NO pattern AI: "In questo articolo", "È importante notare", "In conclusione"
 
-STRUTTURA OUTPUT (JSON):
+REGOLE SEO:
+- Keyword focus "${topic.focus}" - densità naturale 1-2%
+- 800-1500 parole OBBLIGATORIO
+- H2/H3 con keyword naturali
+- FAQ reali che gli albergatori cercano
+
+FORMATO OUTPUT (JSON PURO):
 {
-  "title": "Meta title SEO (max 60 chars)",
+  "title": "Meta title SEO max 60 chars con hook",
   "h1": "H1 diverso dal title, con keyword",
-  "metaDescription": "Meta description 120-160 chars, inizia con verbo",
-  "directAnswer": "Risposta diretta 2-3 frasi per featured snippet",
-  "slug": "url-slug-lowercase-hyphen",
-  "content": "Articolo completo strutturato con TAG HTML di formattazione interna (h2, h3, p, ul/li, strong). NON includere <html>, <head>, <body>. Solo il contenuto del body.",
-  "faq": [
-    {"question": "...", "answer": "..."},
-    {"question": "...", "answer": "..."},
-    {"question": "...", "answer": "..."}
-  ],
-  "targetLocation": "Italia (o regione specifica se rilevante)",
-  "secondaryKeywords": ["keyword1", "keyword2", "keyword3"],
-  "lsiKeywords": ["lsi1", "lsi2", "lsi3"],
-  "entityOptimization": "Lista di entità correlate (es. ENEA, GSE, ISO 50001)",
-  "seoScore": 95,
-  "readabilityScore": 80,
-  "contentQuality": 90
+  "metaDescription": "Meta description 120-160 chars, verbo d'azione iniziale",
+  "directAnswer": "Risposta diretta 2-3 frasi per featured snippet Google",
+  "slug": "url-slug-lowercase-con-trattini",
+  "content": "HTML: h2, h3, p, strong. NO html/body/head. Solo contenuto.",
+  "faq": [{"question": "...", "answer": "..."}, {"question": "...", "answer": "..."}],
+  "targetLocation": "Italia",
+  "secondaryKeywords": ["kw1", "kw2", "kw3"],
+  "seoScore": 90
 }`;
 
-  const userPrompt = `Scrivi un articolo blog su: "${topic.title}"
+  const userPrompt = `Scrivi un articolo su: "${topic.title}"
 
-Angolo/Focus: ${topic.angle}
-Keyword principale: ${topic.focus}
+Focus: ${topic.focus}
+Angolo: ${topic.angle}
 
-L'articolo deve essere utile per direttori d'hotel italiani che vogliono ridurre i costi energetici senza grossi investimenti o cantieri.
+Target: Direttori hotel italiani che vogliono ridurre costi energetici senza grossi cantieri.
+Tono: Esperto ma accessibile, pratico, con esempi concreti.
 
-Rispondi SOLO con il JSON, nessun testo aggiuntivo.`;
+RISPONDI SOLO CON IL JSON.`;
 
   const response = await fetch(OPENROUTER_API_URL, {
     method: 'POST',
@@ -304,316 +277,87 @@ Rispondi SOLO con il JSON, nessun testo aggiuntivo.`;
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
       ],
-      temperature: 0.8,
+      temperature: 0.85,
       max_tokens: 4000
     })
   });
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(`OpenRouter API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+    throw new Error(`OpenRouter API error: ${response.status} - ${errorData.error?.message || 'Unknown'}`);
   }
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content;
 
-  if (!content) {
-    throw new Error('Empty response from OpenRouter');
-  }
+  if (!content) throw new Error('Empty response from OpenRouter');
 
-  // Parse JSON from response
+  // Parse JSON
   let articleJson;
   try {
     let jsonStr = content.trim();
-    if (jsonStr.startsWith('```json')) {
-      jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (jsonStr.startsWith('```')) {
-      jsonStr = jsonStr.replace(/^```\s*/, '').replace(/\s*```$/, '');
-    }
+    if (jsonStr.startsWith('```json')) jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    else if (jsonStr.startsWith('```')) jsonStr = jsonStr.replace(/^```\s*/, '').replace(/\s*```$/, '');
     articleJson = JSON.parse(jsonStr);
   } catch (parseError) {
-    console.error('Failed to parse AI response:', content.substring(0, 500));
-    throw new Error('Failed to parse article JSON from AI response');
+    console.error('Parse error:', content.substring(0, 500));
+    throw new Error('Failed to parse article JSON');
   }
 
-  // Validate required fields
-  const requiredFields = ['title', 'h1', 'metaDescription', 'directAnswer', 'slug', 'content', 'faq'];
-  for (const field of requiredFields) {
-    if (!articleJson[field]) {
-      throw new Error(`Missing required field: ${field}`);
-    }
-  }
-
-  // Validate word count
-  const wordCount = countWords(articleJson.content);
-  if (wordCount < CONFIG.minWords) {
-    console.warn(`   Warning: Article has ${wordCount} words (minimum: ${CONFIG.minWords})`);
+  // Validate
+  const required = ['title', 'h1', 'metaDescription', 'directAnswer', 'slug', 'content'];
+  for (const field of required) {
+    if (!articleJson[field]) throw new Error(`Missing field: ${field}`);
   }
 
   return articleJson;
 }
 
 /**
- * Generate featured image using KEI API
- */
-async function generateImage(topic) {
-  const visualPrompt = `Professional architectural photography of a modern luxury hotel in Italy implementing ${topic.focus}, natural lighting, cinematic 8k quality, minimalist design, sustainable architecture details, no text overlay`;
-
-  console.log('   Sending task to KEI API...');
-
-  const response = await fetch(KEI_API_URL, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.KEI_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'flux-2/pro-text-to-image',
-      input: {
-        prompt: visualPrompt,
-        aspect_ratio: '16:9',
-        resolution: '1K'
-      }
-    })
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`KEI API error: ${response.status} - ${errText}`);
-  }
-
-  const responseBody = await response.json();
-
-  // Response is an ARRAY: [{ code, msg, data: { taskId, recordId } }]
-  const responseItem = Array.isArray(responseBody) ? responseBody[0] : responseBody;
-  const taskId = responseItem?.data?.taskId;
-
-  if (taskId) {
-    console.log(`   Task created (ID: ${taskId}), waiting for result...`);
-    return await pollKEITask(taskId);
-  }
-
-  console.error('   KEI response missing taskId:', JSON.stringify(responseBody));
-  return null;
-}
-
-/**
- * Poll KEI API for task completion
- * Uses /jobs/recordInfo endpoint with 10s interval, max 30 mins
- * Response format: [{ code, msg, data: { taskId, state, resultJson: "{resultUrls:[...]}" } }]
- */
-async function pollKEITask(taskId) {
-  const maxAttempts = 180; // 180 attempts * 10s = 1800s (30 mins)
-  const delay = 10000; // 10 seconds
-  const pollUrl = 'https://api.kie.ai/api/v1/jobs/recordInfo';
-
-  console.log(`   Polling KEI task ${taskId} every 10s for up to 30m...`);
-
-  for (let i = 0; i < maxAttempts; i++) {
-    await new Promise(resolve => setTimeout(resolve, delay));
-
-    try {
-      const checkResponse = await fetch(`${pollUrl}?taskId=${taskId}`, {
-        headers: {
-          'Authorization': `Bearer ${process.env.KEI_API_KEY}`
-        }
-      });
-
-      if (i % 6 === 0) console.log(`   [${i + 1}/${maxAttempts}] Polling...`);
-
-      if (checkResponse.ok) {
-        const resultBody = await checkResponse.json();
-
-        // Response is an ARRAY - get first element
-        const responseItem = Array.isArray(resultBody) ? resultBody[0] : resultBody;
-        const taskData = responseItem?.data || responseItem;
-
-        // Status is in 'state' field, not 'status'
-        const state = taskData.state || taskData.status;
-
-        if (i % 3 === 0) console.log(`   State: ${state}`);
-
-        if (state === 'success' || state === 'completed' || state === 'done') {
-          // resultJson is a STRING that needs to be parsed
-          if (taskData.resultJson) {
-            try {
-              const resultData = JSON.parse(taskData.resultJson);
-              // URL is in resultUrls array
-              if (resultData.resultUrls && resultData.resultUrls.length > 0) {
-                const imageUrl = resultData.resultUrls[0];
-                console.log(`   SUCCESS! Image URL: ${imageUrl}`);
-                return imageUrl;
-              }
-            } catch (parseErr) {
-              console.error('   Failed to parse resultJson:', parseErr.message);
-            }
-          }
-
-          // Fallback: try other common fields
-          const fallbackUrl = taskData.result_url || taskData.url || taskData.imageUrl;
-          if (fallbackUrl) {
-            console.log(`   SUCCESS (fallback)! Image URL: ${fallbackUrl}`);
-            return fallbackUrl;
-          }
-
-          console.log(`   State is success but no URL found. Full data: ${JSON.stringify(taskData).substring(0, 300)}`);
-
-        } else if (state === 'failed' || state === 'error') {
-          console.error('   Image generation failed:', taskData.failMsg || taskData.error);
-          return null;
-        }
-        // Otherwise still processing, continue loop
-
-      } else {
-        console.log(`   Polling HTTP Error: ${checkResponse.status}`);
-      }
-    } catch (e) {
-      console.log(`   Polling Exception: ${e.message}`);
-    }
-  }
-
-  console.warn('   Image generation timed out after 30 mins');
-  return null;
-}
-
-/**
- * Download image from URL and upload to Payload CMS Media collection
- */
-async function uploadImageToPayload(imageUrl, title) {
-  console.log('   Downloading image from:', imageUrl);
-
-  // 1. Download image
-  const imgResponse = await fetch(imageUrl);
-  if (!imgResponse.ok) {
-    throw new Error(`Failed to download image: ${imgResponse.statusText}`);
-  }
-  const imgBuffer = await imgResponse.buffer();
-
-  // 2. Prepare multipart form data manually
-  const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
-  const filename = `hero-${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}.webp`;
-
-  let body = '';
-  // File part
-  body += `--${boundary}\r\n`;
-  body += `Content-Disposition: form-data; name="file"; filename="${filename}"\r\n`;
-  body += `Content-Type: image/webp\r\n\r\n`;
-
-  // Combine body parts with buffer
-  const preBuffer = Buffer.from(body, 'utf-8');
-  const postBuffer = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf-8');
-  const finalBuffer = Buffer.concat([preBuffer, imgBuffer, postBuffer]);
-
-  console.log(`   Uploading to Payload Media (${finalBuffer.length} bytes)...`);
-
-  // 3. Upload to Payload
-  const uploadResponse = await fetch(`${PAYLOAD_CMS_URL}/media`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.PAYLOAD_API_KEY}`,
-      'Content-Type': `multipart/form-data; boundary=${boundary}`
-    },
-    body: finalBuffer
-  });
-
-  if (!uploadResponse.ok) {
-    const err = await uploadResponse.text();
-    console.error('   Media Upload Error:', err);
-    throw new Error(`Failed to upload media: ${uploadResponse.status} - ${err}`);
-  }
-
-  const mediaData = await uploadResponse.json();
-  console.log('   Media uploaded successfully. ID:', mediaData.doc?.id || mediaData.id);
-
-  return mediaData.doc?.id || mediaData.id;
-}
-
-/**
  * Publish article to Payload CMS
  */
-async function publishToCMS(article, imageUrl) {
-  console.log('   >>> publishToCMS called');
-  console.log('   >>> Article title:', article?.title || 'MISSING');
-
-  // Ensure slug is unique by appending short timestamp
+async function publishToCMS(article) {
+  // Unique slug
   const uniqueSuffix = Date.now().toString().slice(-6);
-  if (!article.slug.endsWith(uniqueSuffix)) {
-    article.slug = `${article.slug}-${uniqueSuffix}`;
-  }
-  console.log('   >>> Unique Slug:', article.slug);
+  article.slug = `${article.slug}-${uniqueSuffix}`;
 
-  // Truncate directAnswer to max 160 chars
-  const truncatedDirectAnswer = article.directAnswer && article.directAnswer.length > 160
+  // Truncate fields
+  const truncDesc = article.directAnswer?.length > 160
     ? article.directAnswer.substring(0, 157) + '...'
     : article.directAnswer;
-
-  // Truncate metaDescription to max 160 chars
-  const truncatedMetaDesc = article.metaDescription && article.metaDescription.length > 160
+  const truncMeta = article.metaDescription?.length > 160
     ? article.metaDescription.substring(0, 157) + '...'
     : article.metaDescription;
 
-  // Convert HTML content to Payload Lexical format (simplified)
-  const contentLexical = htmlToLexical(article.content || article.directAnswer);
-
+  // Convert to Lexical
+  const contentLexical = htmlToLexical(article.content);
   const wordCount = countWords(article.content);
-  const timeToRead = Math.ceil(wordCount / 200);
-  const canonicalUrl = `${CONFIG.siteUrl}/blog/${article.slug}`;
-
-  // Ensure required fields have values
-  const h1Value = article.h1 || article.title || 'Articolo';
-  const focusKeywordValue = article.slug ? article.slug.replace(/-/g, ' ') : 'efficienza energetica hotel';
-
-  // Map keywords
-  const secondaryKeywordsMapped = Array.isArray(article.secondaryKeywords)
-    ? article.secondaryKeywords.map(k => ({ keyword: k }))
-    : [];
 
   const payload = {
     title: article.title,
-    h1: h1Value,
+    h1: article.h1 || article.title,
     slug: article.slug,
     content: contentLexical,
-    focusKeyword: focusKeywordValue,
-    directAnswer: truncatedDirectAnswer,
+    focusKeyword: article.slug.replace(/-/g, ' '),
+    directAnswer: truncDesc,
     searchIntent: 'informational',
     targetLocation: article.targetLocation || 'Italia',
-
-    // New fields
-    wordCount: wordCount,
-    readabilityScore: article.readabilityScore || 80,
-    seoScore: article.seoScore || 90,
-    contentQuality: article.contentQuality || 85,
-
-    // Keywords & Optimize
-    secondaryKeywords: secondaryKeywordsMapped,
-    lsiKeywords: Array.isArray(article.lsiKeywords) ? article.lsiKeywords.join(', ') : article.lsiKeywords,
-    entityOptimization: article.entityOptimization,
-
+    wordCount,
+    readabilityScore: 80,
+    seoScore: article.seoScore || 85,
+    secondaryKeywords: (article.secondaryKeywords || []).map(k => ({ keyword: k })),
     meta: {
       title: article.title,
-      description: truncatedMetaDesc,
+      description: truncMeta,
       ogTitle: article.title,
-      ogDescription: truncatedMetaDesc,
+      ogDescription: truncMeta,
       articleSection: 'Efficienza Energetica',
-      timeToRead: timeToRead,
-      canonicalUrl: canonicalUrl
+      timeToRead: Math.ceil(wordCount / 200),
+      canonicalUrl: `${CONFIG.siteUrl}/blog/${article.slug}`
     },
-    faqSchema: article.faq,
+    faqSchema: article.faq || [],
     _status: 'published'
   };
-
-  if (imageUrl) {
-    try {
-      // Upload image to Payload Media first
-      const mediaId = await uploadImageToPayload(imageUrl, article.title);
-      if (mediaId) {
-        payload.heroImage = mediaId;
-        console.log('   Associated hero image ID:', mediaId);
-      }
-    } catch (uploadError) {
-      console.error('   Failed to upload hero image:', uploadError.message);
-    }
-  }
 
   const response = await fetch(`${PAYLOAD_CMS_URL}/posts`, {
     method: 'POST',
@@ -624,22 +368,11 @@ async function publishToCMS(article, imageUrl) {
     body: JSON.stringify(payload)
   });
 
-  console.log('   HTTP Status:', response.status);
-
-  const responseData = await response.json().catch((e) => {
-    console.error('   Failed to parse response:', e.message);
-    return {};
-  });
+  const responseData = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    console.error('   CMS Error:', JSON.stringify(responseData, null, 2));
     throw new Error(`Payload CMS error: ${response.status} - ${JSON.stringify(responseData)}`);
   }
-
-  const docId = responseData.doc?.id || responseData.id;
-  const docSlug = responseData.doc?.slug || responseData.slug;
-  console.log('   Published ID:', docId || 'unknown');
-  console.log('   Published Slug:', docSlug || 'unknown');
 
   return responseData.doc || responseData;
 }
@@ -650,212 +383,111 @@ async function publishToCMS(article, imageUrl) {
 async function sendNotification(type, data) {
   const templates = {
     success: {
-      subject: `[NexEnergy Blog] ✅ Articolo Pubblicato - ${new Date().toLocaleDateString('it-IT')}`,
-      html: `
-        <h2>Nuovo articolo pubblicato con successo</h2>
-        <p><strong>Titolo:</strong> ${data.title}</p>
-        <p><strong>URL:</strong> <a href="${CONFIG.siteUrl}/blog/${data.slug}.html">${CONFIG.siteUrl}/blog/${data.slug}.html</a></p>
-        <p><strong>Parole:</strong> ${data.words}</p>
-        <hr>
-        <p style="color: #666; font-size: 12px;">NexEnergy AI Blog Agent</p>
-      `
+      subject: `[NexEnergy] ✅ Articolo Pubblicato`,
+      html: `<h2>Nuovo articolo: ${data.title}</h2><p>URL: ${CONFIG.siteUrl}/blog/${data.slug}</p><p>Parole: ${data.words}</p>`
     },
     error: {
-      subject: `[NexEnergy Blog] ❌ ERRORE - ${data.errorType}`,
-      html: `
-        <h2>Errore durante la generazione articolo</h2>
-        <p><strong>Tipo:</strong> ${data.errorType}</p>
-        <p><strong>Messaggio:</strong> ${data.errorMessage}</p>
-        <p><strong>Timestamp:</strong> ${data.timestamp}</p>
-        <hr>
-        <p>Azione richiesta: Verificare crediti API o configurazione.</p>
-        <hr>
-        <p style="color: #666; font-size: 12px;">NexEnergy AI Blog Agent</p>
-      `
+      subject: `[NexEnergy] ❌ Errore: ${data.errorType}`,
+      html: `<h2>Errore</h2><p>${data.errorMessage}</p><p>${data.timestamp}</p>`
     },
     credits_warning: {
-      subject: `[NexEnergy Blog] ⚠️ Crediti API in esaurimento`,
-      html: `
-        <h2>Attenzione: Crediti API quasi esauriti</h2>
-        <p><strong>Servizio:</strong> ${data.serviceName}</p>
-        <p><strong>Crediti rimanenti:</strong> ${data.creditsRemaining}</p>
-        <hr>
-        <p>Si prega di ricaricare i crediti per evitare interruzioni del servizio.</p>
-        <hr>
-        <p style="color: #666; font-size: 12px;">NexEnergy AI Blog Agent</p>
-      `
+      subject: `[NexEnergy] ⚠️ Crediti Bassi`,
+      html: `<h2>Crediti ${data.serviceName} quasi esauriti</h2><p>Rimanenti: ${data.creditsRemaining}</p>`
     }
   };
 
   const template = templates[type];
-  if (!template) {
-    throw new Error(`Unknown notification type: ${type}`);
-  }
+  if (!template) return;
 
-  const response = await fetch(RESEND_API_URL, {
+  await fetch(RESEND_API_URL, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      from: 'NexEnergy Blog <onboarding@resend.dev>',
+      from: 'NexEnergy <onboarding@resend.dev>',
       to: [process.env.ADMIN_EMAIL],
       subject: template.subject,
       html: template.html
     })
   });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(`Resend API error: ${response.status} - ${JSON.stringify(errorData)}`);
-  }
-
-  return await response.json();
 }
 
 /**
- * Convert HTML content to Payload CMS Lexical format
- * SIMPLIFIED VERSION: Flattens lists to paragraphs, STRIPS all tags from text
+ * Convert HTML to Lexical format (simplified - strips all HTML tags)
  */
 function htmlToLexical(html) {
   if (!html) {
-    return {
-      root: {
-        type: 'root',
-        children: [
-          {
-            type: 'paragraph',
-            children: [{ type: 'text', text: 'Contenuto non disponibile.', version: 1 }],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1
-          }
-        ],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1
-      }
-    };
+    return { root: { type: 'root', children: [{ type: 'paragraph', children: [{ type: 'text', text: 'Contenuto.', version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 } };
   }
 
   const children = [];
 
-  // Pre-process: Strip html, head, body tags if present
-  let processedHtml = html
-    .replace(/<\/?(?:html|head|body|!DOCTYPE)[^>]*>/gi, '') // Remove wrapper tags
-    .replace(/<ul>/gi, '')
-    .replace(/<\/ul>/gi, '')
-    .replace(/<ol>/gi, '')
-    .replace(/<\/ol>/gi, '')
-    .replace(/<li>/gi, '<p>• ') // Convert list items to paragraphs with bullet
-    .replace(/<\/li>/gi, '</p>')
-    .replace(/<br\s*\/?>/gi, '</p><p>'); // Convert br to paragraph breaks
+  // Pre-process HTML
+  let processed = html
+    .replace(/<\/?(?:html|head|body|!DOCTYPE)[^>]*>/gi, '')
+    .replace(/<ul>/gi, '').replace(/<\/ul>/gi, '')
+    .replace(/<ol>/gi, '').replace(/<\/ol>/gi, '')
+    .replace(/<li>/gi, '<p>• ').replace(/<\/li>/gi, '</p>')
+    .replace(/<br\s*\/?>/gi, '</p><p>');
 
-  // Split by block tags we support
-  const parts = processedHtml.split(/(<\/?(?:h[1-6]|p)[^>]*>)/gi);
+  const parts = processed.split(/(<\/?(?:h[1-6]|p)[^>]*>)/gi);
+  let currentParagraph = [];
 
-  let currentParagraphChildren = [];
-
-  function flushParagraph() {
-    if (currentParagraphChildren.length > 0) {
+  function flush() {
+    if (currentParagraph.length > 0) {
       children.push({
         type: 'paragraph',
-        children: currentParagraphChildren,
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1
+        children: currentParagraph,
+        direction: 'ltr', format: '', indent: 0, version: 1
       });
-      currentParagraphChildren = [];
+      currentParagraph = [];
     }
   }
 
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i];
     if (!part || part.trim() === '') continue;
+    const lower = part.toLowerCase();
 
-    const lowerPart = part.toLowerCase();
-
-    // Headings
-    if (/^<h[1-6]/.test(lowerPart)) {
-      flushParagraph();
-      const level = parseInt(lowerPart.match(/<h([1-6])/)[1]);
-      const nextPart = parts[i + 1] || '';
-      // STRIP ALL HTML TAGS from heading text (e.g. strong inside h2)
-      const text = nextPart.replace(/<[^>]*>/g, '').trim();
-
+    if (/^<h[1-6]/.test(lower)) {
+      flush();
+      const level = parseInt(lower.match(/<h([1-6])/)[1]);
+      const text = (parts[i + 1] || '').replace(/<[^>]*>/g, '').trim();
       if (text) {
         children.push({
-          type: 'heading',
-          tag: `h${level}`,
-          children: [{ type: 'text', text: text, version: 1 }],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1
+          type: 'heading', tag: `h${level}`,
+          children: [{ type: 'text', text, version: 1 }],
+          direction: 'ltr', format: '', indent: 0, version: 1
         });
-        i++; // Skip content
+        i++;
       }
-    }
-    // Paragraph Start (or converted list item)
-    else if (/^<p/.test(lowerPart)) {
-      flushParagraph();
-    }
-    // Closing tags
-    else if (/^<\//.test(lowerPart)) {
+    } else if (/^<p/.test(lower)) {
+      flush();
+    } else if (/^<\//.test(lower)) {
       continue;
-    }
-    // Text Content
-    else if (!/^<[^>]*>/.test(part)) {
-      // STRIP ALL HTML TAGS from paragraph text (no more bold/italic raw tags)
-      const text = part.replace(/<[^>]*>/g, '').replace(/•/g, '• ').trim();
-      if (text) {
-        currentParagraphChildren.push({
-          type: 'text',
-          text: text,
-          version: 1
-        });
-      }
+    } else if (!/^<[^>]*>/.test(part)) {
+      const text = part.replace(/<[^>]*>/g, '').trim();
+      if (text) currentParagraph.push({ type: 'text', text, version: 1 });
     }
   }
 
-  flushParagraph();
+  flush();
 
-  // Fallback
   if (children.length === 0) {
-    children.push({
-      type: 'paragraph',
-      children: [{ type: 'text', text: 'Contenuto.', version: 1 }],
-      direction: 'ltr',
-      format: '',
-      indent: 0,
-      version: 1
-    });
+    children.push({ type: 'paragraph', children: [{ type: 'text', text: 'Contenuto.', version: 1 }], direction: 'ltr', format: '', indent: 0, version: 1 });
   }
 
-  return {
-    root: {
-      type: 'root',
-      children: children,
-      direction: 'ltr',
-      format: '',
-      indent: 0,
-      version: 1
-    }
-  };
+  return { root: { type: 'root', children, direction: 'ltr', format: '', indent: 0, version: 1 } };
 }
 
 /**
- * Count words in HTML content
+ * Count words in HTML
  */
 function countWords(html) {
-  // Strip HTML tags and count words
   const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   return text.split(' ').filter(w => w.length > 0).length;
 }
 
-// Run main
 main();

@@ -1,0 +1,57 @@
+name: Blog Sync from Payload CMS
+
+on:
+  # Run every 12 hours
+  schedule:
+    - cron: '0 6,18 * * *'  # 6:00 and 18:00 UTC
+  
+  # Run on push to main (for immediate sync after deploy)
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/blog-sync.js'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  sync-blog:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Run Blog Sync
+        env:
+          PAYLOAD_CMS_URL: https://cms.immoby.org/api
+          SITE_URL: https://nex-energy.it
+        run: node scripts/blog-sync.js
+      
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --quiet blog/ || echo "changes=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add blog/
+          git commit -m "🔄 Auto-sync blog articles from Payload CMS"
+          git push
+      
+      - name: Log sync status
+        run: |
+          echo "✅ Blog sync completed at $(date)"
+          echo "📄 Articles in blog/:"
+          ls -la blog/*.html 2>/dev/null | wc -l || echo "0"

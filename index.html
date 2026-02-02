@@ -154,9 +154,37 @@
       color: white;
       text-decoration: none;
       letter-spacing: -0.5px;
+      /* Gradient Text */
       background: linear-gradient(135deg, #fff 0%, var(--color-primary) 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
+
+      /* Special Effects */
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+      /* Glow */
+      animation: logoFlip 10s infinite ease-in-out;
+      /* 360 Rotation */
+      transform-style: preserve-3d;
+      backface-visibility: visible;
+      perspective: 1000px;
+    }
+
+    @keyframes logoFlip {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      10% {
+        transform: rotateY(360deg);
+      }
+
+      /* Fast flip */
+      100% {
+        transform: rotateY(360deg);
+      }
+
+      /* Pause */
     }
 
     .nav {
@@ -203,11 +231,29 @@
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
       color: #0b0f19;
       box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      animation: pulse-btn 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-btn {
+      0% {
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        transform: scale(1.02);
+      }
+
+      100% {
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      }
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.8);
+      animation: none;
+      /* Stop pulse on hover */
     }
 
     .btn-secondary {
@@ -302,9 +348,7 @@
     }
 
     /* Helper for non-gradient fallback if needed, but we assume modern browser */
-    .hero h1 span {
-      /* No longer needed as separate span, but keeping clean cleanup */
-    }
+
 
     @keyframes text-breathing {
 
@@ -325,16 +369,18 @@
     }
 
     .hero-headline {
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      color: var(--color-text-light);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: #ffffff;
+      font-weight: 600;
       margin-bottom: var(--spacing-lg);
-      max-width: 700px;
-      line-height: 1.6;
-      background: rgba(11, 15, 25, 0.4);
-      /* Slight backing for readability */
+      max-width: 800px;
+      line-height: 1.5;
+      background: rgba(11, 15, 25, 0.6);
+      border: 1px solid rgba(0, 212, 255, 0.3);
       backdrop-filter: blur(4px);
-      padding: 10px;
-      border-radius: 12px;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .hero-cta {
@@ -593,7 +639,8 @@
         </div>
 
         <div class="hero-cta">
-          <a href="#contatti" class="btn btn-primary btn-lg" data-track="cta_hero_primary">Calcola il Tuo Risparmio</a>
+          <a href="#roi-calculator" class="btn btn-primary btn-lg" data-track="cta_hero_primary">Calcola il Tuo
+            Risparmio</a>
           <a href="#soluzione" class="btn btn-secondary btn-lg" data-track="cta_hero_secondary">Come Funzionano gli
             Incentivi</a>
         </div>
@@ -611,7 +658,9 @@
   <!-- Problema Section -->
   <section id="problema" class="problema">
     <div class="container">
-      <h2 class="section-title">Il Paradosso dell'Eccellenza Italiana</h2>
+      <h2 class="section-title"
+        style="font-size: clamp(2.5rem, 4vw, 3.5rem); background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(255,255,255,0.1);">
+        Il Paradosso dell'Eccellenza Italiana</h2>
       <p class="section-subtitle">(e l'illusione del risparmio)</p>
 
       <div class="problema-content">
@@ -645,7 +694,9 @@
   <!-- Soluzione Section - Bento Grid -->
   <section id="soluzione" class="soluzione">
     <div class="container">
-      <h2 class="section-title">Non Ristrutturare. Evolvi.</h2>
+      <h2 class="section-title"
+        style="font-size: clamp(2.5rem, 4vw, 3.5rem); background: linear-gradient(135deg, #fff 0%, #00d4ff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(0, 212, 255, 0.2);">
+        Non Ristrutturare. Evolvi.</h2>
       <p class="section-intro">La prima tecnologia di retrofit energetico nativo per l'hospitality. Ingegneria
         energetica e AI fuse in un unico ecosistema invisibile.</p>
 
@@ -654,7 +705,7 @@
         <div class="feature-card">
           <div class="feature-visual">
             <img src="/images/sections/installazione-retrofit-camera-hotel.webp" alt="Installazione Non Invasiva"
-              loading="lazy">
+              width="600" height="400" loading="lazy">
           </div>
           <div class="feature-content">
             <h3>Installazione Non Invasiva</h3>
@@ -696,7 +747,7 @@
         <div class="feature-card">
           <div class="feature-visual">
             <img src="/images/sections/dashboard-ai-energy-management-hotel.webp" alt="Machine Learning Adattivo"
-              loading="lazy">
+              width="600" height="400" loading="lazy">
           </div>
           <div class="feature-content">
             <h3>Machine Learning Adattivo</h3>
@@ -781,7 +832,9 @@
   <!-- Metodo Tesla Section - Scroll Timeline -->
   <section id="metodo" class="metodo">
     <div class="container">
-      <h2 class="section-title">Hardware Oggi, Intelligenza Domani.</h2>
+      <h2 class="section-title"
+        style="font-size: clamp(2.5rem, 4vw, 3.5rem); background: linear-gradient(135deg, #cbd5e1 0%, #00d4ff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(0, 212, 255, 0.2);">
+        Hardware Oggi, Intelligenza Domani.</h2>
       <p class="section-intro">Il Metodo Evolutivo: il sistema migliora mentre lo usi.</p>
 
       <div class="timeline-container">

@@ -188,9 +188,14 @@
 
     const closeBtn = mobileMenu.querySelector('.mobile-menu-close');
 
-    menuToggle.addEventListener('click', function () {
-      mobileMenu.classList.add('active');
-      document.body.style.overflow = 'hidden';
+    menuToggle.addEventListener('click', function (e) {
+      e.stopPropagation(); // Prevent immediate close
+      if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
     });
 
     closeBtn.addEventListener('click', closeMobileMenu);

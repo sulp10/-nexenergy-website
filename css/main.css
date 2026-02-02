@@ -1402,7 +1402,7 @@ input[type=range] {
 
 /* 1. Cyber Glitch Effect (User Request: "No glow, something innovative") */
 .futuristic-title {
-  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-size: clamp(1.75rem, 5vw, 4.5rem);
   line-height: 1.1;
   color: #fff;
   margin-bottom: 2rem;
@@ -1411,6 +1411,8 @@ input[type=range] {
   overflow-wrap: break-word;
   word-break: break-word;
   letter-spacing: -1px;
+  text-align: center;
+  width: 100%;
 }
 
 .cyber-glitch {

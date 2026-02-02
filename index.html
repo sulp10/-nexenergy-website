@@ -530,7 +530,7 @@
       margin-right: auto;
     }
 
-    /* Cookie Banner */
+    /* Cookie Banner - uses transform to avoid CLS */
     .cookie-banner {
       position: fixed;
       bottom: 0;
@@ -541,6 +541,11 @@
       padding: 20px;
       z-index: 10000;
       backdrop-filter: blur(10px);
+      transform: translateY(100%);
+      transition: transform 0.3s ease-out;
+    }
+    .cookie-banner.visible {
+      transform: translateY(0);
     }
 
     .cookie-banner-content {
@@ -1528,7 +1533,7 @@
   <script defer src="/js/analytics.min.js"></script>
 
   <!-- Cookie Consent Banner -->
-  <div id="cookie-banner" class="cookie-banner" hidden>
+  <div id="cookie-banner" class="cookie-banner">
     <div class="cookie-banner-content">
       <div class="cookie-banner-text">
         <p class="cookie-banner-title">🍪 Utilizziamo i cookie</p>
@@ -1545,7 +1550,7 @@
   </div>
 
   <script>
-    // Cookie Consent Logic
+    // Cookie Consent Logic - uses CSS transform to avoid CLS
     (function () {
       const banner = document.getElementById('cookie-banner');
       const acceptBtn = banner.querySelector('.cookie-accept');
@@ -1554,12 +1559,15 @@
       // Check if consent already given
       const consent = localStorage.getItem('cookie_consent');
       if (!consent) {
-        banner.hidden = false;
+        // Use requestAnimationFrame to show after paint (avoid CLS)
+        requestAnimationFrame(function() {
+          banner.classList.add('visible');
+        });
       }
 
       acceptBtn.addEventListener('click', function () {
         localStorage.setItem('cookie_consent', 'all');
-        banner.hidden = true;
+        banner.classList.remove('visible');
         // Enable analytics if available
         if (typeof gtag === 'function') {
           gtag('consent', 'update', { analytics_storage: 'granted' });
@@ -1568,7 +1576,7 @@
 
       rejectBtn.addEventListener('click', function () {
         localStorage.setItem('cookie_consent', 'necessary');
-        banner.hidden = true;
+        banner.classList.remove('visible');
         // Keep analytics disabled
       });
     })();

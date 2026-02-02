@@ -52,17 +52,20 @@
       const roiInvestmentDiscounted = document.getElementById('roi-investment-discounted');
 
       // Check if elements exist (to avoid errors on pages without calc)
-      if (!roomsInput || !occupancyInput || !energyInput) return;
+      if (!roomsInput || !occupancyInput || !energyInput) {
+        console.warn('ROI Calculator: Missing input elements');
+        return;
+      }
 
       function updateRoi() {
         // Get values
-        const rooms = parseInt(roomsInput.value);
-        const occupancy = parseInt(occupancyInput.value);
-        const energyCost = parseFloat(energyInput.value);
+        const rooms = parseInt(roomsInput.value) || 50;
+        const occupancy = parseInt(occupancyInput.value) || 70;
+        const energyCost = parseFloat(energyInput.value) || 0.25;
 
         // Update UI labels
-        roomsVal.textContent = rooms;
-        occupancyVal.textContent = occupancy + '%';
+        if (roomsVal) roomsVal.textContent = rooms;
+        if (occupancyVal) occupancyVal.textContent = occupancy + '%';
 
         // Update Energy Display
         if (energyDisplayVal) {
@@ -93,20 +96,24 @@
         const roiStandard = (totalInvestment / savingsEuro) * 12;
         const roiIncentivized = (discountedInvestment / savingsEuro) * 12;
 
-        // Update UI
+        // Update UI - with null checks
         const currencyFmt = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 
-        savingsYear.textContent = currencyFmt.format(savingsEuro);
-        roiInvestmentTotal.textContent = currencyFmt.format(totalInvestment);
-        roiInvestmentDiscounted.textContent = currencyFmt.format(discountedInvestment);
+        if (savingsYear) savingsYear.textContent = currencyFmt.format(savingsEuro);
+        if (roiInvestmentTotal) roiInvestmentTotal.textContent = currencyFmt.format(totalInvestment);
+        if (roiInvestmentDiscounted) roiInvestmentDiscounted.textContent = currencyFmt.format(discountedInvestment);
 
-        roiMonthsStandard.textContent = Math.max(1, Math.round(roiStandard)) + " Mesi";
+        if (roiMonthsStandard) {
+          roiMonthsStandard.textContent = Math.max(1, Math.round(roiStandard)) + " Mesi";
+        }
 
-        const roiIncVal = Math.max(0.1, roiIncentivized);
-        if (roiIncVal < 1) {
-          roiMonthsIncentivized.textContent = "< 1 Mese!";
-        } else {
-          roiMonthsIncentivized.textContent = Math.round(roiIncVal) + " Mesi";
+        if (roiMonthsIncentivized) {
+          const roiIncVal = Math.max(0.1, roiIncentivized);
+          if (roiIncVal < 1) {
+            roiMonthsIncentivized.textContent = "< 1 Mese!";
+          } else {
+            roiMonthsIncentivized.textContent = Math.round(roiIncVal) + " Mesi";
+          }
         }
       }
 

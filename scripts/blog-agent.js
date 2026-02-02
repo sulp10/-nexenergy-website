@@ -417,29 +417,60 @@ async function pollKEITask(taskId) {
         }
       });
 
+      console.log(`   [${i + 1}/${maxAttempts}] HTTP Status: ${checkResponse.status}`);
+
       if (checkResponse.ok) {
         const resultBody = await checkResponse.json();
+
+        // DEBUG: Log full response every 3 iterations
+        if (i % 3 === 0) {
+          console.log(`   FULL RESPONSE: ${JSON.stringify(resultBody).substring(0, 500)}`);
+        }
+
+        // Try to find data in multiple places
         const taskData = resultBody.data || resultBody;
+        const status = taskData.status || resultBody.status || resultBody.msg;
 
-        // Log status occasionally
-        if (i % 6 === 0) console.log(`   [${i + 1}/${maxAttempts}] Status: ${taskData.status || 'unknown'}`);
+        console.log(`   Status: ${status}`);
 
-        if (taskData.status === 'success' || taskData.status === 'completed' || taskData.status === 'succeeded') {
-          if (taskData.result_url) return taskData.result_url;
-          if (taskData.url) return taskData.url;
+        // Check for success (trying many possible values)
+        if (status === 'success' || status === 'completed' || status === 'succeeded' || status === 'done' || status === 'finished') {
+          // Try to extract URL from ALL possible locations
+          const possibleUrl =
+            taskData.result_url ||
+            taskData.resultUrl ||
+            taskData.url ||
+            taskData.imageUrl ||
+            taskData.image_url ||
+            taskData.output ||
+            (taskData.results && taskData.results[0]?.url) ||
+            (taskData.results && taskData.results[0]) ||
+            (taskData.result && taskData.result.url) ||
+            (taskData.result && typeof taskData.result === 'string' && taskData.result.startsWith('http') ? taskData.result : null) ||
+            resultBody.url ||
+            resultBody.result_url ||
+            (resultBody.results && resultBody.results[0]?.url);
 
-          if (taskData.results && taskData.results.length > 0) {
-            return taskData.results[0].url || taskData.results[0];
+          if (possibleUrl) {
+            console.log(`   SUCCESS! Found URL: ${possibleUrl}`);
+            return possibleUrl;
+          } else {
+            console.log(`   Status is success but NO URL found in response!`);
+            console.log(`   Full taskData: ${JSON.stringify(taskData)}`);
           }
-
-          if (taskData.result && taskData.result.url) return taskData.result.url;
-
-        } else if (taskData.status === 'failed') {
-          console.error('   Image generation task failed:', taskData.error || taskData.failReason);
+        } else if (status === 'failed' || status === 'error') {
+          console.error('   Image generation task failed:', taskData.error || taskData.failReason || taskData.message);
           return null;
+        } else if (status === 'pending' || status === 'processing' || status === 'running' || status === 'queued') {
+          // Still processing, continue loop
+          if (i % 6 === 0) console.log(`   Still processing...`);
+        } else {
+          // Unknown status
+          console.log(`   Unknown status: ${status}`);
         }
       } else {
-        console.log(`   Polling HTTP Error: ${checkResponse.status}`);
+        const errText = await checkResponse.text();
+        console.log(`   Polling HTTP Error: ${checkResponse.status} - ${errText.substring(0, 200)}`);
       }
     } catch (e) {
       console.log(`   Polling Exception: ${e.message}`);

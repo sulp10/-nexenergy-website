@@ -146,58 +146,60 @@
 
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
             padding-bottom: 80px;
         }
 
         .blog-card {
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
             text-decoration: none;
             display: block;
-            background: rgba(255, 255, 255, 0.02);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 242, 255, 0.02) 100%);
+            padding: 24px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .blog-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.15);
+            transform: translateX(8px);
+            border-color: rgba(0, 242, 255, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 242, 255, 0.04) 100%);
         }
 
-        .blog-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .blog-img::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(11, 15, 25, 0.9), transparent);
-        }
-
-        .blog-content {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
+        .blog-card:hover::before {
+            opacity: 1;
         }
 
         .blog-content h2 {
-            font-size: 1.1rem;
-            margin: 0 0 10px;
+            font-size: 1.25rem;
+            margin: 0 0 12px;
             color: white;
             line-height: 1.4;
+            font-weight: 600;
         }
 
         .blog-content p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--color-text-dim);
             margin: 0;
-            line-height: 1.5;
+            line-height: 1.6;
             display: -webkit-box;
+            line-clamp: 2;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
@@ -206,8 +208,13 @@
         .blog-date {
             font-size: 0.8rem;
             color: var(--color-primary);
-            margin-top: 10px;
-            display: block;
+            margin-top: 16px;
+            display: inline-block;
+            opacity: 0.8;
+        }
+
+        .blog-card:hover .blog-date {
+            opacity: 1;
         }
 
         footer {
@@ -349,13 +356,11 @@
                     const slug = article.slug;
                     const title = escapeHtml(article.h1 || article.title);
                     const excerpt = escapeHtml(article.meta?.description || article.directAnswer || '');
-                    const image = article.heroImage?.url || '../assets/images/blog/default-blog-image.webp';
                     const date = article.createdAt ? formatDate(article.createdAt) : '';
 
-                    // Link to CMS-generated article page (Payload serves these)
+                    // Text-focused card without image
                     return `
                         <a href="${PAYLOAD_CMS_URL.replace('/api', '')}/posts/${slug}" class="blog-card" target="_blank" rel="noopener">
-                            <div class="blog-img" style="background-image: url('${image}');"></div>
                             <div class="blog-content">
                                 <h2>${title}</h2>
                                 ${excerpt ? `<p>${excerpt}</p>` : ''}

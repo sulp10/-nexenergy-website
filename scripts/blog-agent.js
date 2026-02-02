@@ -384,8 +384,9 @@ async function generateImage(topic) {
 
   const responseBody = await response.json();
 
-  // Doc format: { code: 200, msg: "success", data: { taskId: "..." } }
-  const taskId = responseBody.data?.taskId;
+  // Response is an ARRAY: [{ code, msg, data: { taskId, recordId } }]
+  const responseItem = Array.isArray(responseBody) ? responseBody[0] : responseBody;
+  const taskId = responseItem?.data?.taskId;
 
   if (taskId) {
     console.log(`   Task created (ID: ${taskId}), waiting for result...`);

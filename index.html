@@ -187,38 +187,40 @@
       text-decoration: none;
       letter-spacing: -0.5px;
 
-      /* Holographic Tech Gradient (No Blur) */
-      background: linear-gradient(to right, #ffffff 0%, #a4e5ff 50%, #ffffff 100%);
+      /* White-Azure Fluo Gradient */
+      background: linear-gradient(90deg, #ffffff 0%, #00f2ff 50%, #ffffff 100%);
       background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
 
-      /* Dynamic Shine Animation */
-      animation: logoShine 5s linear infinite, logoFloat 6s ease-in-out infinite;
+      /* Animations: 360 Rotation + Flowing Gradient */
+      animation: logoRotate 10s infinite linear, logoShine 3s infinite linear;
 
-      /* Crisp Shadow for Depth (No Bloom) */
+      /* Crisp Shadow */
       filter: drop-shadow(0 2px 5px rgba(0, 212, 255, 0.3));
 
       transform-style: preserve-3d;
       perspective: 1000px;
     }
 
-    @keyframes logoShine {
-      to {
-        background-position: 200% center;
+    @keyframes logoRotate {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      100% {
+        transform: rotateY(360deg);
       }
     }
 
-    @keyframes logoFloat {
-
-      0%,
-      100% {
-        transform: translateY(0);
+    @keyframes logoShine {
+      0% {
+        background-position: 200% center;
       }
 
-      50% {
-        transform: translateY(-3px);
+      100% {
+        background-position: -200% center;
       }
     }
 

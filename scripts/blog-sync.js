@@ -12,162 +12,194 @@ const path = require('path');
 
 // Configuration
 const CONFIG = {
-    payloadUrl: process.env.PAYLOAD_CMS_URL || 'https://cms.immoby.org/api',
-    siteUrl: process.env.SITE_URL || 'https://nex-energy.it',
-    blogDir: path.join(__dirname, '..', 'blog'),
-    templatePath: path.join(__dirname, 'blog-article-template.html')
+  payloadUrl: process.env.PAYLOAD_CMS_URL || 'https://cms.immoby.org/api',
+  siteUrl: process.env.SITE_URL || 'https://nex-energy.it',
+  blogDir: path.join(__dirname, '..', 'blog'),
+  templatePath: path.join(__dirname, 'blog-article-template.html')
 };
 
 /**
  * Fetch all published articles from Payload CMS
  */
 async function fetchArticles() {
-    console.log('📥 Fetching articles from Payload CMS...');
+  console.log('📥 Fetching articles from Payload CMS...');
 
-    const response = await fetch(`${CONFIG.payloadUrl}/posts?limit=100&sort=-createdAt&where[_status][equals]=published`);
+  const response = await fetch(`${CONFIG.payloadUrl}/posts?limit=100&sort=-createdAt&where[_status][equals]=published`);
 
-    if (!response.ok) {
-        throw new Error(`CMS responded with ${response.status}`);
-    }
+  if (!response.ok) {
+    throw new Error(`CMS responded with ${response.status}`);
+  }
 
-    const data = await response.json();
-    console.log(`   Found ${data.docs?.length || 0} published articles`);
+  const data = await response.json();
+  console.log(`   Found ${data.docs?.length || 0} published articles`);
 
-    return data.docs || [];
+  return data.docs || [];
 }
 
 /**
  * Parse Payload's rich text JSON tree into HTML
  */
 function parseContentToHtml(content) {
-    if (!content?.root?.children) return '';
+  if (!content?.root?.children) return '';
 
-    return content.root.children.map(node => parseNode(node)).join('\n');
+  return content.root.children.map(node => parseNode(node)).join('\n');
 }
 
 function parseNode(node) {
-    if (!node) return '';
+  if (!node) return '';
 
-    switch (node.type) {
-        case 'heading':
-            const tag = node.tag || 'h2';
-            const headingText = extractText(node);
-            return `<${tag}>${headingText}</${tag}>`;
+  switch (node.type) {
+    case 'heading':
+      const tag = node.tag || 'h2';
+      const headingText = extractText(node);
+      return `<${tag}>${headingText}</${tag}>`;
 
-        case 'paragraph':
-            const paragraphText = extractText(node);
-            if (!paragraphText.trim()) return '';
-            return `<p>${paragraphText}</p>`;
+    case 'paragraph':
+      const paragraphText = extractText(node);
+      if (!paragraphText.trim()) return '';
+      return `<p>${paragraphText}</p>`;
 
-        case 'list':
-            const listTag = node.listType === 'number' ? 'ol' : 'ul';
-            const listItems = node.children?.map(item =>
-                `<li>${extractText(item)}</li>`
-            ).join('\n') || '';
-            return `<${listTag}>\n${listItems}\n</${listTag}>`;
+    case 'list':
+      const listTag = node.listType === 'number' ? 'ol' : 'ul';
+      const listItems = node.children?.map(item =>
+        `<li>${extractText(item)}</li>`
+      ).join('\n') || '';
+      return `<${listTag}>\n${listItems}\n</${listTag}>`;
 
-        case 'quote':
-            return `<blockquote>${extractText(node)}</blockquote>`;
+    case 'quote':
+      return `<blockquote>${extractText(node)}</blockquote>`;
 
-        default:
-            if (node.children) {
-                return node.children.map(child => parseNode(child)).join('');
-            }
-            return '';
-    }
+    default:
+      if (node.children) {
+        return node.children.map(child => parseNode(child)).join('');
+      }
+      return '';
+  }
 }
 
 function extractText(node) {
-    if (!node) return '';
+  if (!node) return '';
 
-    if (node.text !== undefined) {
-        let text = escapeHtml(node.text);
-        if (node.bold) text = `<strong>${text}</strong>`;
-        if (node.italic) text = `<em>${text}</em>`;
-        if (node.underline) text = `<u>${text}</u>`;
-        return text;
-    }
+  if (node.text !== undefined) {
+    let text = escapeHtml(node.text);
+    if (node.bold) text = `<strong>${text}</strong>`;
+    if (node.italic) text = `<em>${text}</em>`;
+    if (node.underline) text = `<u>${text}</u>`;
+    return text;
+  }
 
-    if (node.children) {
-        return node.children.map(child => extractText(child)).join('');
-    }
+  if (node.children) {
+    return node.children.map(child => extractText(child)).join('');
+  }
 
-    return '';
+  return '';
 }
 
 function escapeHtml(text) {
-    if (!text) return '';
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 /**
  * Generate FAQ Schema.org JSON-LD
  */
 function generateFaqSchema(faqs) {
-    if (!faqs || faqs.length === 0) return '';
+  if (!faqs || faqs.length === 0) return '';
 
-    const schema = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqs.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faq.answer
-            }
-        }))
-    };
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
 
-    return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
 }
 
 /**
  * Generate Article Schema.org JSON-LD
  */
 function generateArticleSchema(article) {
-    const schema = {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": article.h1 || article.title,
-        "description": article.meta?.description || article.directAnswer || '',
-        "datePublished": article.publishedAt || article.createdAt,
-        "dateModified": article.updatedAt,
-        "author": {
-            "@type": "Organization",
-            "name": "NexEnergy"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "NexEnergy",
-            "url": CONFIG.siteUrl
-        },
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": `${CONFIG.siteUrl}/blog/${article.slug}.html`
-        },
-        "articleSection": article.meta?.articleSection || "Efficienza Energetica",
-        "wordCount": article.wordCount || 0
-    };
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": article.h1 || article.title,
+    "description": article.meta?.description || article.directAnswer || '',
+    "datePublished": article.publishedAt || article.createdAt,
+    "dateModified": article.updatedAt,
+    "author": {
+      "@type": "Organization",
+      "name": "NexEnergy"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "NexEnergy",
+      "url": CONFIG.siteUrl
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${CONFIG.siteUrl}/blog/${article.slug}.html`
+    },
+    "articleSection": article.meta?.articleSection || "Efficienza Energetica",
+    "wordCount": article.wordCount || 0
+  };
 
-    if (article.heroImage?.url) {
-        schema.image = article.heroImage.url;
-    }
+  if (article.heroImage?.url) {
+    schema.image = article.heroImage.url;
+  }
 
-    return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+}
+
+/**
+ * Generate BreadcrumbList Schema.org JSON-LD
+ */
+function generateBreadcrumbSchema(article) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": CONFIG.siteUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": `${CONFIG.siteUrl}/blog/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": article.h1 || article.title,
+        "item": `${CONFIG.siteUrl}/blog/${article.slug}.html`
+      }
+    ]
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
 }
 
 /**
  * Generate FAQ HTML section
  */
 function generateFaqHtml(faqs) {
-    if (!faqs || faqs.length === 0) return '';
+  if (!faqs || faqs.length === 0) return '';
 
-    const faqItems = faqs.map(faq => `
+  const faqItems = faqs.map(faq => `
     <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
       <h3 itemprop="name">${escapeHtml(faq.question)}</h3>
       <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
@@ -176,7 +208,7 @@ function generateFaqHtml(faqs) {
     </div>
   `).join('\n');
 
-    return `
+  return `
     <section class="article-faq" itemscope itemtype="https://schema.org/FAQPage">
       <h2>Domande Frequenti</h2>
       ${faqItems}
@@ -188,41 +220,42 @@ function generateFaqHtml(faqs) {
  * Generate secondary keywords meta
  */
 function generateKeywordsMeta(keywords) {
-    if (!keywords || keywords.length === 0) return '';
-    const kwList = keywords.map(k => k.keyword || k).join(', ');
-    return `<meta name="keywords" content="${escapeHtml(kwList)}">`;
+  if (!keywords || keywords.length === 0) return '';
+  const kwList = keywords.map(k => k.keyword || k).join(', ');
+  return `<meta name="keywords" content="${escapeHtml(kwList)}">`;
 }
 
 /**
  * Format date for display
  */
 function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('it-IT', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+  const date = new Date(dateString);
+  return date.toLocaleDateString('it-IT', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 }
 
 /**
  * Generate a complete HTML page for an article
  */
 function generateArticleHtml(article) {
-    const title = article.meta?.title || article.title || '';
-    const h1 = article.h1 || article.title || '';
-    const description = article.meta?.description || article.directAnswer || '';
-    const canonicalUrl = `${CONFIG.siteUrl}/blog/${article.slug}.html`;
-    const publishDate = formatDate(article.publishedAt || article.createdAt);
-    const readTime = article.meta?.timeToRead || Math.ceil((article.wordCount || 500) / 200);
+  const title = article.meta?.title || article.title || '';
+  const h1 = article.h1 || article.title || '';
+  const description = article.meta?.description || article.directAnswer || '';
+  const canonicalUrl = `${CONFIG.siteUrl}/blog/${article.slug}.html`;
+  const publishDate = formatDate(article.publishedAt || article.createdAt);
+  const readTime = article.meta?.timeToRead || Math.ceil((article.wordCount || 500) / 200);
 
-    const contentHtml = parseContentToHtml(article.content);
-    const faqHtml = generateFaqHtml(article.faqSchema);
-    const faqSchema = generateFaqSchema(article.faqSchema);
-    const articleSchema = generateArticleSchema(article);
-    const keywordsMeta = generateKeywordsMeta(article.secondaryKeywords);
+  const contentHtml = parseContentToHtml(article.content);
+  const faqHtml = generateFaqHtml(article.faqSchema);
+  const faqSchema = generateFaqSchema(article.faqSchema);
+  const articleSchema = generateArticleSchema(article);
+  const breadcrumbSchema = generateBreadcrumbSchema(article);
+  const keywordsMeta = generateKeywordsMeta(article.secondaryKeywords);
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -264,9 +297,13 @@ function generateArticleHtml(article) {
   <!-- Schema.org -->
   ${articleSchema}
   ${faqSchema}
+  ${breadcrumbSchema}
   
   <link rel="stylesheet" href="/css/style.css">
   <style>
+    /* === MOBILE-FIRST OPTIMIZATIONS FOR 50+ USERS === */
+    /* Larger base font, high contrast, big touch targets */
+    
     .article-container {
       max-width: 800px;
       margin: 0 auto;
@@ -279,34 +316,35 @@ function generateArticleHtml(article) {
     }
     .article-meta {
       display: flex;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
       color: var(--color-text-dim, #94a3b8);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      font-size: 1rem; /* Larger for readability */
+      margin-bottom: 1.5rem;
     }
     .article-meta span {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .article-title {
-      font-size: 2.5rem;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
       color: white;
     }
     .article-excerpt {
-      font-size: 1.2rem;
-      color: var(--color-text-light, #cbd5e1);
-      line-height: 1.6;
+      font-size: 1.25rem; /* Larger for older readers */
+      color: var(--color-text-light, #e2e8f0); /* High contrast */
+      line-height: 1.7;
     }
     .article-content {
-      color: var(--color-text-light, #cbd5e1);
-      line-height: 1.8;
-      font-size: 1.1rem;
+      color: var(--color-text-light, #e2e8f0); /* Higher contrast */
+      line-height: 1.9; /* More line spacing */
+      font-size: 1.15rem; /* Larger base text */
     }
     .article-content h2 {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       margin: 2.5rem 0 1rem;
       color: white;
     }
@@ -417,12 +455,61 @@ function generateArticleHtml(article) {
     }
     .btn {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 16px 32px; /* Larger touch target for 50+ */
+      min-height: 56px; /* Minimum 56px for accessibility */
       background: var(--color-primary);
       color: #000;
-      border-radius: 8px;
+      border-radius: 12px;
       text-decoration: none;
       font-weight: 600;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    
+    /* Mobile optimizations for 50+ users */
+    @media (max-width: 768px) {
+      .article-container {
+        padding: 100px 16px 60px;
+      }
+      .article-title {
+        font-size: 1.75rem;
+        line-height: 1.35;
+      }
+      .article-content {
+        font-size: 1.1rem; /* Minimum 18px on mobile */
+        line-height: 1.8;
+      }
+      .article-content h2 {
+        font-size: 1.5rem;
+      }
+      .article-content h3 {
+        font-size: 1.25rem;
+      }
+      .article-meta {
+        font-size: 0.95rem;
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+        padding: 18px 24px;
+        font-size: 1.15rem;
+      }
+      .back-link {
+        display: block;
+        padding: 16px 0;
+        font-size: 1.1rem;
+      }
+      .faq-item {
+        padding: 1.25rem;
+      }
+      .faq-item h3 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+      }
+      .faq-item p {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
     }
     .footer {
       border-top: 1px solid rgba(255,255,255,0.1);
@@ -479,86 +566,125 @@ function generateArticleHtml(article) {
 }
 
 /**
+ * Update sitemap.xml with new articles
+ */
+function updateSitemap(articles) {
+  const sitemapPath = path.join(__dirname, '..', 'sitemap.xml');
+
+  if (!fs.existsSync(sitemapPath)) {
+    console.log('⚠️ sitemap.xml not found, skipping update');
+    return;
+  }
+
+  let sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
+
+  // Remove existing blog article URLs to avoid duplicates (excluding main /blog/ page)
+  const urlRegex = /<url>(?:(?!<\/url>).)*?\/blog\/(?!$)(?:(?!<\/url>).)*?<\/url>/gs;
+  sitemapContent = sitemapContent.replace(urlRegex, '');
+
+  // Create new URL entries
+  const today = new Date().toISOString().split('T')[0];
+  const newUrls = articles.map(article => `  <url>
+    <loc>${CONFIG.siteUrl}/blog/${article.slug}.html</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n');
+
+  // Insert new URLs before </urlset>
+  sitemapContent = sitemapContent.replace('</urlset>', `${newUrls}\n</urlset>`);
+
+  // Clean up empty lines
+  sitemapContent = sitemapContent.replace(/^\s*[\r\n]/gm, '');
+
+  fs.writeFileSync(sitemapPath, sitemapContent);
+  console.log(`   Updated sitemap.xml with ${articles.length} articles`);
+}
+
+/**
  * Update the blog index page with all articles
  */
 function generateBlogIndexJson(articles) {
-    const indexData = articles.map(article => ({
-        slug: article.slug,
-        title: article.h1 || article.title,
-        excerpt: article.meta?.description || article.directAnswer || '',
-        date: article.publishedAt || article.createdAt,
-        wordCount: article.wordCount,
-        readTime: article.meta?.timeToRead || Math.ceil((article.wordCount || 500) / 200)
-    }));
+  const indexData = articles.map(article => ({
+    slug: article.slug,
+    title: article.h1 || article.title,
+    excerpt: article.meta?.description || article.directAnswer || '',
+    date: article.publishedAt || article.createdAt,
+    wordCount: article.wordCount,
+    readTime: article.meta?.timeToRead || Math.ceil((article.wordCount || 500) / 200)
+  }));
 
-    const indexPath = path.join(CONFIG.blogDir, 'articles.json');
-    fs.writeFileSync(indexPath, JSON.stringify(indexData, null, 2));
-    console.log(`   Updated articles.json with ${indexData.length} articles`);
+  const indexPath = path.join(CONFIG.blogDir, 'articles.json');
+  fs.writeFileSync(indexPath, JSON.stringify(indexData, null, 2));
+  console.log(`   Updated articles.json with ${indexData.length} articles`);
 }
 
 /**
  * Main sync function
  */
 async function syncBlog() {
-    console.log('\n🔄 NexEnergy Blog Sync');
-    console.log('='.repeat(50));
-    console.log(`📅 ${new Date().toISOString()}\n`);
+  console.log('\n🔄 NexEnergy Blog Sync');
+  console.log('='.repeat(50));
+  console.log(`📅 ${new Date().toISOString()}\n`);
 
-    try {
-        // Ensure blog directory exists
-        if (!fs.existsSync(CONFIG.blogDir)) {
-            fs.mkdirSync(CONFIG.blogDir, { recursive: true });
-        }
-
-        // Fetch articles from CMS
-        const articles = await fetchArticles();
-
-        if (articles.length === 0) {
-            console.log('⚠️  No articles found in CMS');
-            return;
-        }
-
-        // Generate HTML page for each article
-        console.log('\n📝 Generating article pages...');
-        let created = 0;
-        let updated = 0;
-
-        for (const article of articles) {
-            if (!article.slug) {
-                console.log(`   ⚠️ Skipping article without slug: ${article.title}`);
-                continue;
-            }
-
-            const filePath = path.join(CONFIG.blogDir, `${article.slug}.html`);
-            const html = generateArticleHtml(article);
-
-            const existed = fs.existsSync(filePath);
-            fs.writeFileSync(filePath, html);
-
-            if (existed) {
-                updated++;
-                console.log(`   📄 Updated: ${article.slug}.html`);
-            } else {
-                created++;
-                console.log(`   ✨ Created: ${article.slug}.html`);
-            }
-        }
-
-        // Generate articles index JSON for the blog listing page
-        generateBlogIndexJson(articles);
-
-        // Summary
-        console.log('\n' + '='.repeat(50));
-        console.log('✅ Sync completed!');
-        console.log(`   Created: ${created} articles`);
-        console.log(`   Updated: ${updated} articles`);
-        console.log(`   Total: ${articles.length} articles\n`);
-
-    } catch (error) {
-        console.error('\n❌ Sync failed:', error.message);
-        console.error(error.stack);
-        process.exit(1);
+  try {
+    // Ensure blog directory exists
+    if (!fs.existsSync(CONFIG.blogDir)) {
+      fs.mkdirSync(CONFIG.blogDir, { recursive: true });
     }
+
+    // Fetch articles from CMS
+    const articles = await fetchArticles();
+
+    if (articles.length === 0) {
+      console.log('⚠️  No articles found in CMS');
+      return;
+    }
+
+    // Generate HTML page for each article
+    console.log('\n📝 Generating article pages...');
+    let created = 0;
+    let updated = 0;
+
+    for (const article of articles) {
+      if (!article.slug) {
+        console.log(`   ⚠️ Skipping article without slug: ${article.title}`);
+        continue;
+      }
+
+      const filePath = path.join(CONFIG.blogDir, `${article.slug}.html`);
+      const html = generateArticleHtml(article);
+
+      const existed = fs.existsSync(filePath);
+      fs.writeFileSync(filePath, html);
+
+      if (existed) {
+        updated++;
+        console.log(`   📄 Updated: ${article.slug}.html`);
+      } else {
+        created++;
+        console.log(`   ✨ Created: ${article.slug}.html`);
+      }
+    }
+
+    // Generate articles index JSON for the blog listing page
+    generateBlogIndexJson(articles);
+
+    // Update sitemap.xml
+    updateSitemap(articles);
+
+    // Summary
+    console.log('\n' + '='.repeat(50));
+    console.log('✅ Sync completed!');
+    console.log(`   Created: ${created} articles`);
+    console.log(`   Updated: ${updated} articles`);
+    console.log(`   Total: ${articles.length} articles\n`);
+
+  } catch (error) {
+    console.error('\n❌ Sync failed:', error.message);
+    console.error(error.stack);
+    process.exit(1);
+  }
 }
 
 // Run sync

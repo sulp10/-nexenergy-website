@@ -111,9 +111,38 @@
   ]
 }
 </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://nex-energy.it"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://nex-energy.it/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sensori di Presenza: La Nuova Era dell'Occupazione Camere in Hotel",
+      "item": "https://nex-energy.it/blog/sensori-presenza-camera-occupazione-hotel-456085.html"
+    }
+  ]
+}
+</script>
   
   <link rel="stylesheet" href="/css/style.css">
   <style>
+    /* === MOBILE-FIRST OPTIMIZATIONS FOR 50+ USERS === */
+    /* Larger base font, high contrast, big touch targets */
+    
     .article-container {
       max-width: 800px;
       margin: 0 auto;
@@ -126,34 +155,35 @@
     }
     .article-meta {
       display: flex;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
       color: var(--color-text-dim, #94a3b8);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      font-size: 1rem; /* Larger for readability */
+      margin-bottom: 1.5rem;
     }
     .article-meta span {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .article-title {
-      font-size: 2.5rem;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
       color: white;
     }
     .article-excerpt {
-      font-size: 1.2rem;
-      color: var(--color-text-light, #cbd5e1);
-      line-height: 1.6;
+      font-size: 1.25rem; /* Larger for older readers */
+      color: var(--color-text-light, #e2e8f0); /* High contrast */
+      line-height: 1.7;
     }
     .article-content {
-      color: var(--color-text-light, #cbd5e1);
-      line-height: 1.8;
-      font-size: 1.1rem;
+      color: var(--color-text-light, #e2e8f0); /* Higher contrast */
+      line-height: 1.9; /* More line spacing */
+      font-size: 1.15rem; /* Larger base text */
     }
     .article-content h2 {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       margin: 2.5rem 0 1rem;
       color: white;
     }
@@ -264,12 +294,61 @@
     }
     .btn {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 16px 32px; /* Larger touch target for 50+ */
+      min-height: 56px; /* Minimum 56px for accessibility */
       background: var(--color-primary);
       color: #000;
-      border-radius: 8px;
+      border-radius: 12px;
       text-decoration: none;
       font-weight: 600;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    
+    /* Mobile optimizations for 50+ users */
+    @media (max-width: 768px) {
+      .article-container {
+        padding: 100px 16px 60px;
+      }
+      .article-title {
+        font-size: 1.75rem;
+        line-height: 1.35;
+      }
+      .article-content {
+        font-size: 1.1rem; /* Minimum 18px on mobile */
+        line-height: 1.8;
+      }
+      .article-content h2 {
+        font-size: 1.5rem;
+      }
+      .article-content h3 {
+        font-size: 1.25rem;
+      }
+      .article-meta {
+        font-size: 0.95rem;
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+        padding: 18px 24px;
+        font-size: 1.15rem;
+      }
+      .back-link {
+        display: block;
+        padding: 16px 0;
+        font-size: 1.1rem;
+      }
+      .faq-item {
+        padding: 1.25rem;
+      }
+      .faq-item h3 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+      }
+      .faq-item p {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
     }
     .footer {
       border-top: 1px solid rgba(255,255,255,0.1);

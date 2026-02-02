@@ -399,6 +399,7 @@ async function generateImage(topic) {
 /**
  * Poll KEI API for task completion
  * Uses /jobs/recordInfo endpoint with 10s interval, max 30 mins
+ * Response format: [{ code, msg, data: { taskId, state, resultJson: "{resultUrls:[...]}" } }]
  */
 async function pollKEITask(taskId) {
   const maxAttempts = 180; // 180 attempts * 10s = 1800s (30 mins)
@@ -417,60 +418,53 @@ async function pollKEITask(taskId) {
         }
       });
 
-      console.log(`   [${i + 1}/${maxAttempts}] HTTP Status: ${checkResponse.status}`);
+      if (i % 6 === 0) console.log(`   [${i + 1}/${maxAttempts}] Polling...`);
 
       if (checkResponse.ok) {
         const resultBody = await checkResponse.json();
 
-        // DEBUG: Log full response every 3 iterations
-        if (i % 3 === 0) {
-          console.log(`   FULL RESPONSE: ${JSON.stringify(resultBody).substring(0, 500)}`);
-        }
+        // Response is an ARRAY - get first element
+        const responseItem = Array.isArray(resultBody) ? resultBody[0] : resultBody;
+        const taskData = responseItem?.data || responseItem;
 
-        // Try to find data in multiple places
-        const taskData = resultBody.data || resultBody;
-        const status = taskData.status || resultBody.status || resultBody.msg;
+        // Status is in 'state' field, not 'status'
+        const state = taskData.state || taskData.status;
 
-        console.log(`   Status: ${status}`);
+        if (i % 3 === 0) console.log(`   State: ${state}`);
 
-        // Check for success (trying many possible values)
-        if (status === 'success' || status === 'completed' || status === 'succeeded' || status === 'done' || status === 'finished') {
-          // Try to extract URL from ALL possible locations
-          const possibleUrl =
-            taskData.result_url ||
-            taskData.resultUrl ||
-            taskData.url ||
-            taskData.imageUrl ||
-            taskData.image_url ||
-            taskData.output ||
-            (taskData.results && taskData.results[0]?.url) ||
-            (taskData.results && taskData.results[0]) ||
-            (taskData.result && taskData.result.url) ||
-            (taskData.result && typeof taskData.result === 'string' && taskData.result.startsWith('http') ? taskData.result : null) ||
-            resultBody.url ||
-            resultBody.result_url ||
-            (resultBody.results && resultBody.results[0]?.url);
-
-          if (possibleUrl) {
-            console.log(`   SUCCESS! Found URL: ${possibleUrl}`);
-            return possibleUrl;
-          } else {
-            console.log(`   Status is success but NO URL found in response!`);
-            console.log(`   Full taskData: ${JSON.stringify(taskData)}`);
+        if (state === 'success' || state === 'completed' || state === 'done') {
+          // resultJson is a STRING that needs to be parsed
+          if (taskData.resultJson) {
+            try {
+              const resultData = JSON.parse(taskData.resultJson);
+              // URL is in resultUrls array
+              if (resultData.resultUrls && resultData.resultUrls.length > 0) {
+                const imageUrl = resultData.resultUrls[0];
+                console.log(`   SUCCESS! Image URL: ${imageUrl}`);
+                return imageUrl;
+              }
+            } catch (parseErr) {
+              console.error('   Failed to parse resultJson:', parseErr.message);
+            }
           }
-        } else if (status === 'failed' || status === 'error') {
-          console.error('   Image generation task failed:', taskData.error || taskData.failReason || taskData.message);
+
+          // Fallback: try other common fields
+          const fallbackUrl = taskData.result_url || taskData.url || taskData.imageUrl;
+          if (fallbackUrl) {
+            console.log(`   SUCCESS (fallback)! Image URL: ${fallbackUrl}`);
+            return fallbackUrl;
+          }
+
+          console.log(`   State is success but no URL found. Full data: ${JSON.stringify(taskData).substring(0, 300)}`);
+
+        } else if (state === 'failed' || state === 'error') {
+          console.error('   Image generation failed:', taskData.failMsg || taskData.error);
           return null;
-        } else if (status === 'pending' || status === 'processing' || status === 'running' || status === 'queued') {
-          // Still processing, continue loop
-          if (i % 6 === 0) console.log(`   Still processing...`);
-        } else {
-          // Unknown status
-          console.log(`   Unknown status: ${status}`);
         }
+        // Otherwise still processing, continue loop
+
       } else {
-        const errText = await checkResponse.text();
-        console.log(`   Polling HTTP Error: ${checkResponse.status} - ${errText.substring(0, 200)}`);
+        console.log(`   Polling HTTP Error: ${checkResponse.status}`);
       }
     } catch (e) {
       console.log(`   Polling Exception: ${e.message}`);

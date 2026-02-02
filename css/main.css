@@ -1534,3 +1534,10 @@ input[type="range"] {
     touch-action: manipulation;
     /* Improve touch sliding */
 }
+
+/* FAILSAFE: Ensure content is visible if JS fails */
+body:not(.js-loaded) .reveal-on-scroll {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}

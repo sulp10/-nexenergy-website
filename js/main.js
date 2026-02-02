@@ -6,6 +6,12 @@
 (function () {
   'use strict';
 
+  // Debug Log
+  console.log('NexEnergy Main JS V2.1 Started');
+
+  // Failsafe: Mark body as JS-loaded to enable animations
+  document.body.classList.add('js-loaded');
+
   // DOM Ready
   document.addEventListener('DOMContentLoaded', init);
 
@@ -692,5 +698,6 @@
         });
       });
     }
+  }
 
-  }) ();
+})();

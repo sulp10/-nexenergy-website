@@ -266,7 +266,7 @@ STRUTTURA OUTPUT (JSON):
   "metaDescription": "Meta description 120-160 chars, inizia con verbo",
   "directAnswer": "Risposta diretta 2-3 frasi per featured snippet",
   "slug": "url-slug-lowercase-hyphen",
-  "content": "Articolo completo in HTML (h2, h3, p, ul, strong)",
+  "content": "Articolo completo strutturato con TAG HTML di formattazione interna (h2, h3, p, ul/li, strong). NON includere <html>, <head>, <body>. Solo il contenuto del body.",
   "faq": [
     {"question": "...", "answer": "..."},
     {"question": "...", "answer": "..."},
@@ -398,6 +398,7 @@ async function generateImage(topic) {
 
 /**
  * Poll KEI API for task completion
+ * Uses /jobs/recordInfo endpoint with 10s interval, max 30 mins
  */
 async function pollKEITask(taskId) {
   const maxAttempts = 180; // 180 attempts * 10s = 1800s (30 mins)
@@ -418,9 +419,6 @@ async function pollKEITask(taskId) {
 
       if (checkResponse.ok) {
         const resultBody = await checkResponse.json();
-        // User requested strict loop until success with URL
-        // Endpoint: /jobs/recordInfo
-        // Response format usually contains data.status or data.data.status
         const taskData = resultBody.data || resultBody;
 
         // Log status occasionally
@@ -440,6 +438,8 @@ async function pollKEITask(taskId) {
           console.error('   Image generation task failed:', taskData.error || taskData.failReason);
           return null;
         }
+      } else {
+        console.log(`   Polling HTTP Error: ${checkResponse.status}`);
       }
     } catch (e) {
       console.log(`   Polling Exception: ${e.message}`);
@@ -690,7 +690,7 @@ async function sendNotification(type, data) {
 
 /**
  * Convert HTML content to Payload CMS Lexical format
- * SIMPLIFIED VERSION: Flattens lists to paragraphs to avoid Lexical Error #17
+ * SIMPLIFIED VERSION: Flattens lists to paragraphs, STRIPS all tags from text
  */
 function htmlToLexical(html) {
   if (!html) {
@@ -717,15 +717,18 @@ function htmlToLexical(html) {
 
   const children = [];
 
-  // Convert lists to plain text with bullets before splitting
+  // Pre-process: Strip html, head, body tags if present
   let processedHtml = html
+    .replace(/<\/?(?:html|head|body|!DOCTYPE)[^>]*>/gi, '') // Remove wrapper tags
     .replace(/<ul>/gi, '')
     .replace(/<\/ul>/gi, '')
     .replace(/<ol>/gi, '')
     .replace(/<\/ol>/gi, '')
     .replace(/<li>/gi, '<p>• ') // Convert list items to paragraphs with bullet
-    .replace(/<\/li>/gi, '</p>');
+    .replace(/<\/li>/gi, '</p>')
+    .replace(/<br\s*\/?>/gi, '</p><p>'); // Convert br to paragraph breaks
 
+  // Split by block tags we support
   const parts = processedHtml.split(/(<\/?(?:h[1-6]|p)[^>]*>)/gi);
 
   let currentParagraphChildren = [];
@@ -755,6 +758,7 @@ function htmlToLexical(html) {
       flushParagraph();
       const level = parseInt(lowerPart.match(/<h([1-6])/)[1]);
       const nextPart = parts[i + 1] || '';
+      // STRIP ALL HTML TAGS from heading text (e.g. strong inside h2)
       const text = nextPart.replace(/<[^>]*>/g, '').trim();
 
       if (text) {
@@ -780,7 +784,8 @@ function htmlToLexical(html) {
     }
     // Text Content
     else if (!/^<[^>]*>/.test(part)) {
-      const text = part.replace(/•/g, '• ').trim(); // Ensure space after bullet
+      // STRIP ALL HTML TAGS from paragraph text (no more bold/italic raw tags)
+      const text = part.replace(/<[^>]*>/g, '').replace(/•/g, '• ').trim();
       if (text) {
         currentParagraphChildren.push({
           type: 'text',

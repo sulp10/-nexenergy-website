@@ -525,7 +525,17 @@ async function publishToCMS(article, imageUrl) {
   };
 
   if (imageUrl) {
-    payload.heroImage = imageUrl;
+    try {
+      // Upload image to Payload Media first
+      const mediaId = await uploadImageToPayload(imageUrl, article.title);
+      if (mediaId) {
+        payload.heroImage = mediaId;
+        console.log('   Associated hero image ID:', mediaId);
+      }
+    } catch (uploadError) {
+      console.error('   Failed to upload hero image:', uploadError.message);
+      // Continue without image is better than failing completely
+    }
   }
 
   const response = await fetch(`${PAYLOAD_CMS_URL}/posts`, {
@@ -634,6 +644,63 @@ async function sendNotification(type, data) {
  * Convert HTML content to Payload CMS Lexical format
  * Lexical uses a tree structure with root > children nodes
  */
+/**
+ * Download image from URL and upload to Payload CMS Media collection
+ */
+async function uploadImageToPayload(imageUrl, title) {
+  console.log('   Downloading image from:', imageUrl);
+
+  // 1. Download image
+  const imgResponse = await fetch(imageUrl);
+  if (!imgResponse.ok) {
+    throw new Error(`Failed to download image: ${imgResponse.statusText}`);
+  }
+  const imgBuffer = await imgResponse.buffer();
+
+  // 2. Prepare multipart form data manually (since we don't have form-data package)
+  const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
+  const filename = `hero-${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}.webp`;
+
+  let body = '';
+  // File part
+  body += `--${boundary}\r\n`;
+  body += `Content-Disposition: form-data; name="file"; filename="${filename}"\r\n`;
+  body += `Content-Type: image/webp\r\n\r\n`;
+
+  // Combine body parts with buffer
+  const preBuffer = Buffer.from(body, 'utf-8');
+  const postBuffer = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf-8');
+  const finalBuffer = Buffer.concat([preBuffer, imgBuffer, postBuffer]);
+
+  console.log(`   Uploading to Payload Media (${finalBuffer.length} bytes)...`);
+
+  // 3. Upload to Payload
+  const uploadResponse = await fetch(`${PAYLOAD_CMS_URL}/media`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.PAYLOAD_API_KEY}`,
+      'Content-Type': `multipart/form-data; boundary=${boundary}`
+    },
+    body: finalBuffer
+  });
+
+  if (!uploadResponse.ok) {
+    const err = await uploadResponse.text();
+    console.error('   Media Upload Error:', err);
+    throw new Error(`Failed to upload media: ${uploadResponse.status} - ${err}`);
+  }
+
+  const mediaData = await uploadResponse.json();
+  console.log('   Media uploaded successfully. ID:', mediaData.doc?.id || mediaData.id);
+
+  return mediaData.doc?.id || mediaData.id;
+}
+
+
+/**
+ * Convert HTML content to Payload CMS Lexical format
+ * Fixes List Node structure to avoid Lexical Error #17
+ */
 function htmlToLexical(html) {
   if (!html) {
     return {
@@ -642,7 +709,11 @@ function htmlToLexical(html) {
         children: [
           {
             type: 'paragraph',
-            children: [{ type: 'text', text: 'Contenuto non disponibile.' }]
+            children: [{ type: 'text', text: 'Contenuto non disponibile.', version: 1 }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1
           }
         ],
         direction: 'ltr',
@@ -655,31 +726,36 @@ function htmlToLexical(html) {
 
   const children = [];
 
-  // Simple HTML to Lexical conversion
-  // Split by common HTML tags and convert to Lexical nodes
-  const parts = html.split(/(<\/?(?:h[1-6]|p|ul|li|strong|em)[^>]*>)/gi);
+  // Split by HTML tags
+  const parts = html.split(/(<\/?(?:h[1-6]|p|ul|ol|li|strong|em)[^>]*>)/gi);
 
-  let currentParagraph = [];
-  let inList = false;
-  let listItems = [];
+  let currentParagraphChildren = [];
+  let listNode = null;
+
+  function flushParagraph() {
+    if (currentParagraphChildren.length > 0) {
+      children.push({
+        type: 'paragraph',
+        children: currentParagraphChildren,
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1
+      });
+      currentParagraphChildren = [];
+    }
+  }
 
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i];
-
     if (!part || part.trim() === '') continue;
 
-    // Opening tags
-    if (/<h([1-6])[^>]*>/i.test(part)) {
-      // Flush current paragraph
-      if (currentParagraph.length > 0) {
-        children.push({
-          type: 'paragraph',
-          children: currentParagraph
-        });
-        currentParagraph = [];
-      }
+    const lowerPart = part.toLowerCase();
 
-      const level = parseInt(part.match(/<h([1-6])/i)[1]);
+    // Headings
+    if (/^<h[1-6]/.test(lowerPart)) {
+      flushParagraph();
+      const level = parseInt(lowerPart.match(/<h([1-6])/)[1]);
       const nextPart = parts[i + 1] || '';
       const text = nextPart.replace(/<[^>]*>/g, '').trim();
 
@@ -687,79 +763,89 @@ function htmlToLexical(html) {
         children.push({
           type: 'heading',
           tag: `h${level}`,
-          children: [{ type: 'text', text: text }]
+          children: [{ type: 'text', text: text, version: 1 }],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1
         });
         i++; // Skip content
       }
-    } else if (/<\/h[1-6]>/i.test(part)) {
-      // Skip closing heading tags
+    }
+    // Paragraph Start
+    else if (/^<p/.test(lowerPart)) {
+      flushParagraph();
+    }
+    // List Start
+    else if (/^<ul/.test(lowerPart) || /^<ol/.test(lowerPart)) {
+      flushParagraph();
+      listNode = {
+        type: 'list',
+        listType: /^<ol/.test(lowerPart) ? 'number' : 'bullet',
+        tag: /^<ol/.test(lowerPart) ? 'ol' : 'ul',
+        start: 1,
+        children: [],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1
+      };
+    }
+    // List End
+    else if (/^<\/ul>/.test(lowerPart) || /^<\/ol>/.test(lowerPart)) {
+      if (listNode && listNode.children.length > 0) {
+        children.push(listNode);
+      }
+      listNode = null;
+    }
+    // List Item
+    else if (/^<li/.test(lowerPart)) {
+      if (listNode) {
+        const nextPart = parts[i + 1] || '';
+        const text = nextPart.replace(/<[^>]*>/g, '').trim();
+        if (text) {
+          listNode.children.push({
+            type: 'listitem',
+            value: listNode.children.length + 1,
+            children: [{ type: 'text', text: text, version: 1 }],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1
+          });
+          i++; // Skip content
+        }
+      }
+    }
+    // Closing tags that just need skipping
+    else if (/^<\//.test(lowerPart)) {
       continue;
-    } else if (/<p[^>]*>/i.test(part)) {
-      // Start new paragraph
-      if (currentParagraph.length > 0) {
-        children.push({
-          type: 'paragraph',
-          children: currentParagraph
-        });
-        currentParagraph = [];
-      }
-    } else if (/<\/p>/i.test(part)) {
-      // End paragraph
-      if (currentParagraph.length > 0) {
-        children.push({
-          type: 'paragraph',
-          children: currentParagraph
-        });
-        currentParagraph = [];
-      }
-    } else if (/<ul[^>]*>/i.test(part)) {
-      inList = true;
-      listItems = [];
-    } else if (/<\/ul>/i.test(part)) {
-      if (listItems.length > 0) {
-        children.push({
-          type: 'list',
-          listType: 'bullet',
-          children: listItems
-        });
-      }
-      inList = false;
-      listItems = [];
-    } else if (/<li[^>]*>/i.test(part)) {
-      // List item - get content from next part
-      const nextPart = parts[i + 1] || '';
-      const text = nextPart.replace(/<[^>]*>/g, '').trim();
-      if (text && inList) {
-        listItems.push({
-          type: 'listitem',
-          children: [{ type: 'text', text: text }]
-        });
-        i++;
-      }
-    } else if (/<\/li>/i.test(part)) {
-      continue;
-    } else if (!/<[^>]*>/.test(part)) {
-      // Plain text
+    }
+    // Text Content (not inside tag)
+    else if (!/^<[^>]*>/.test(part)) {
       const text = part.trim();
       if (text) {
-        currentParagraph.push({ type: 'text', text: text });
+        // Plain text is stripped of tags just in case
+        currentParagraphChildren.push({
+          type: 'text',
+          text: text,
+          version: 1
+        });
       }
     }
   }
 
-  // Flush remaining paragraph
-  if (currentParagraph.length > 0) {
-    children.push({
-      type: 'paragraph',
-      children: currentParagraph
-    });
-  }
+  flushParagraph();
 
-  // Ensure at least one child
+  // Fallback if empty
   if (children.length === 0) {
     children.push({
       type: 'paragraph',
-      children: [{ type: 'text', text: html.replace(/<[^>]*>/g, ' ').trim() || 'Contenuto' }]
+      children: [{ type: 'text', text: 'Contenuto non disponibile.', version: 1 }],
+      direction: 'ltr',
+      format: '',
+      indent: 0,
+      version: 1
     });
   }
 

@@ -489,10 +489,19 @@ function generateArticleHtml(article) {
         font-size: 0.95rem;
       }
       .btn {
-        width: 100%;
+        width: auto; /* Revert full width */
+        max-width: 100%;
+        display: inline-flex;
+        justify-content: center;
         text-align: center;
-        padding: 18px 24px;
-        font-size: 1.15rem;
+        padding: 14px 24px; /* Slightly reduced padding */
+        font-size: 1.1rem;
+        margin: 0 auto; /* Center button */
+      }
+      .header .btn {
+        padding: 10px 18px; /* Smaller for header */
+        font-size: 0.95rem;
+        min-height: 44px;
       }
       .back-link {
         display: block;

@@ -248,15 +248,20 @@
 
             <!-- Empty State -->
             <div id="empty-state" class="loading-state" hidden>
-                <p>Nessun articolo disponibile al momento.</p>
-                <p style="margin-top: 10px;"><a href="../index.html" style="color: var(--color-primary);">Torna alla
-                        homepage</a> per leggere gli articoli statici.</p>
+                <p>Gli articoli AI saranno disponibili dopo il deploy.</p>
+                <p style="margin-top: 10px;">
+                    <a href="https://cms.immoby.org/posts" target="_blank"
+                        style="color: var(--color-primary);">Visualizza gli articoli sul CMS →</a>
+                </p>
             </div>
 
-            <!-- Error State -->
+            <!-- Error State (local dev) -->
             <div id="error-state" class="loading-state" hidden>
-                <p>Errore nel caricamento degli articoli.</p>
-                <button onclick="location.reload()" class="btn" style="margin-top: 20px;">Riprova</button>
+                <p>Caricamento non disponibile in locale.</p>
+                <p style="margin-top: 10px; color: var(--color-text-dim);">Gli articoli saranno visibili dopo il deploy
+                    su Netlify.</p>
+                <a href="https://cms.immoby.org/posts" target="_blank" class="btn" style="margin-top: 20px;">Vedi
+                    Articoli su CMS</a>
             </div>
 
             <!-- Blog Grid (populated dynamically from CMS) -->

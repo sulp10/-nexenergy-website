@@ -1274,4 +1274,77 @@ input[type=range] {
   section {
     page-break-inside: avoid;
   }
+}/* ========================
+   MOBILE OPTIMIZATIONS (USER FEEDBACK FIXES)
+   ======================== */
+
+@media (max-width: 768px) {
+
+    /* 1. Newsletter Popup Fixes */
+    .newsletter-popup-content {
+        max-width: 90%;
+        /* Prevent edge-to-edge */
+        padding: 20px !important;
+        /* Reduce padding */
+        margin: 0 auto;
+        overflow-y: auto;
+        max-height: 90vh;
+    }
+
+    .newsletter-popup-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.15);
+        /* More visible */
+    }
+
+    /* 2. Glow Effects onCards (Permanent on mobile) */
+    .feature-card {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.15) !important;
+        border-color: rgba(0, 212, 255, 0.2) !important;
+    }
+
+    .feature-visual img {
+        transform: scale(1.02);
+        /* Slight zoom for dynamic feel */
+    }
+
+    /* 3. ROI Calculator Fixes */
+    .roi-results {
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        /* Ensure padding doesn't increase width */
+    }
+
+    .roi-dual-container {
+        grid-template-columns: 1fr;
+        /* Stack vertically */
+        gap: 10px;
+    }
+
+    .roi-container {
+        padding: 20px;
+    }
+
+    /* 4. Contact Form Fixes */
+    .contact-form {
+        padding: 20px;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* 5. Paradosso & Evolvi Backgrounds */
+    /* Ensure backgrounds are visible and not just flat colors */
+    body {
+        background-attachment: scroll !important;
+        /* Fix fixed bg on mobile */
+    }
+
+    .feature-card.text-only .feature-content {
+        background: linear-gradient(135deg, rgba(11, 15, 25, 0.9), rgba(0, 212, 255, 0.1));
+    }
 }

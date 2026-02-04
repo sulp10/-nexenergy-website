@@ -43,7 +43,7 @@ jobs:
           KEI_API_KEY: ${{ secrets.KEI_API_KEY }}
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           ARTICLE_MODEL: google/gemini-2.0-flash-001
-          SITE_URL: https://nexenergy.it
+          SITE_URL: https://nex-energy.it
           SITE_NAME: NexEnergy Blog Agent
         run: |
           if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then

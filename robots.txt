@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Allow: /ai/
 
 # Sitemap location
 Sitemap: https://nex-energy.it/sitemap.xml

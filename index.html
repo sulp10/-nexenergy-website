@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- SEO Primary -->
-  <title>NexEnergy | Retrofit Energetico Intelligente per Hotel Italia</title>
+  <title>NexEnergy Hospitality | Retrofit Energetico Hotel Italia</title>
   <meta name="description"
     content="Riduci i costi energetici del tuo hotel senza cantieri. Sistema retrofit con AI che impara dalla tua struttura. Risparmio attivo dal giorno uno. Richiedi demo.">
   <link rel="canonical" href="https://nex-energy.it/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="NexEnergy | Retrofit Energetico Intelligente per Hotel">
+  <meta property="og:title" content="NexEnergy Hospitality | Retrofit Energetico Intelligente per Hotel">
   <meta property="og:description"
     content="Riduci i costi energetici del tuo hotel senza cantieri. Sistema retrofit con AI che impara dalla tua struttura.">
   <meta property="og:image" content="https://nex-energy.it/images/nexenergy-retrofit-energetico-hotel-og.webp">
@@ -22,7 +22,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="NexEnergy | Retrofit Energetico Intelligente per Hotel">
+  <meta name="twitter:title" content="NexEnergy Hospitality | Retrofit Energetico Intelligente per Hotel">
   <meta name="twitter:description" content="Riduci i costi energetici del tuo hotel senza cantieri.">
   <meta name="twitter:image" content="https://nex-energy.it/images/nexenergy-retrofit-energetico-hotel-og.webp">
 
@@ -544,6 +544,7 @@
       transform: translateY(100%);
       transition: transform 0.3s ease-out;
     }
+
     .cookie-banner.visible {
       transform: translateY(0);
     }
@@ -683,11 +684,12 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": "https://nexenergy.it/#organization",
-    "name": "NexEnergy",
+    "@id": "https://nex-energy.it/#organization",
+    "name": "NexEnergy Hospitality",
+    "alternateName": ["NexEnergy", "NexEnergy Retrofit"],
     "description": "Sistema di retrofit energetico intelligente per l'hospitality italiana",
-    "url": "https://nexenergy.it",
-    "logo": "https://nexenergy.it/images/logo-nexenergy.svg",
+    "url": "https://nex-energy.it",
+    "logo": "https://nex-energy.it/images/logo-nexenergy.svg",
     "knowsAbout": [
       "Energy Efficiency",
       "Hotel Automation",
@@ -791,6 +793,35 @@
         }
       }
     ]
+  }
+  </script>
+
+  <!-- Schema.org WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "NexEnergy Hospitality",
+    "url": "https://nex-energy.it",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://nex-energy.it/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Schema.org BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://nex-energy.it"
+    }]
   }
   </script>
 </head>
@@ -1522,7 +1553,7 @@
           </svg>
         </div>
         <h3>Si è verificato un errore</h3>
-        <p>Riprova più tardi o contattaci direttamente a info@nexenergy.it</p>
+        <p>Riprova più tardi o contattaci direttamente a info@nex-energy.it</p>
         <button type="button" class="btn btn-secondary newsletter-retry">Riprova</button>
       </div>
     </div>
@@ -1560,7 +1591,7 @@
       const consent = localStorage.getItem('cookie_consent');
       if (!consent) {
         // Use requestAnimationFrame to show after paint (avoid CLS)
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
           banner.classList.add('visible');
         });
       }

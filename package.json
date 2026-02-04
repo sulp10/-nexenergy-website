@@ -23,7 +23,8 @@
     "test:newsletter": "node scripts/test-newsletter.js",
     "test:cms": "node scripts/test-cms-publish.js",
     "test:cms:keep": "node scripts/test-cms-publish.js --keep",
-    "test:all": "npm run api:health && npm run lint"
+    "test:all": "npm run api:health && npm run lint",
+    "ai:generate": "node scripts/generate-ai-pages.js"
   },
   "keywords": [
     "nexenergy",
@@ -36,6 +37,7 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
+    "cheerio": "^1.2.0",
     "html-validate": "^8.0.0",
     "serve": "^14.0.0"
   },

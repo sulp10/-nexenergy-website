@@ -319,9 +319,9 @@ RISPONDI SOLO CON IL JSON.`;
  * Publish article to Payload CMS
  */
 async function publishToCMS(article) {
-  // Unique slug
-  const uniqueSuffix = Date.now().toString().slice(-6);
-  article.slug = `${article.slug}-${uniqueSuffix}`;
+  // REMOVED NUMERIC SUFFIX FOR CLEAN SEO URLs
+  // Old: article.slug = `${article.slug}-${uniqueSuffix}`;
+  // New: Keep clean semantic slug (e.g., /blog/costi-energia-hotel-italia-2026/)
 
   // Truncate fields
   const truncDesc = article.directAnswer?.length > 160

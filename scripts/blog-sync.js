@@ -195,6 +195,132 @@ function generateBreadcrumbSchema(article) {
 }
 
 /**
+ * Generate Organization Schema.org JSON-LD (Standalone)
+ * Critical for AEO - AI needs to know who the publisher is
+ */
+function generateOrganizationSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "NexEnergy",
+    "alternateName": "NexEnergy Hospitality",
+    "url": CONFIG.siteUrl,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${CONFIG.siteUrl}/favicon.svg`
+    },
+    "description": "Sistema di retrofit energetico intelligente per hotel e strutture ricettive in Italia",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IT",
+      "addressRegion": "Italia"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Italia"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "availableLanguage": ["Italian"]
+    },
+    "sameAs": []
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+}
+
+/**
+ * Generate LocalBusiness Schema.org JSON-LD
+ * Critical for GEO targeting - helps rank for local searches
+ */
+function generateLocalBusinessSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "NexEnergy",
+    "description": "Soluzioni di retrofit energetico per hotel in Italia",
+    "url": CONFIG.siteUrl,
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IT",
+      "addressRegion": "Italia"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "42.5",
+      "longitude": "12.5"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Italia"
+    },
+    "priceRange": "$$"
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+}
+
+/**
+ * Generate Service Schema.org JSON-LD
+ * Critical for Entity Recognition - AI understands what service we offer
+ */
+function generateServiceSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Retrofit Energetico per Hotel",
+    "description": "Sistema di efficientamento energetico intelligente per strutture ricettive",
+    "provider": {
+      "@type": "Organization",
+      "name": "NexEnergy",
+      "url": CONFIG.siteUrl
+    },
+    "serviceType": "Efficienza Energetica",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Italia"
+    },
+    "audience": {
+      "@type": "BusinessAudience",
+      "name": "Hotel e strutture ricettive"
+    },
+    "category": "Energy Efficiency",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "priceCurrency": "EUR"
+      }
+    }
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+}
+
+/**
+ * Generate geo meta tags for local SEO
+ * Critical for GEO targeting - helps Google understand geographic relevance
+ */
+function generateGeoMetaTags(targetLocation = 'Italia') {
+  return `
+  <!-- Geo Targeting -->
+  <meta name="geo.region" content="IT">
+  <meta name="geo.placename" content="${targetLocation}">
+  <meta name="geo.position" content="42.5;12.5">
+  <meta name="ICBM" content="42.5, 12.5">`;
+}
+
+/**
+ * Get default OG image if none provided
+ * Critical for SEO - social sharing and Google Discover
+ */
+function getDefaultOgImage() {
+  return `${CONFIG.siteUrl}/images/nexenergy-retrofit-energetico-hotel-og.webp`;
+}
+
+/**
  * Generate FAQ HTML section
  */
 function generateFaqHtml(faqs) {
@@ -256,18 +382,26 @@ function generateArticleHtml(article) {
   const breadcrumbSchema = generateBreadcrumbSchema(article);
   const keywordsMeta = generateKeywordsMeta(article.secondaryKeywords);
 
+  // NEW: Enhanced SEO/AEO/GEO markup
+  const organizationSchema = generateOrganizationSchema();
+  const localBusinessSchema = generateLocalBusinessSchema();
+  const serviceSchema = generateServiceSchema();
+  const geoMetaTags = generateGeoMetaTags(article.targetLocation || 'Italia');
+  const ogImage = article.heroImage?.url || getDefaultOgImage();
+
   return `<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- SEO Primary -->
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${canonicalUrl}">
   ${keywordsMeta}
-  
+  ${geoMetaTags}
+
   <!-- Open Graph -->
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
@@ -275,30 +409,40 @@ function generateArticleHtml(article) {
   <meta property="og:type" content="article">
   <meta property="og:locale" content="it_IT">
   <meta property="og:site_name" content="NexEnergy">
-  ${article.heroImage?.url ? `<meta property="og:image" content="${article.heroImage.url}">` : ''}
-  
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="NexEnergy - ${escapeHtml(title)}">
+
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  
+  <meta name="twitter:image" content="${ogImage}">
+  <meta name="twitter:image:alt" content="NexEnergy - ${escapeHtml(title)}">
+
   <!-- Article Meta -->
   <meta property="article:published_time" content="${article.publishedAt || article.createdAt}">
   <meta property="article:modified_time" content="${article.updatedAt}">
   <meta property="article:section" content="${article.meta?.articleSection || 'Efficienza Energetica'}">
-  
+
   <!-- Favicon -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Schema.org -->
+
+  <!-- Schema.org - Core Article Markup -->
   ${articleSchema}
   ${faqSchema}
   ${breadcrumbSchema}
+
+  <!-- Schema.org - Enhanced Entity Markup for AEO/GEO -->
+  ${organizationSchema}
+  ${localBusinessSchema}
+  ${serviceSchema}
   
   <link rel="stylesheet" href="/css/style.css">
   <style>
@@ -338,6 +482,27 @@ function generateArticleHtml(article) {
       font-size: 1.25rem; /* Larger for older readers */
       color: var(--color-text-light, #e2e8f0); /* High contrast */
       line-height: 1.7;
+    }
+    .article-direct-answer {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 157, 0.08));
+      border-left: 4px solid var(--color-primary, #00d4ff);
+      border-radius: 8px;
+    }
+    .direct-answer-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-primary, #00d4ff);
+      margin-bottom: 0.75rem;
+    }
+    .direct-answer-text {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: white;
+      font-weight: 500;
     }
     .article-content {
       color: var(--color-text-light, #e2e8f0); /* Higher contrast */
@@ -570,6 +735,15 @@ function generateArticleHtml(article) {
         <h1 class="article-title" itemprop="headline">${escapeHtml(h1)}</h1>
         ${article.directAnswer ? `<p class="article-excerpt" itemprop="abstract">${escapeHtml(article.directAnswer)}</p>` : ''}
       </header>
+
+      <!-- AEO-Optimized Direct Answer for Featured Snippets -->
+      ${article.directAnswer ? `
+      <div class="article-direct-answer" itemscope itemtype="https://schema.org/Answer">
+        <div class="direct-answer-label">Risposta Rapida</div>
+        <div class="direct-answer-text" itemprop="text">
+          ${escapeHtml(article.directAnswer)}
+        </div>
+      </div>` : ''}
 
       <div class="article-content" itemprop="articleBody">
         ${contentHtml}

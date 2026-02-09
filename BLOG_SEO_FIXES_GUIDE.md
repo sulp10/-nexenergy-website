@@ -71,6 +71,51 @@ const ogImage = article.heroImage?.url || getDefaultOgImage();
 - Risposta diretta ottimizzata per AI (ChatGPT, Claude, Perplexity)
 - Migliore Answer Engine Optimization (AEO)
 
+### 6. 🆕 Schema Avanzati e Contenuto Strutturato (v2.0 - Feb 2026)
+**File modificati**: `scripts/blog-sync.js` (righe 328-391), `scripts/blog-agent.js` (righe 225-296)
+
+**Problema identificato**: Analisi AI su articoli pubblicati rivelava contenuti vaghi e mancanza di schema avanzati
+
+**Aggiunto in blog-sync.js**:
+- ✅ **HowTo Schema** per articoli con procedure step-by-step
+- ✅ **Legislation Schema** per articoli con riferimenti normativi
+
+**Migliorato Prompt AI in blog-agent.js**:
+
+**Prima** (contenuti generici):
+```
+"Audit energetico: Valutazione dello stato attuale (es. entro fine 2024)"
+"Esistono incentivi come Ecobonus e Conto Termico"
+"Hotel Lefay ha fatto della sostenibilità un punto di forza"
+```
+
+**Dopo** (contenuti strutturati e precisi):
+```
+"Audit energetico: entro il 31 dicembre 2024 (D.Lgs. 102/2014 art. 8)"
+"Ecobonus 65%: detrazione fiscale su 100.000€ massimali, 10 anni, gestito da ENEA"
+"Hotel de Russie Roma: investimento 890.000€, risparmio 127.000€/anno, ROI 4,8 anni, da classe F a C"
+```
+
+**Nuove istruzioni nel prompt**:
+1. **Date precise**: "31 dicembre 2024" invece di "es. entro fine 2024"
+2. **Incentivi dettagliati**: Percentuale + massimale + durata + scadenza + ente
+3. **Casi studio quantitativi**: Investimento + risparmio + ROI + classe energetica
+4. **Riferimenti normativi**: Nome completo + data + articolo (es: "D.Lgs. 102/2014 art. 8")
+5. **Tone autorevole**: Ridotti colloquialismi eccessivi ("incubo che ci toglie il sonno")
+6. **Checklist operative**: Azioni concrete con scadenze
+
+**Benefici**:
+- ✅ Autorevolezza e credibilità professionale aumentate
+- ✅ Featured snippets per query informazionali complesse
+- ✅ AI (ChatGPT, Perplexity) può estrarre dati strutturati
+- ✅ Utenti trovano informazioni precise e actionable
+- ✅ Ranking migliorato per query long-tail normative/tecniche
+
+**Note**:
+- Schema HowTo/Legislation sono **opzionali** - generati solo se applicabili
+- Articoli esistenti mantengono contenuti originali (non rigenerati)
+- Nuovi articoli avranno automaticamente contenuti più ricchi
+
 ## 🚀 Come Rigenerare gli Articoli Esistenti
 
 ### Opzione 1: Risincronizzare dal CMS (Raccomandato)
@@ -197,6 +242,13 @@ Considera di arricchire gli articoli con riferimenti a:
 
 ### scripts/blog-agent.js
 - **Riga 323**: Rimosso suffisso numerico dal slug
+- **Righe 225-296 (v2.0)**: Prompt AI migliorato con istruzioni per:
+  - Date precise (formato "DD Mese YYYY")
+  - Incentivi dettagliati (%, massimali, scadenze, enti)
+  - Casi studio quantitativi (investimento, risparmio, ROI, classe energetica)
+  - Riferimenti normativi (decreti, direttive, leggi)
+  - Tone autorevole ma accessibile
+  - Schema opzionali: `howToSteps`, `legislation`
 
 ### scripts/blog-sync.js
 - **Righe 201-231**: Aggiunta funzione `generateOrganizationSchema()`
@@ -204,8 +256,10 @@ Considera di arricchire gli articoli con riferimenti a:
 - **Righe 272-301**: Aggiunta funzione `generateServiceSchema()`
 - **Righe 306-315**: Aggiunta funzione `generateGeoMetaTags()`
 - **Righe 319-321**: Aggiunta funzione `getDefaultOgImage()`
-- **Righe 386-390**: Generazione variabili per nuovi markup
-- **Righe 403-433**: Inserimento markup nel `<head>` HTML
+- **Righe 328-355 (v2.0)**: Aggiunta funzione `generateHowToSchema()` per procedure step-by-step
+- **Righe 357-391 (v2.0)**: Aggiunta funzione `generateLegislationSchema()` per riferimenti normativi
+- **Righe 453-459**: Generazione variabili per nuovi markup (inclusi HowTo e Legislation)
+- **Righe 511-515**: Inserimento markup nel `<head>` HTML (inclusi HowTo e Legislation)
 - **Righe 475-496**: CSS per sezione "Risposta Rapida" AEO
 - **Righe 742-751**: HTML sezione "Risposta Rapida" con schema Answer
 

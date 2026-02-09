@@ -228,32 +228,72 @@ STILE DI SCRITTURA (CRITICO):
 - Scrivi come un GIORNALISTA PROFESSIONISTA, non come una AI
 - Usa frasi di lunghezza variabile (corte e lunghe alternate)
 - Inizia i paragrafi con parole DIVERSE (mai ripetere lo stesso pattern)
-- Includi aneddoti specifici, nomi di hotel italiani reali se pertinente
-- Usa espressioni colloquiali italiane naturali ("diciamo la verità", "ecco il punto")
-- Evita: elenchi puntati eccessivi, frasi generiche, tono accademico
+- TONE BILANCIATO: Autorevole ma accessibile, esperto ma non accademico
+- Usa colloquialismi moderati, ma mantieni credibilità professionale
+- EVITA colloquialismi eccessivi tipo "incubo che ci toglie il sonno", "diciamoci la verità"
+- Evita: elenchi puntati eccessivi, frasi generiche, tono da marketing aggressivo
 - NO pattern AI: "In questo articolo", "È importante notare", "In conclusione"
+
+CONTENUTO STRUTTURATO (OBBLIGATORIO):
+1. **DATE PRECISE**: Mai usare "es. entro fine 2024" o "circa metà 2025"
+   - Formato: "31 dicembre 2024", "30 giugno 2025", "entro il 15 marzo 2026"
+   - Se data incerta, scrivi "da verificare su Gazzetta Ufficiale" invece di date vaghe
+
+2. **INCENTIVI DETTAGLIATI**: Per ogni incentivo citato (Ecobonus, Conto Termico, ecc.):
+   - Percentuale di detrazione/contributo (es: "65%", "fino al 65%")
+   - Massimale di spesa (es: "100.000€ per unità immobiliare")
+   - Durata detrazione (es: "10 anni")
+   - Scadenza (es: "31 dicembre 2025")
+   - Ente gestore (es: "ENEA", "GSE")
+   - Link/riferimento (opzionale)
+
+3. **CASI STUDIO QUANTITATIVI**: Se citi hotel reali (preferibile), includi:
+   - Nome hotel + località + categoria stelle
+   - Investimento totale (€)
+   - Risparmio annuo (€ o %)
+   - ROI o payback period (anni/mesi)
+   - Classe energetica prima/dopo (es: "da F a C")
+   - Tecnologie implementate (specifiche)
+
+4. **RIFERIMENTI NORMATIVI**: Per articoli su normative/obblighi:
+   - Nome completo (es: "D.Lgs. 102/2014", "Direttiva EPBD IV 2024/1275/UE")
+   - Data emanazione se rilevante
+   - Articolo specifico se applicabile (es: "art. 8")
+   - Link Gazzetta Ufficiale o fonte EU (opzionale)
+
+5. **CHECKLIST OPERATIVE**: Per articoli su compliance/implementazione:
+   - Lista azioni concrete con scadenze
+   - Formato: "ENTRO [DATA]: [AZIONE] ([dettagli])"
 
 REGOLE SEO:
 - Keyword focus "${topic.focus}" - densità naturale 1-2%
 - 800-1500 parole OBBLIGATORIO
 - H2/H3 con keyword naturali
-- FAQ reali che gli albergatori cercano
+- FAQ reali che gli albergatori cercano (minimo 3)
+- Includi entità: ENEA, GSE, Federalberghi, nomi regioni/città italiane
 
 FORMATO OUTPUT (JSON PURO):
 {
   "title": "Meta title SEO max 55 chars STRICT (essenziale per Google)",
   "h1": "H1 max 65 chars STRICT (diverso dal title)",
   "metaDescription": "Meta description 120-160 chars, verbo d'azione iniziale",
-  "directAnswer": "Risposta diretta 2-3 frasi per featured snippet Google",
+  "directAnswer": "Risposta diretta 2-3 frasi COMPLETE (no troncamenti tipo 'Gli a...') per featured snippet Google",
   "slug": "url-slug-lowercase-con-trattini",
-  "content": "HTML: h2, h3, p, strong. NO html/body/head. Solo contenuto.",
+  "content": "HTML: h2, h3, p, strong. NO html/body/head. Solo contenuto. Includi dati precisi come da istruzioni.",
   "faq": [{"question": "...", "answer": "..."}, {"question": "...", "answer": "..."}],
   "targetLocation": "Italia",
   "secondaryKeywords": ["kw1", "kw2", "kw3"],
   "lsiKeywords": "parole correlate semanticamente, separate da virgola",
   "entityOptimization": "entità rilevanti per SEO: nomi brand, associazioni, normative, es: ENEA, GSE, Federalberghi",
+  "howToSteps": [{"name": "Step 1", "text": "Descrizione dettagliata"}],
+  "legislation": [{"name": "D.Lgs. 102/2014", "jurisdiction": "Italia", "type": "Decreto Legislativo", "legislationDate": "2014-07-04"}],
   "seoScore": 90
-}`;
+}
+
+NOTA SCHEMA OPZIONALI:
+- "howToSteps": Includi SOLO se articolo contiene procedura step-by-step (es: "Come fare audit", "Procedura richiesta incentivi")
+- "legislation": Includi SOLO se articolo cita normative/leggi specifiche (es: decreti, direttive EU, leggi nazionali)
+- Se NON applicabili, ometti questi campi (non usare array vuoti)`;
 
   const userPrompt = `Scrivi un articolo su: "${topic.title}"
 

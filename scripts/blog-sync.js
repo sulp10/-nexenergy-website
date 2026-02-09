@@ -321,6 +321,73 @@ function getDefaultOgImage() {
 }
 
 /**
+ * Generate HowTo Schema.org JSON-LD
+ * Critical for AEO - helps Google show step-by-step instructions in search results
+ * Only generates if article has howToSteps array
+ */
+function generateHowToSchema(article) {
+  // Check if article has howToSteps (will be added by AI prompt)
+  if (!article.howToSteps || !Array.isArray(article.howToSteps) || article.howToSteps.length === 0) {
+    return '';
+  }
+
+  const steps = article.howToSteps.map((step, index) => ({
+    "@type": "HowToStep",
+    "name": step.name,
+    "text": step.text,
+    "position": index + 1
+  }));
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": article.howToTitle || article.title,
+    "description": article.howToDescription || article.metaDescription,
+    "step": steps
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>\n  `;
+}
+
+/**
+ * Generate Legislation Schema.org JSON-LD
+ * Critical for Authority - helps AI understand legal/regulatory content
+ * Only generates if article has legislation array
+ */
+function generateLegislationSchema(article) {
+  // Check if article has legislation references (will be added by AI prompt)
+  if (!article.legislation || !Array.isArray(article.legislation) || article.legislation.length === 0) {
+    return '';
+  }
+
+  // Generate multiple Legislation schemas if multiple laws cited
+  const schemas = article.legislation.map(law => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Legislation",
+      "name": law.name,
+      "legislationJurisdiction": law.jurisdiction || "Italia",
+      "legislationType": law.type || "Normativa"
+    };
+
+    // Add optional fields if present
+    if (law.legislationDate) {
+      schema.legislationDate = law.legislationDate;
+    }
+    if (law.legislationIdentifier) {
+      schema.legislationIdentifier = law.legislationIdentifier;
+    }
+    if (law.url) {
+      schema.url = law.url;
+    }
+
+    return `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+  });
+
+  return schemas.join('\n  ');
+}
+
+/**
  * Generate FAQ HTML section
  */
 function generateFaqHtml(faqs) {
@@ -386,6 +453,8 @@ function generateArticleHtml(article) {
   const organizationSchema = generateOrganizationSchema();
   const localBusinessSchema = generateLocalBusinessSchema();
   const serviceSchema = generateServiceSchema();
+  const howToSchema = generateHowToSchema(article);
+  const legislationSchema = generateLegislationSchema(article);
   const geoMetaTags = generateGeoMetaTags(article.targetLocation || 'Italia');
   const ogImage = article.heroImage?.url || getDefaultOgImage();
 
@@ -443,7 +512,8 @@ function generateArticleHtml(article) {
   ${organizationSchema}
   ${localBusinessSchema}
   ${serviceSchema}
-  
+  ${howToSchema}${legislationSchema}
+
   <link rel="stylesheet" href="/css/style.css">
   <style>
     /* === MOBILE-FIRST OPTIMIZATIONS FOR 50+ USERS === */

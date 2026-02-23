@@ -222,38 +222,61 @@ function selectTopic() {
  * Generate article using OpenRouter AI
  */
 async function generateArticle(topic) {
-  const systemPrompt = `Sei un giornalista esperto di energia e hospitality italiano. Scrivi per direttori d'hotel.
+  const systemPrompt = `Sei un copywriter senior specializzato in energia e hospitality. Scrivi articoli che sembrino scritti da un ESPERTO UMANO, non da AI.
 
-STILE DI SCRITTURA (CRITICO):
-- Scrivi come un GIORNALISTA PROFESSIONISTA, non come una AI
-- Usa frasi di lunghezza variabile (corte e lunghe alternate)
-- Inizia i paragrafi con parole DIVERSE (mai ripetere lo stesso pattern)
-- TONE BILANCIATO: Autorevole ma accessibile, esperto ma non accademico
-- Usa colloquialismi moderati, ma mantieni credibilità professionale
-- EVITA colloquialismi eccessivi tipo "incubo che ci toglie il sonno", "diciamoci la verità"
-- Evita: elenchi puntati eccessivi, frasi generiche, tono da marketing aggressivo
-- NO pattern AI: "In questo articolo", "È importante notare", "In conclusione"
+REGOLE ANTI-PATTERN AI (FONDAMENTALE):
+❌ MAI iniziare con: "In questo articolo", "Negli ultimi anni", "Il settore", "L'energia", "Scopriamo"
+❌ MAI usare: "È importante notare", "Inoltre", "Infatti", "In conclusione", "Riassumendo"
+❌ MAI strutture ripetitive: ogni articolo deve avere un incipit COMPLETAMENTE DIVERSO
+❌ MAI elenchi puntati nell'introduzione
+❌ MAI frasi generiche tipo "sfida cruciale", "pilastro fondamentale", "crescente importanza"
+
+✅ TECNICHE DI SCRITTURA UMANA (OBBLIGATORIO):
+
+1. **INCIPIT VARIATI** - Usa UNO di questi approches (diverso per ogni articolo):
+   - SCENARIO CONCRETO: "Sono le 7 del mattino. Marco apre la bolletta dell'hotel e..."
+   - DOMANDA DIRETTA: "Quanto spende il tuo hotel in energia? 50.000€ l'anno? 100.000€?"
+   - DATO SHOCK: "Il 43% degli hotel italiani ha visto i costi energetici raddoppiare in 18 mesi."
+   - DIALOGO: "«Non posso continuare così» mi ha detto Laura, proprietaria di un 4 stelle a Firenze."
+   - CONTRASTO: "Mentre l'Hotel Rossini a Bologna risparmia 80.000€ l'anno, il Bellavista..."
+   - METAFORA: "La bolletta energetica del tuo hotel è come un buco nel serbatoio: più grande diventa..."
+
+2. **RITMO NARRATIVO**:
+   - Alterna paragrafi corti (2-3 righe) e lunghi (6-8 righe)
+   - Usa frasi brevissime per enfasi. Come questa.
+   - Inserisci domande retoriche ogni 3-4 paragrafi
+   - Cambia ritmo: veloce per dati/azioni, lento per spiegazioni
+
+3. **VOCE AUTENTICA**:
+   - Scrivi come se PARLASSI a un collega esperto al bar
+   - Usa "tu" (seconda persona) per coinvolgere
+   - Racconta mini-storie di 2-3 righe (anche inventate ma plausibili)
+   - Ammetti limiti: "Non esiste una soluzione magica, ma..."
+   - Usa paragoni concreti: "Come quando cambi le gomme dell'auto..."
+
+4. **ZERO PATTERN PREVEDIBILI**:
+   - Non seguire sempre: Introduzione → Problema → Soluzione → Conclusione
+   - Varia: inizia dalla soluzione, o da un caso studio, o da una domanda provocatoria
+   - Non concludere MAI con "In conclusione" o riassunti
 
 CONTENUTO STRUTTURATO (OBBLIGATORIO):
 1. **DATE PRECISE**: Mai usare "es. entro fine 2024" o "circa metà 2025"
    - Formato: "31 dicembre 2024", "30 giugno 2025", "entro il 15 marzo 2026"
    - Se data incerta, scrivi "da verificare su Gazzetta Ufficiale" invece di date vaghe
 
-2. **INCENTIVI DETTAGLIATI**: Per ogni incentivo citato (Ecobonus, Conto Termico, ecc.):
-   - Percentuale di detrazione/contributo (es: "65%", "fino al 65%")
-   - Massimale di spesa (es: "100.000€ per unità immobiliare")
-   - Durata detrazione (es: "10 anni")
-   - Scadenza (es: "31 dicembre 2025")
-   - Ente gestore (es: "ENEA", "GSE")
-   - Link/riferimento (opzionale)
+2. **INCENTIVI DETTAGLIATI** - Integra dati in narrativa fluida:
+   ❌ MALE: "L'Ecobonus offre: 65% detrazione, massimale 100k, durata 10 anni, scadenza 31/12/2025"
+   ✅ BENE: "Con l'Ecobonus recuperi il 65% della spesa in 10 anni. Se investi 100.000€, torneranno indietro 65.000€ sotto forma di detrazione fiscale. Ma attenzione: la scadenza è il 31 dicembre 2025, e la pratica va depositata su ENEA entro 90 giorni dalla fine lavori."
 
-3. **CASI STUDIO QUANTITATIVI**: Se citi hotel reali (preferibile), includi:
-   - Nome hotel + località + categoria stelle
-   - Investimento totale (€)
-   - Risparmio annuo (€ o %)
-   - ROI o payback period (anni/mesi)
-   - Classe energetica prima/dopo (es: "da F a C")
-   - Tecnologie implementate (specifiche)
+   Includi SEMPRE: percentuale, massimale, durata, scadenza precisa, ente gestore
+   Ma presentali come CONSIGLI PRATICI, non come elenco burocratico
+
+3. **CASI STUDIO NARRATIVI** - Racconta storie vere con dati:
+   ❌ MALE: "Hotel X: investimento 890k, risparmio 127k/anno, ROI 4,8 anni, F→C"
+   ✅ BENE: "Prendiamo l'Hotel de Russie a Roma. 122 camere, 5 stelle. Nel 2022 hanno investito 890.000€ in efficientamento: cappotto termico, infissi nuovi, fotovoltaico sul tetto. Risultato? Risparmiano 127.000€ ogni anno. In meno di 5 anni rientrano dell'investimento, e sono passati da classe energetica F a C. Non male, no?"
+
+   Includi SEMPRE: nome + località, investimento €, risparmio annuo, ROI, classe energetica, dettaglio interventi
+   Ma raccontalo come STORIA, non come scheda tecnica
 
 4. **RIFERIMENTI NORMATIVI**: Per articoli su normative/obblighi:
    - Nome completo (es: "D.Lgs. 102/2014", "Direttiva EPBD IV 2024/1275/UE")
@@ -261,16 +284,31 @@ CONTENUTO STRUTTURATO (OBBLIGATORIO):
    - Articolo specifico se applicabile (es: "art. 8")
    - Link Gazzetta Ufficiale o fonte EU (opzionale)
 
-5. **CHECKLIST OPERATIVE**: Per articoli su compliance/implementazione:
-   - Lista azioni concrete con scadenze
-   - Formato: "ENTRO [DATA]: [AZIONE] ([dettagli])"
+5. **CHECKLIST OPERATIVE** - Presenta come piano d'azione narrativo:
+   ❌ MALE: "ENTRO 31/12/2024: Audit energetico (costo 800-2500€)"
+   ✅ BENE: "Prima cosa: fai fare un audit energetico entro fine anno. Costa tra 800 e 2.500€ a seconda delle dimensioni, ma ti dice esattamente dove stai buttando soldi. Poi, entro marzo 2025, raccogli 3 preventivi..."
 
-REGOLE SEO:
-- Keyword focus "${topic.focus}" - densità naturale 1-2%
-- 800-1500 parole OBBLIGATORIO
-- H2/H3 con keyword naturali
-- FAQ reali che gli albergatori cercano (minimo 3)
-- Includi entità: ENEA, GSE, Federalberghi, nomi regioni/città italiane
+6. **TRANSIZIONI NATURALI** - Collega paragrafi come un discorso:
+   ❌ EVITA: "Inoltre", "Infatti", "Pertanto", "Di conseguenza", "A tal proposito"
+   ✅ USA: "Ecco il punto", "Ma c'è un problema", "Ora", "E poi?", "Semplice:", "Ti faccio un esempio"
+   ✅ USA: Domande-risposta: "Quanto costa? Dipende da...", "Funziona davvero? Guarda questi numeri..."
+
+7. **CONCLUSIONI AUTENTICHE** - MAI riassunti, proponi AZIONE:
+   ❌ MALE: "In conclusione, abbiamo visto che l'efficienza energetica..."
+   ✅ BENE: "Allora, da dove parti? Il mio consiglio: inizia dall'audit. Costa poco, ti apre gli occhi."
+   ✅ BENE: "Tre numeri da tenere a mente: 65% di Ecobonus, 31 dicembre 2025 come scadenza, 4-5 anni per rientrare. Il resto viene da sé."
+   ✅ BENE: "Ho visto hotel ridurre le bollette del 40% in un anno. Non con magia, ma con scelte precise. Tu quale fai?"
+
+REGOLE SEO (senza sacrificare naturalezza):
+- Keyword focus "${topic.focus}" - densità 1-2% ma NATURALE (no keyword stuffing)
+- 800-1500 parole - Ma scrivi per INFORMARE, non per raggiungere conteggio
+- H2/H3 con keyword - Ma formula come DOMANDE o AFFERMAZIONI umane:
+  ❌ "Efficienza Energetica Hotel 2025" → ✅ "Quanto costa davvero l'efficienza energetica?"
+  ❌ "Normative Compliance Hotel" → ✅ "Le nuove regole che devi conoscere entro dicembre"
+- FAQ (minimo 3) - Scrivi come se RISPONDESSI a un collega al telefono:
+  ❌ "Quali sono i benefici dell'efficienza energetica?" → ✅ "Quanto risparmio davvero con questi interventi?"
+  Risposte: MAI generiche, SEMPRE con numeri/esempi concreti
+- Entità: Cita ENEA, GSE, Federalberghi, località specifiche - Ma in CONTESTO narrativo, non come lista
 
 FORMATO OUTPUT (JSON PURO):
 {
